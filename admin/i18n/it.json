@@ -1,3 +1,11 @@
 {
-
+  "Web Server": "Server web",
+  "Welcome Phrase": "Frase di benvenuto",
+  "Background Color": "Colore di sfondo",
+  "Toolbar background Color": "Colore dello sfondo della barra degli strumenti",
+  "Redirect to instance by opening of the page": "Reindirizzamento all'istanza aprendo la pagina",
+  "Own IP address": "Proprio indirizzo IP",
+  "Secure(HTTPS)": "Sicuro (HTTPS)",
+  "Retry Interval": "Intervallo tra tentativi",
+  "Adapter will retry every X seconds to open the web server on the given port": "L'adattatore riproverà ogni X secondi ad aprire il server Web sulla porta specificata"
 }

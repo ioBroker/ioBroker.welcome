@@ -1,0 +1,114 @@
+{
+  "i18n": true,
+  "type": "tabs",
+  "items": {
+    "_config": {
+      "type": "panel",
+      "label": "Web Server",
+      "items": {
+        "bind": {
+          "type": "ip",
+          "label": "Own IP address",
+          "sm": 6,
+          "md": 4,
+          "lg": 2
+        },
+        "port": {
+          "type": "port",
+          "label": "Port",
+          "default": 80,
+          "sm": 6,
+          "md": 4,
+          "lg": 2
+        },
+        "secure": {
+          "newLine": true,
+          "type": "checkbox",
+          "label": "Secure(HTTPS)",
+          "sm": 12,
+          "md": 6,
+          "lg": 2
+        },
+        "_certs": {
+          "type": "certificates",
+          "newLine": true,
+          "hidden": "!data.secure",
+          "sm": 12
+        },
+        "retryInterval": {
+          "newLine": true,
+          "type": "number",
+          "label": "Retry Interval",
+          "help": "Adapter will retry every X seconds to open the web server on the given port",
+          "sm": 6,
+          "md": 4,
+          "lg": 2
+        }
+      }
+    },
+    "_settings": {
+      "type": "panel",
+      "label": "Settings",
+      "items": {
+        "redirect": {
+          "newLine": true,
+          "type": "instance",
+          "label": "Redirect to instance by opening of the page",
+          "default": "",
+          "adapters": ["admin", "web"],
+          "sm": 12,
+          "md": 6,
+          "lg": 4
+        },
+        "welcomePhrase": {
+          "newLine": true,
+          "type": "text",
+          "label": "Welcome Phrase",
+          "sm": 12,
+          "hidden": "!!data.redirect"
+        },
+        "backgroundColor": {
+          "newLine": true,
+          "type": "color",
+          "label": "Background Color",
+          "sm": 6,
+          "md": 4,
+          "lg": 2,
+          "hidden": "!!data.redirect"
+        },
+        "backgroundToolbarColor": {
+          "newLine": true,
+          "type": "color",
+          "label": "Toolbar background Color",
+          "sm": 6,
+          "md": 4,
+          "lg": 2,
+          "hidden": "!!data.redirect"
+        },
+
+        "language": {
+          "newLine": true,
+          "type": "language",
+          "label": "Language",
+          "system": true,
+          "noTranslation": true,
+          "sm": 6,
+          "md": 4,
+          "lg": 2,
+          "hidden": "!!data.redirect"
+        },
+        "_custom": {
+          "newLine": true,
+          "type": "custom",
+          "sm": 12,
+          "md": 6,
+          "lg": 6,
+          "i18n": true,
+          "url": "custom/customComponents.js",
+          "name": "ConfigCustomWelcomeSet/Components/WelcomeComponent",
+          "hidden": "!!data.redirect"
+        }
+      }
+    }
+  }
+}

@@ -1,3 +1,11 @@
 {
-
+  "Web Server": "网络服务器",
+  "Welcome Phrase": "欢迎词",
+  "Background Color": "背景颜色",
+  "Toolbar background Color": "工具栏背景颜色",
+  "Redirect to instance by opening of the page": "通过打开页面重定向到实例",
+  "Own IP address": "自己的IP地址",
+  "Secure(HTTPS)": "安全（HTTPS）",
+  "Retry Interval": "重试间隔",
+  "Adapter will retry every X seconds to open the web server on the given port": "适配器将每隔 X 秒重试一次以在给定端口上打开 Web 服务器"
 }

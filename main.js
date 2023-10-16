@@ -39,7 +39,9 @@ const SUPPORTED_ADAPTERS = ['admin', 'web'];
 async function renderIndexHtml() {
     const _indexHtml =
         fs.existsSync(`${__dirname}/src/build/index.html`) ? fs.readFileSync(`${__dirname}/src/build/index.html`).toString() :
-            fs.readFileSync(`${__dirname}/www/index.html`).toString();
+            fs.readFileSync(`${__dirname}/public/index.html`).toString();
+
+    let redirect = '';
 
     const instances = await adapter.getObjectViewAsync('system', 'instance', {});
     const systemConfig = await adapter.getForeignObjectAsync('system.config');
@@ -50,6 +52,17 @@ async function renderIndexHtml() {
     const pages = [];
     for (const id in mapInstance) {
         const instance = mapInstance[id];
+        const url = `http${instance.native.secure ? 's' : ''}://${instance.native.bind === '0.0.0.0' ? 'localhost' : instance.native.bind}:${instance.native.port}/`;
+        if (id.substring('system.adapter.'.length) === adapter.config.redirect) {
+            redirect = url;
+        }
+
+        if (adapter.config.allInstances === false &&
+            adapter.config.specificInstances &&
+            adapter.config.specificInstances.includes(id.substring('system.adapter.'.length))
+        ) {
+            continue;
+        }
         if (!instance.common || !instance.native) {
             continue;
         }
@@ -62,7 +75,6 @@ async function renderIndexHtml() {
         if (!SUPPORTED_ADAPTERS.includes(instance.common.name)) {
             continue;
         }
-        const url = `http${instance.native.secure ? 's' : ''}://${instance.native.bind === '0.0.0.0' ? 'localhost' : instance.native.bind}:${instance.native.port}/`;
         let icon = await adapter.readFileAsync(`${instance.common.name}.admin`, instance.common.icon);
         if (instance.common.icon.endsWith('.jpg')) {
             icon = `data:image/jpg;base64,${icon.file.toString('base64')}`;
@@ -71,11 +83,17 @@ async function renderIndexHtml() {
         }
         pages.push({
             icon,
+            instance: instance._id.substring('system.adapter.'.length),
             title: instance.common.titleLang || instance.common.title,
             name: instance.common.name,
             url
         });
     }
+
+    if (redirect) {
+        return _indexHtml.replace('window.REPLACEMENT_TEXT="REPLACEMENT_TEXT"', `window.location="${redirect}".replace('localhost', window.location.hostname);`);
+    }
+
     const IOBROKER_PAGES = {
         welcomePhrase: adapter.config.welcomePhrase,
         backgroundColor: adapter.config.backgroundColor,
@@ -84,7 +102,7 @@ async function renderIndexHtml() {
         pages
     };
 
-    return _indexHtml.replace('var REPLACEMENT_TEXT', `window.IOBROKER_PAGES = ${JSON.stringify(IOBROKER_PAGES)};`);
+    return _indexHtml.replace('window.REPLACEMENT_TEXT="REPLACEMENT_TEXT"', `window.IOBROKER_PAGES=${JSON.stringify(IOBROKER_PAGES)};`);
 }
 
 async function main() {
@@ -132,7 +150,7 @@ async function initWebServer(settings) {
             next();
         });
 
-        server.app.use(express.static('www'));
+        server.app.use(express.static('public'));
 
         const appOptions = {};
         if (settings.cache) {
@@ -183,7 +201,11 @@ async function initWebServer(settings) {
             port = parseInt(port, 10);
             if (port !== settings.port && !settings.findNextPort) {
                 adapter.log.error(`port ${settings.port} already in use`);
-                adapter.terminate ? adapter.terminate(utils.EXIT_CODES.ADAPTER_REQUESTED_TERMINATION): process.exit(utils.EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
+                // retry every 10 seconds to open the welcome screen on port 80
+                setTimeout(() => {
+                    initWebServer(settings);
+                }, (parseInt(adapter.config.retryInterval, 10) || 10) * 1000);
+                return;
             }
             serverPort = port;
             server.server.listen(port, (!settings.bind || settings.bind === '0.0.0.0') ? undefined : settings.bind || undefined, () => {

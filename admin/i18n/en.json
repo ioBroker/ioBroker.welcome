@@ -1,3 +1,11 @@
 {
-
+  "Web Server": "Web Server",
+  "Welcome Phrase": "Welcome Phrase",
+  "Background Color": "Background Color",
+  "Toolbar background Color": "Toolbar background Color",
+  "Redirect to instance by opening of the page": "Redirect to instance by opening of the page",
+  "Own IP address": "Own IP address",
+  "Secure(HTTPS)": "Secure(HTTPS)",
+  "Retry Interval": "Retry Interval",
+  "Adapter will retry every X seconds to open the web server on the given port": "Adapter will retry every X seconds to open the web server on the given port"
 }

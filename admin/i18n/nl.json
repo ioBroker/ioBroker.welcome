@@ -1,3 +1,11 @@
 {
-
+  "Web Server": "Web Server",
+  "Welcome Phrase": "Welkomstzin",
+  "Background Color": "Achtergrond kleur",
+  "Toolbar background Color": "Achtergrondkleur van de werkbalk",
+  "Redirect to instance by opening of the page": "Omleiden naar exemplaar door de pagina te openen",
+  "Own IP address": "Eigen IP-adres",
+  "Secure(HTTPS)": "Veilig (HTTPS)",
+  "Retry Interval": "Interval opnieuw proberen",
+  "Adapter will retry every X seconds to open the web server on the given port": "De adapter probeert elke X seconden opnieuw om de webserver op de opgegeven poort te openen"
 }

@@ -9,10 +9,14 @@
 [![Translation status](https://weblate.iobroker.net/widgets/adapters/-/web/svg-badge.svg)](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.welcome.svg)](https://www.npmjs.com/package/iobroker.welcome)
 
-Web server on the base of Node.js and express to read the files from ioBroker DB.
+This adapter shows all web and admin instances of ioBroker on one page on port 80 (configurable)
 
 **This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** 
 For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
+
+![Welcome](img/screen.png)
+
+You can provide the instance, to which it will be redirected automatically by opening of the welcome page.
 
 <!--
 	Placeholder for the next version (at the beginning of the line):

@@ -1,3 +1,11 @@
 {
-
+  "Web Server": "Веб сервер",
+  "Welcome Phrase": "Приветственная фраза",
+  "Background Color": "Фоновый цвет",
+  "Toolbar background Color": "Цвет фона панели инструментов",
+  "Redirect to instance by opening of the page": "Перенаправление на экземпляр при открытии страницы",
+  "Own IP address": "Собственный IP-адрес",
+  "Secure(HTTPS)": "Безопасный (HTTPS)",
+  "Retry Interval": "Интервал повтора",
+  "Adapter will retry every X seconds to open the web server on the given port": "Адаптер будет повторять попытку каждые X секунд, чтобы открыть веб-сервер на данном порту."
 }

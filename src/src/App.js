@@ -1,15 +1,50 @@
 import React from 'react';
+import * as PropTypes from 'prop-types';
 import { withStyles } from '@mui/styles';
 import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
 import * as Sentry from '@sentry/browser';
 import * as SentryIntegrations from '@sentry/integrations';
 
-import { AppBar } from '@mui/material';
+import {
+    AppBar, Avatar,
+    Button,
+    Card, CardActions,
+    CardContent, CardMedia,
+    Toolbar, Typography,
+} from '@mui/material';
 
-import {I18n, Theme, Utils} from '@iobroker/adapter-react-v5';
+import {
+    I18n,
+    Theme,
+    Utils,
+    ToggleThemeMenu,
+} from '@iobroker/adapter-react-v5';
+
+import logo from './assets/logo.png';
 
 const styles = theme => ({
+    page: {
+        overflow: 'auto',
+        width: '100%',
+        height: 'calc(100% - 48px)',
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        gap: theme.spacing(2),
+        alignSelf: 'center',
+        padding: theme.spacing(3),
+    },
+    card: {
+        width: 300,
+        height: 295,
+    },
 });
+
+Typography.propTypes = {
+    color: PropTypes.string,
+    variant: PropTypes.string,
+    children: PropTypes.node,
+};
 
 class App extends React.Component {
     constructor(props) {
@@ -30,6 +65,7 @@ class App extends React.Component {
         };
 
         I18n.setTranslations(translations);
+        I18n.setLanguage(window.IOBROKER_PAGES.language || (window.navigator.userLanguage || window.navigator.language).substring(0, 2));
         extendedProps.sentryDSN = window.sentryDSN;
 
         // activate sentry plugin
@@ -43,24 +79,146 @@ class App extends React.Component {
         const theme = Theme(Utils.getThemeName(''));
 
         this.state = {
+            themeName: Utils.getThemeName(),
             theme,
-            themeType: theme.palette.mode,
         };
+
+        document.body.style.backgroundColor = theme.palette.mode === 'dark' ? '#111' : '#fafafa';
+        document.body.style.color = theme.palette.mode === 'dark' ? '#EEE' : '#111';
+    }
+
+    static getText(text) {
+        if (!text) {
+            return '';
+        }
+        if (typeof text === 'object') {
+            return text[window.IOBROKER_PAGES.language || I18n.getLanguage()] || text.en;
+        }
+
+        return text;
+    }
+
+    static openLink = (page, inNewPage) => {
+        const url = page.url.replace('localhost', window.location.hostname);
+        if (!inNewPage) {
+            window.location = url;
+        } else {
+            window.open(url, page.instance);
+        }
+    };
+
+    renderCard(page) {
+        if (page.url.includes('127.0.0.1') || page.url.includes('::1')) {
+            if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1' && !window.location.hostname.includes('::1')) {
+                return null;
+            }
+        }
+
+        return <Card
+            key={page.instance}
+            className={this.props.classes.card}
+        >
+            <CardMedia
+                sx={{
+                    height: 140,
+                    backgroundSize: 'contain',
+                    marginTop: '10px',
+                    cursor: 'pointer',
+                }}
+                onClick={() => App.openLink(page)}
+                image={page.icon}
+                title={page.instance}
+            />
+            <CardContent
+                onClick={() => App.openLink(page)}
+                sx={{
+                    cursor: 'pointer',
+                }}
+            >
+                <Typography gutterBottom variant="h5" component="div">
+                    {page.instance}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                    {App.getText(page.title)}
+                </Typography>
+            </CardContent>
+            <CardActions
+                sx={{
+                    justifyContent: 'space-between',
+                }}
+            >
+                <Button
+                    size="small"
+                    onClick={() => App.openLink(page)}
+                >
+                    {I18n.t('Open')}
+                </Button>
+                <Button
+                    size="small"
+                    onClick={() => App.openLink(page, true)}
+                >
+                    {I18n.t('Open in new tab')}
+                </Button>
+            </CardActions>
+        </Card>;
+    }
+
+    toggleTheme(newThemeName) {
+        const themeName = this.state.themeName;
+
+        // dark => blue => colored => light => dark
+        newThemeName = newThemeName || (themeName === 'dark' ? 'blue' :
+            (themeName === 'blue' ? 'colored' :
+                (themeName === 'colored' ? 'light' : 'dark')));
+
+        if (newThemeName !== themeName) {
+            Utils.setThemeName(newThemeName);
+
+            const theme = Theme(newThemeName);
+
+            this.setState({
+                theme,
+                themeName: Utils.getThemeName(theme),
+                // themeType: this.getThemeType(theme),
+            }, () => {
+                this.props.onThemeChange && this.props.onThemeChange(newThemeName);
+            });
+        }
     }
 
     render() {
         const {
             theme,
-            themeType,
         } = this.state;
 
         return <StyledEngineProvider injectFirst>
             <ThemeProvider theme={this.state.theme}>
-                <div className="App" style={{ background: theme.palette.background.default, color: theme.palette.text.primary }}>
-                    <AppBar position="static">
-                        ioBroker
-                        {I18n.t('Welcome page')}
-                    </AppBar>
+                <AppBar position="static">
+                    <Toolbar
+                        variant="dense"
+                        sx={{
+                            backgroundColor: window.IOBROKER_PAGES.backgroundToolbarColor || theme.palette.primary.main,
+                            color: Utils.invertColor(window.IOBROKER_PAGES.backgroundToolbarColor || theme.palette.primary.main, true),
+                        }}
+                    >
+                        <Avatar alt="ioBroker" src={logo} sx={{ width: 32, height: 32, marginRight: 1 }} />
+                        {window.IOBROKER_PAGES.welcomePhrase || I18n.t('ioBroker Welcome page')}
+                        <div style={{ flexGrow: 1 }} />
+                        <ToggleThemeMenu
+                            t={I18n.t}
+                            toggleTheme={() => this.toggleTheme()}
+                            themeName={this.state.themeName}
+                        />
+                    </Toolbar>
+                </AppBar>
+                <div
+                    className={this.props.classes.page}
+                    style={{
+                        backgroundColor: window.IOBROKER_PAGES.backgroundColor || undefined,
+                        color: Utils.invertColor(window.IOBROKER_PAGES.backgroundColor || theme.palette.primary.main, true),
+                    }}
+                >
+                    {window.IOBROKER_PAGES.pages.map(page => this.renderCard(page))}
                 </div>
             </ThemeProvider>
         </StyledEngineProvider>;

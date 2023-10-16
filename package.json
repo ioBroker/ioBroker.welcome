@@ -1,6 +1,6 @@
 {
   "name": "iobroker.welcome",
-  "version": "6.1.6",
+  "version": "0.0.1",
   "description": "ioBroker simple web Adapter",
   "author": {
     "name": "bluefox",
@@ -51,8 +51,8 @@
     "release-patch": "release-script patch --yes",
     "release-minor": "release-script minor --yes",
     "release-major": "release-script major --yes",
-    "update-packages": "ncu --upgrade && cd src && ncu --upgrade && cd ..",
-    "npm": "npm i && cd src && npm i -f && cd .."
+    "update-packages": "ncu --upgrade && cd src && ncu --upgrade && cd ../src-admin && ncu --upgrade",
+    "npm": "npm i && cd src && npm i -f && cd ../src-admin && npm i -f"
   },
   "license": "MIT",
   "maintainers": [

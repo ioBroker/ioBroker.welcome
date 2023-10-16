@@ -1,3 +1,11 @@
 {
-
+  "Web Server": "Serwer internetowy",
+  "Welcome Phrase": "Wyrażenie powitalne",
+  "Background Color": "Kolor tła",
+  "Toolbar background Color": "Kolor tła paska narzędzi",
+  "Redirect to instance by opening of the page": "Przekieruj do instancji poprzez otwarcie strony",
+  "Own IP address": "Własny adres IP",
+  "Secure(HTTPS)": "Bezpieczne (HTTPS)",
+  "Retry Interval": "Interwał ponawiania prób",
+  "Adapter will retry every X seconds to open the web server on the given port": "Adapter będzie ponawiał próbę otwarcia serwera WWW na podanym porcie co X sekund"
 }

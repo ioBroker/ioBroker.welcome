@@ -53,6 +53,7 @@
     "eraseOnUpload": true,
     "connectionType": "local",
     "dataSource": "push",
+    "localLink": "%welcome_protocol%://%ip%:%welcome_port%/",
     "dependencies": [
       {
         "js-controller": ">=3.1.0"
@@ -77,14 +78,19 @@
     "tier": 3
   },
   "native": {
+    "allInstances": true,
+    "specificInstances": [],
+    "redirect": "",
     "port": 80,
     "auth": false,
     "secure": false,
     "bind": "0.0.0.0",
+    "language": "",
     "defaultUser": "admin",
     "welcomePhrase": "",
     "backgroundColor": "",
-    "backgroundToolbarColor": ""
+    "backgroundToolbarColor": "",
+    "retryInterval": 10
   },
   "instanceObjects": [
     {
@@ -93,6 +99,27 @@
       "common": {
         "name": "user files and images for background image",
         "type": "meta.user"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info",
+      "type": "channel",
+      "common": {
+        "name": "Information"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.connection",
+      "type": "state",
+      "common": {
+        "role": "indicator.connected",
+        "name": "If web server started",
+        "type": "boolean",
+        "read": true,
+        "write": false,
+        "def": false
       },
       "native": {}
     }
