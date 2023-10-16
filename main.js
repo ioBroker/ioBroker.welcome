@@ -59,7 +59,7 @@ async function renderIndexHtml() {
 
         if (adapter.config.allInstances === false &&
             adapter.config.specificInstances &&
-            adapter.config.specificInstances.includes(id.substring('system.adapter.'.length))
+            !adapter.config.specificInstances.includes(id.substring('system.adapter.'.length))
         ) {
             continue;
         }

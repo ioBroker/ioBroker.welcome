@@ -1,19 +1,20 @@
 {
   "common": {
     "name": "welcome",
-    "version": "0.0.4",
-    "title": "WEB server",
+    "version": "0.0.3",
+    "title": "Welcome page",
     "titleLang": {
-      "en": "WEB server",
-      "de": "WEB-Server",
-      "ru": "Веб сервер",
-      "pt": "Servidor web",
-      "nl": "Web Server",
-      "fr": "Serveur Web",
-      "it": "Server web",
-      "es": "Servidor web",
-      "pl": "Serwer internetowy",
-      "zh-cn": "Web服务器"
+      "en": "Welcome page",
+        "de": "Willkommensseite",
+        "ru": "Страница: Добро пожаловать",
+        "pt": "Página de boas-vindas",
+        "nl": "Welkomstpagina",
+        "fr": "Page de bienvenue",
+        "it": "Pagina di benvenuto",
+        "es": "Página de bienvenida",
+        "pl": "Strona powitalna",
+        "uk": "Сторінка: Ласкаво просимо",
+        "zh-cn": "欢迎页面"
     },
     "news": {
       "0.0.4": {
@@ -31,16 +32,17 @@
       }
     },
     "desc": {
-      "en": "opens a webserver for other adapters",
-      "de": "Stellt webserver für 'ioBroker Adapter' zur Verfügung",
-      "ru": "Запускает веб сервер для 'ioBroker драйверов'",
-      "pt": "abre um servidor web para outros adaptadores",
-      "nl": "opent een webserver voor andere adapters",
-      "fr": "ouvre un serveur web pour d'autres adaptateurs",
-      "it": "apre un server web per altri adattatori",
-      "es": "abre un servidor web para otros adaptadores",
-      "pl": "otwiera serwer internetowy dla innych kart",
-      "zh-cn": "为其他适配器服务的web服务器"
+      "en": "Shows welcome page with list of ioBroker adapters with web servers",
+        "de": "Zeigt die Begrüßungsseite mit einer Liste der ioBroker-Adapter mit Webservern",
+        "ru": "Показывает приветственную страницу со списком адаптеров ioBroker с веб-серверами",
+        "pt": "Mostra a página de boas-vindas com a lista de adaptadores ioBroker com servidores da web",
+        "nl": "Toont welkomstpagina met lijst van ioBroker-adapters met webservers",
+        "fr": "Affiche la page de bienvenue avec la liste des adaptateurs ioBroker avec des serveurs Web",
+        "it": "Mostra la pagina di benvenuto con l'elenco degli adattatori ioBroker con server Web",
+        "es": "Muestra la página de bienvenida con la lista de adaptadores ioBroker con servidores web",
+        "pl": "Pokazuje stronę powitalną z listą adapterów ioBroker z serwerami WWW",
+        "uk": "Показує сторінку вітання зі списком адаптерів ioBroker з веб-серверами",
+        "zh-cn": "显示欢迎页面，其中包含ioBroker适配器列表和Web服务器"
     },
     "license": "MIT",
     "mode": "daemon",

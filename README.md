@@ -11,12 +11,15 @@
 
 This adapter shows all web and admin instances of ioBroker on one page on port 80 (configurable)
 
-**This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** 
+**This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.**
 For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
 
 ![Welcome](img/screen.png)
 
+Normally, this adapter should be running on port 80 or 443, and it shows available adapters with web servers.
+
 Optionally, you can provide the instance, to which it will be redirected automatically by opening of the welcome page.
+In this case, by opening of http://IP it will be immediately redirected to a specified web instance.
 
 <!--
 	Placeholder for the next version (at the beginning of the line):
@@ -24,6 +27,9 @@ Optionally, you can provide the instance, to which it will be redirected automat
 -->
 
 ## Changelog
+### **WORK IN PROGRESS**
+* (bluefox) Corrected the adapter list
+
 ### 0.0.4 (2023-10-16)
 * (bluefox) First release
 
