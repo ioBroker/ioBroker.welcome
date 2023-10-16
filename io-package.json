@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "welcome",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "title": "Welcome page",
     "titleLang": {
       "en": "Welcome page",
@@ -17,6 +17,19 @@
       "zh-cn": "欢迎页面"
     },
     "news": {
+      "0.0.5": {
+        "en": "Corrected the adapter list",
+        "de": "Korrektur der Adapterliste",
+        "ru": "Исправлен список адаптеров",
+        "pt": "Corrigido a lista de adaptadores",
+        "nl": "Vertaling:",
+        "fr": "Correction de la liste d'adaptateur",
+        "it": "Corretto l'elenco dell'adattatore",
+        "es": "Corregido la lista de adaptadores",
+        "pl": "Poprawiona lista adapterów",
+        "uk": "Виправлено список адаптерів",
+        "zh-cn": "修改名单"
+      },
       "0.0.4": {
         "en": "First release",
         "de": "Erste Veröffentlichung",
