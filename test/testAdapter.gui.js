@@ -15,7 +15,7 @@ describe('welcome-gui', () => {
 
     it('Check web server', async function (){
         this.timeout(5_000);
-        await gPage.waitForSelector('a[href="/#easy"]', { timeout: 5000 });
+        await gPage.waitForSelector('.MuiAvatar-root', { timeout: 5_000 });
     });
 
     after(async function () {

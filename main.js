@@ -145,12 +145,12 @@ async function initWebServer(settings) {
             if (!url || url === '/' || url === '/index.html') {
                 res.set('Cache-Control', `public, max-age=${adapter.config.staticAssetCacheMaxAge}`);
                 res.send(indexHtml);
-                return;
+            } else {
+                next();
             }
-            next();
         });
 
-        server.app.use(express.static('public'));
+        server.app.use(express.static(`${__dirname}/public`));
 
         const appOptions = {};
         if (settings.cache) {
