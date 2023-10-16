@@ -24,7 +24,7 @@ You can provide the instance, to which it will be redirected automatically by op
 -->
 
 ## Changelog
-### **WORK IN PROGRESS**
+### 0.0.2 (2023-10-16)
 * (bluefox) First release
 
 ### 0.0.1 (2023-10-16)
