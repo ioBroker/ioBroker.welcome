@@ -16,7 +16,7 @@ For more details and for information how to disable the error reporting see [Sen
 
 ![Welcome](img/screen.png)
 
-You can provide the instance, to which it will be redirected automatically by opening of the welcome page.
+Optionally, you can provide the instance, to which it will be redirected automatically by opening of the welcome page.
 
 <!--
 	Placeholder for the next version (at the beginning of the line):
@@ -24,7 +24,7 @@ You can provide the instance, to which it will be redirected automatically by op
 -->
 
 ## Changelog
-### **WORK IN PROGRESS**
+### 0.0.3 (2023-10-16)
 * (bluefox) First release
 
 ### 0.0.1 (2023-10-16)

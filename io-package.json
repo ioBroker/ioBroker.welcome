@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "welcome",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "title": "WEB server",
     "titleLang": {
       "en": "WEB server",
@@ -16,7 +16,19 @@
       "zh-cn": "Web服务器"
     },
     "news": {
-
+      "0.0.3": {
+        "en": "First release",
+        "de": "Erste Veröffentlichung",
+        "ru": "Первый выпуск",
+        "pt": "Primeiro lançamento",
+        "nl": "Vertaling:",
+        "fr": "Premier communiqué",
+        "it": "Prima release",
+        "es": "Primera liberación",
+        "pl": "Pierwsze wydanie",
+        "uk": "Перший реліз",
+        "zh-cn": "第一次释放"
+      }
     },
     "desc": {
       "en": "opens a webserver for other adapters",
