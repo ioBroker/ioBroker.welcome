@@ -50,6 +50,7 @@
     "readme": "https://github.com/ioBroker/ioBroker.welcome/blob/master/README.md",
     "enabled": true,
     "compact": true,
+    "nogit": true,
     "keywords": [
       "welcome",
       "server",
