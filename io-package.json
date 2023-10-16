@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "welcome",
-    "version": "6.1.6",
+    "version": "0.0.1",
     "title": "WEB server",
     "titleLang": {
       "en": "WEB server",
