@@ -24,7 +24,7 @@ Optionally, you can provide the instance, to which it will be redirected automat
 -->
 
 ## Changelog
-### **WORK IN PROGRESS**
+### 0.0.4 (2023-10-16)
 * (bluefox) First release
 
 ### 0.0.1 (2023-10-16)
