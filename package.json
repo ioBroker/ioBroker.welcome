@@ -30,7 +30,7 @@
     "@iobroker/legacy-testing": "^1.0.0",
     "@iobroker/testing": "^4.1.0",
     "sinon-chai": "^3.7.0",
-    "puppeteer": "^21.3.8",
+    "puppeteer": "^21.4.1",
     "colorette": "^2.0.20",
     "chai-as-promised": "^7.1.1",
     "chai": "^4.3.10",
