@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "welcome",
-    "version": "0.0.5",
+    "version": "0.1.0",
     "title": "Welcome page",
     "titleLang": {
       "en": "Welcome page",
@@ -17,6 +17,19 @@
       "zh-cn": "欢迎页面"
     },
     "news": {
+      "0.1.0": {
+        "en": "Added custom links",
+        "de": "Hinzufügen von benutzerdefinierten Links",
+        "ru": "Добавлены пользовательские ссылки",
+        "pt": "Adicionados links personalizados",
+        "nl": "Toegevoegde gewoonte links",
+        "fr": "Ajout de liens personnalisés",
+        "it": "Aggiunto link personalizzati",
+        "es": "Enlaces personalizados",
+        "pl": "Adddition link",
+        "uk": "Додати користувацькі посилання",
+        "zh-cn": "增加习俗联系"
+      },
       "0.0.5": {
         "en": "Corrected the adapter list",
         "de": "Korrektur der Adapterliste",
