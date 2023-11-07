@@ -81,10 +81,26 @@ class App extends React.Component {
         this.state = {
             themeName: Utils.getThemeName(),
             theme,
+            alive: [],
         };
 
         document.body.style.backgroundColor = theme.palette.mode === 'dark' ? '#111' : '#fafafa';
         document.body.style.color = theme.palette.mode === 'dark' ? '#EEE' : '#111';
+    }
+
+    componentDidMount() {
+        this.checkAllLinksIfTheyAlive()
+            .catch(e => console.error(`Cannot check all links: ${e}`));
+    }
+
+    async checkAllLinksIfTheyAlive() {
+        try {
+            const response = await fetch(`./alive.json?t=${Date.now()}`);
+            const alive = await response.json();
+            this.setState({ alive });
+        } catch (e) {
+            console.error(`Cannot check all links: ${e}`);
+        }
     }
 
     static getText(text) {
@@ -107,7 +123,7 @@ class App extends React.Component {
         }
     };
 
-    renderCard(page) {
+    renderCard(page, index) {
         if (page.url.includes('127.0.0.1') || page.url.includes('::1')) {
             if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1' && !window.location.hostname.includes('::1')) {
                 return null;
@@ -117,6 +133,7 @@ class App extends React.Component {
         return <Card
             key={page.instance}
             className={this.props.classes.card}
+            style={this.state.alive[index] === false ? { opacity: 0.3 } : { opacity: 1 }}
         >
             <CardMedia
                 sx={{
@@ -126,27 +143,21 @@ class App extends React.Component {
                     cursor: 'pointer',
                 }}
                 onClick={() => App.openLink(page)}
-                image={page.icon}
+                image={page.icon || logo}
                 title={page.instance}
             />
             <CardContent
                 onClick={() => App.openLink(page)}
-                sx={{
-                    cursor: 'pointer',
-                }}
+                sx={{ cursor: 'pointer' }}
             >
-                <Typography gutterBottom variant="h5" component="div">
-                    {page.instance}
+                <Typography gutterBottom variant="h5" component="div" style={{ minHeight: 32 }}>
+                    {page.instance || '&nbsp;'}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body2" color="text.secondary" style={{ minHeight: 20 }}>
                     {App.getText(page.title)}
                 </Typography>
             </CardContent>
-            <CardActions
-                sx={{
-                    justifyContent: 'space-between',
-                }}
-            >
+            <CardActions sx={{ justifyContent: 'space-between' }}>
                 <Button
                     size="small"
                     onClick={() => App.openLink(page)}
@@ -218,7 +229,7 @@ class App extends React.Component {
                         color: Utils.invertColor(window.IOBROKER_PAGES.backgroundColor || theme.palette.primary.main, true),
                     }}
                 >
-                    {window.IOBROKER_PAGES.pages.map(page => this.renderCard(page))}
+                    {window.IOBROKER_PAGES.pages.map((page, index) => this.renderCard(page, index))}
                 </div>
             </ThemeProvider>
         </StyledEngineProvider>;

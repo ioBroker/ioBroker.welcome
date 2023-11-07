@@ -4,7 +4,8 @@
 'use strict';
 
 const express = require('express');
-const fs = require('fs');
+const fs = require('node:fs');
+const axios = require('axios');
 const utils = require('@iobroker/adapter-core'); // Get common adapter utils
 const IoBWebServer = require('@iobroker/webserver');
 const adapterName = require('./package.json').name.split('.').pop();
@@ -36,15 +37,10 @@ function startAdapter(options) {
 
 const SUPPORTED_ADAPTERS = ['admin', 'web'];
 
-async function renderIndexHtml() {
-    const _indexHtml =
-        fs.existsSync(`${__dirname}/src/build/index.html`) ? fs.readFileSync(`${__dirname}/src/build/index.html`).toString() :
-            fs.readFileSync(`${__dirname}/public/index.html`).toString();
-
+async function getPages() {
     let redirect = '';
 
     const instances = await adapter.getObjectViewAsync('system', 'instance', {});
-    const systemConfig = await adapter.getForeignObjectAsync('system.config');
     const mapInstance = {};
     for (let r = 0; r < instances.rows.length; r++) {
         mapInstance[instances.rows[r].id] = instances.rows[r].value;
@@ -85,10 +81,34 @@ async function renderIndexHtml() {
             icon,
             instance: instance._id.substring('system.adapter.'.length),
             title: instance.common.titleLang || instance.common.title,
-            name: instance.common.name,
             url
         });
     }
+
+    if (adapter.config.customLinks) {
+        adapter.config.customLinks.map(item => {
+            if (item.enabled) {
+                pages.push({
+                    icon: item.icon,
+                    instance: item.name,
+                    title: item.desc,
+                    url: item.link,
+                    blank: item.blank
+                });
+            }
+        });
+    }
+
+    return {pages, redirect};
+}
+
+async function renderIndexHtml() {
+    const _indexHtml =
+        fs.existsSync(`${__dirname}/src/build/index.html`) ? fs.readFileSync(`${__dirname}/src/build/index.html`).toString() :
+            fs.readFileSync(`${__dirname}/public/index.html`).toString();
+
+    const systemConfig = await adapter.getForeignObjectAsync('system.config');
+    const {pages, redirect} = await getPages();
 
     if (redirect) {
         return _indexHtml.replace('window.REPLACEMENT_TEXT="REPLACEMENT_TEXT"', `window.location="${redirect}".replace('localhost', window.location.hostname);`);
@@ -116,6 +136,21 @@ async function main() {
         });
 }
 
+async function renderAliveJson() {
+    const {pages} = await getPages();
+    const alive = [];
+    for (let p = 0; p < pages.length; p++) {
+        try {
+            const response = await axios.get(pages[p].url, { timeout: 1000 });
+            alive[p] = response.status === 200;
+        } catch (e) {
+            pages[p].url = '';
+            alive[p] = false;
+        }
+    }
+    return alive;
+}
+
 //settings: {
 //    "port":   8080,
 //    "auth":   false,
@@ -140,11 +175,13 @@ async function initWebServer(settings) {
         server.app = express();
         server.app.disable('x-powered-by');
 
-        server.app.use((req, res, next) => {
+        server.app.use(async (req, res, next) => {
             const url = req.url.split('?')[0];
             if (!url || url === '/' || url === '/index.html') {
                 res.set('Cache-Control', `public, max-age=${adapter.config.staticAssetCacheMaxAge}`);
                 res.send(indexHtml);
+            } else if (url === '/alive.json' || url === 'alive.json') {
+                res.json(await renderAliveJson());
             } else {
                 next();
             }

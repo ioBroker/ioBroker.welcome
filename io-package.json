@@ -118,7 +118,8 @@
     "welcomePhrase": "",
     "backgroundColor": "",
     "backgroundToolbarColor": "",
-    "retryInterval": 10
+    "retryInterval": 10,
+    "customLinks": []
   },
   "instanceObjects": [
     {

@@ -109,6 +109,31 @@
           "hidden": "!!data.redirect"
         }
       }
+    },
+    "_custom": {
+      "type": "panel",
+      "label": "Custom links",
+      "items": {
+        "customLinks": {
+          "type": "table",
+          "items": [
+            {"type": "checkbox", "width": 50, "attr": "enabled", "title": "Enabled"},
+            {"type": "text", "width": "20%", "attr": "name", "title": "Name"},
+            {"type": "text", "width": "20%", "attr": "link", "title": "Link"},
+            {"type": "text", "width": "20%", "attr": "desc", "title": "Description"},
+            {
+              "type": "image",
+              "base64": true,
+              "accept": "image/*",
+              "width": "20%",
+              "attr": "icon",
+              "title": "Icon",
+              "maxSize": 1024000
+            }
+          ],
+          "xs": 12
+        }
+      }
     }
   }
 }
