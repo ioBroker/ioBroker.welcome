@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "welcome",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "title": "Welcome page",
     "titleLang": {
       "en": "Welcome page",
@@ -17,6 +17,19 @@
       "zh-cn": "欢迎页面"
     },
     "news": {
+      "0.2.0": {
+        "en": "Added custom redirect URL",
+        "de": "Hinzugefügt benutzerdefinierte redirect URL",
+        "ru": "Добавлен пользовательский редирект URL",
+        "pt": "Adicionado URL de redirecionamento personalizado",
+        "nl": "Vertaling:",
+        "fr": "Ajout d'URL de redirection personnalisée",
+        "it": "Aggiunto URL redirect personalizzato",
+        "es": "URL redireccionada personalizada",
+        "pl": "Dostosowywanie do standardu URL",
+        "uk": "Додано користувацький перенаправлений URL",
+        "zh-cn": "增加习俗转用欧元"
+      },
       "0.1.0": {
         "en": "Added custom links",
         "de": "Hinzufügen von benutzerdefinierten Links",
