@@ -7,5 +7,9 @@
   "Own IP address": "Eigene IP-Adresse",
   "Secure(HTTPS)": "Sicher (HTTPS)",
   "Retry Interval": "Wiederholungsintervall",
-  "Adapter will retry every X seconds to open the web server on the given port": "Der Adapter versucht alle X Sekunden erneut, den Webserver am angegebenen Port zu öffnen"
+  "Adapter will retry every X seconds to open the web server on the given port": "Der Adapter versucht alle X Sekunden erneut, den Webserver am angegebenen Port zu öffnen",
+  "Redirect to custom link": "Weiterleitung zum benutzerdefinierten Link",
+  "Custom URL": "Eigene URL",
+  "User will be immediately redirected to this link after opening of the page": "Der Benutzer wird nach dem Öffnen der Seite sofort zu diesem Link weitergeleitet",
+  "URL must be set": "URL muss festgelegt werden"
 }

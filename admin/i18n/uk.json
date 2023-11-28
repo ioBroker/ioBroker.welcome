@@ -7,5 +7,9 @@
   "Own IP address": "Власна IP адреса",
   "Secure(HTTPS)": "Безпечний (HTTPS)",
   "Retry Interval": "Інтервал повторних спроб",
-  "Adapter will retry every X seconds to open the web server on the given port": "Адаптер намагатиметься кожні X секунд відкрити веб-сервер на вказаному порту"
+  "Adapter will retry every X seconds to open the web server on the given port": "Адаптер намагатиметься кожні X секунд відкрити веб-сервер на вказаному порту",
+  "Redirect to custom link": "Переспрямувати на спеціальне посилання",
+  "Custom URL": "Спеціальна URL-адреса",
+  "User will be immediately redirected to this link after opening of the page": "Після відкриття сторінки користувач буде негайно перенаправлений за цим посиланням",
+  "URL must be set": "Необхідно встановити URL-адресу"
 }

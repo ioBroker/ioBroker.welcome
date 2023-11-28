@@ -7,5 +7,9 @@
   "Own IP address": "Eigen IP-adres",
   "Secure(HTTPS)": "Veilig (HTTPS)",
   "Retry Interval": "Interval opnieuw proberen",
-  "Adapter will retry every X seconds to open the web server on the given port": "De adapter probeert elke X seconden opnieuw om de webserver op de opgegeven poort te openen"
+  "Adapter will retry every X seconds to open the web server on the given port": "De adapter probeert elke X seconden opnieuw om de webserver op de opgegeven poort te openen",
+  "Redirect to custom link": "Omleiden naar aangepaste link",
+  "Custom URL": "Eigen URL",
+  "User will be immediately redirected to this link after opening of the page": "De gebruiker wordt na het openen van de pagina onmiddellijk doorverwezen naar deze link",
+  "URL must be set": "URL moet worden ingesteld"
 }

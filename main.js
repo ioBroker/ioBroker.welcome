@@ -40,6 +40,10 @@ const SUPPORTED_ADAPTERS = ['admin', 'web'];
 async function getPages() {
     let redirect = '';
 
+    if (adapter.config.redirectToLink) {
+        return {pages: [], redirect: adapter.config.redirectUrl};
+    }
+
     const instances = await adapter.getObjectViewAsync('system', 'instance', {});
     const mapInstance = {};
     for (let r = 0; r < instances.rows.length; r++) {

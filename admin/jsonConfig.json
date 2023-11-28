@@ -50,6 +50,27 @@
       "type": "panel",
       "label": "Settings",
       "items": {
+        "redirectToLink": {
+          "newLine": true,
+          "type": "checkbox",
+          "label": "Redirect to custom link",
+          "sm": 12,
+          "md": 6,
+          "lg": 4
+        },
+        "redirectUrl": {
+          "newLine": true,
+          "type": "text",
+          "label": "Custom URL",
+          "validator": "!data.redirectToLink || !!data.redirectUrl",
+          "validatorErrorText": "URL must be set",
+          "validatorNoSaveOnError": true,
+          "tooltip": "User will be immediately redirected to this link after opening of the page",
+          "sm": 12,
+          "md": 6,
+          "lg": 4,
+          "hidden": "!data.redirectToLink"
+        },
         "redirect": {
           "newLine": true,
           "type": "instance",
@@ -58,14 +79,15 @@
           "adapters": ["admin", "web"],
           "sm": 12,
           "md": 6,
-          "lg": 4
+          "lg": 4,
+          "hidden": "!!data.redirectToLink"
         },
         "welcomePhrase": {
           "newLine": true,
           "type": "text",
           "label": "Welcome Phrase",
           "sm": 12,
-          "hidden": "!!data.redirect"
+          "hidden": "!!data.redirect || !!data.redirectToLink"
         },
         "backgroundColor": {
           "newLine": true,
@@ -74,7 +96,7 @@
           "sm": 6,
           "md": 4,
           "lg": 2,
-          "hidden": "!!data.redirect"
+          "hidden": "!!data.redirect || !!data.redirectToLink"
         },
         "backgroundToolbarColor": {
           "newLine": true,
@@ -83,7 +105,7 @@
           "sm": 6,
           "md": 4,
           "lg": 2,
-          "hidden": "!!data.redirect"
+          "hidden": "!!data.redirect || !!data.redirectToLink"
         },
 
         "language": {
@@ -95,7 +117,7 @@
           "sm": 6,
           "md": 4,
           "lg": 2,
-          "hidden": "!!data.redirect"
+          "hidden": "!!data.redirect || !!data.redirectToLink"
         },
         "_custom": {
           "newLine": true,
@@ -106,13 +128,14 @@
           "i18n": true,
           "url": "custom/customComponents.js",
           "name": "ConfigCustomWelcomeSet/Components/WelcomeComponent",
-          "hidden": "!!data.redirect"
+          "hidden": "!!data.redirect || !!data.redirectToLink"
         }
       }
     },
     "_custom": {
       "type": "panel",
       "label": "Custom links",
+      "hidden": "!!data.redirect || !!data.redirectToLink",
       "items": {
         "customLinks": {
           "type": "table",

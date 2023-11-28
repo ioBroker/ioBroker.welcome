@@ -132,7 +132,9 @@
     "backgroundColor": "",
     "backgroundToolbarColor": "",
     "retryInterval": 10,
-    "customLinks": []
+    "customLinks": [],
+    "redirectToLink": false,
+    "redirectUrl": ""
   },
   "instanceObjects": [
     {

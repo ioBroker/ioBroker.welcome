@@ -7,5 +7,9 @@
   "Own IP address": "自己的IP地址",
   "Secure(HTTPS)": "安全（HTTPS）",
   "Retry Interval": "重试间隔",
-  "Adapter will retry every X seconds to open the web server on the given port": "适配器将每隔 X 秒重试一次以在给定端口上打开 Web 服务器"
+  "Adapter will retry every X seconds to open the web server on the given port": "适配器将每隔 X 秒重试一次以在给定端口上打开 Web 服务器",
+  "Redirect to custom link": "重定向到自定义链接",
+  "Custom URL": "自定义网址",
+  "User will be immediately redirected to this link after opening of the page": "用户打开页面后将立即重定向至此链接",
+  "URL must be set": "必须设置网址"
 }
