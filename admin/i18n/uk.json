@@ -11,5 +11,6 @@
   "Redirect to custom link": "Переспрямувати на спеціальне посилання",
   "Custom URL": "Спеціальна URL-адреса",
   "User will be immediately redirected to this link after opening of the page": "Після відкриття сторінки користувач буде негайно перенаправлений за цим посиланням",
-  "URL must be set": "Необхідно встановити URL-адресу"
+  "URL must be set": "Необхідно встановити URL-адресу",
+  "Logo": "Зображення логотипу"
 }

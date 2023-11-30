@@ -11,5 +11,6 @@
   "Redirect to custom link": "重定向到自定义链接",
   "Custom URL": "自定义网址",
   "User will be immediately redirected to this link after opening of the page": "用户打开页面后将立即重定向至此链接",
-  "URL must be set": "必须设置网址"
+  "URL must be set": "必须设置网址",
+  "Logo": "形象标识"
 }

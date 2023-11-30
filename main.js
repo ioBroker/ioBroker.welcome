@@ -13,6 +13,7 @@ const adapterName = require('./package.json').name.split('.').pop();
 let webServer    = null;
 let indexHtml;
 let adapter;
+let logoPng;
 
 function startAdapter(options) {
     options = options || {};
@@ -28,6 +29,11 @@ function startAdapter(options) {
             }
         },
         ready: async () => main(),
+        fileChange: async (id, name) => {
+            if (name === 'logo.png') {
+                indexHtml = await renderIndexHtml();
+            }
+        }
     });
 
     adapter = new utils.Adapter(options);
@@ -107,6 +113,13 @@ async function getPages() {
 }
 
 async function renderIndexHtml() {
+    // try to read logo
+    try{
+        logoPng = await adapter.readFileAsync(adapter.namespace, 'logo.png');
+    } catch (e) {
+        logoPng = null;
+    }
+
     const _indexHtml =
         fs.existsSync(`${__dirname}/src/build/index.html`) ? fs.readFileSync(`${__dirname}/src/build/index.html`).toString() :
             fs.readFileSync(`${__dirname}/public/index.html`).toString();
@@ -123,6 +136,7 @@ async function renderIndexHtml() {
         backgroundColor: adapter.config.backgroundColor,
         backgroundToolbarColor: adapter.config.backgroundToolbarColor,
         language: adapter.config.language || systemConfig.common.language,
+        logoPng: logoPng ? `data:image/png;base64,${logoPng.file.toString('base64')}` : '',
         pages
     };
 
@@ -130,6 +144,8 @@ async function renderIndexHtml() {
 }
 
 async function main() {
+    adapter.subscribeForeignFiles && await adapter.subscribeForeignFiles(adapter.namespace, 'logo.png');
+
     indexHtml = await renderIndexHtml();
 
     initWebServer(adapter.config)

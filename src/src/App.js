@@ -18,6 +18,7 @@ import {
     Theme,
     Utils,
     ToggleThemeMenu,
+    Icon,
 } from '@iobroker/adapter-react-v5';
 
 import logo from './assets/logo.png';
@@ -37,6 +38,11 @@ const styles = theme => ({
     card: {
         width: 300,
         height: 295,
+    },
+    logo: {
+        width: 'auto',
+        height: 32,
+        marginRight: 10,
     },
 });
 
@@ -212,7 +218,9 @@ class App extends React.Component {
                             color: Utils.invertColor(window.IOBROKER_PAGES.backgroundToolbarColor || theme.palette.primary.main, true),
                         }}
                     >
-                        <Avatar alt="ioBroker" src={logo} sx={{ width: 32, height: 32, marginRight: 1 }} />
+                        {window.IOBROKER_PAGES.logoPng ?
+                            <Icon alt="ioBroker" src={window.IOBROKER_PAGES.logoPng || logo} className={this.props.classes.logo} /> :
+                            <Avatar alt="ioBroker" src={logo} className={this.props.classes.logo} />}
                         {window.IOBROKER_PAGES.welcomePhrase || I18n.t('ioBroker Welcome page')}
                         <div style={{ flexGrow: 1 }} />
                         <ToggleThemeMenu

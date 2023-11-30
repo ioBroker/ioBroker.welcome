@@ -11,5 +11,6 @@
   "Redirect to custom link": "Przekieruj do niestandardowego linku",
   "Custom URL": "Niestandardowy adres URL",
   "User will be immediately redirected to this link after opening of the page": "Po otwarciu strony użytkownik zostanie natychmiast przekierowany do tego linku",
-  "URL must be set": "Adres URL musi być ustawiony"
+  "URL must be set": "Adres URL musi być ustawiony",
+  "Logo": "Obraz logo"
 }

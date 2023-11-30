@@ -11,5 +11,6 @@
   "Redirect to custom link": "Redirigir a enlace personalizado",
   "Custom URL": "URL personalizada",
   "User will be immediately redirected to this link after opening of the page": "El usuario será redirigido inmediatamente a este enlace después de abrir la página.",
-  "URL must be set": "Se debe configurar la URL"
+  "URL must be set": "Se debe configurar la URL",
+  "Logo": "Logotipo"
 }

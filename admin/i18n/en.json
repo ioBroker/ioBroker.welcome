@@ -11,5 +11,6 @@
   "Redirect to custom link": "Redirect to custom link",
   "Custom URL": "Custom URL",
   "User will be immediately redirected to this link after opening of the page": "User will be immediately redirected to this link after opening of the page",
-  "URL must be set": "URL must be set"
+  "URL must be set": "URL must be set",
+  "Logo": "Logo image"
 }

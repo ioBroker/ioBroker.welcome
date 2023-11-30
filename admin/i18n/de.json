@@ -11,5 +11,6 @@
   "Redirect to custom link": "Weiterleitung zum benutzerdefinierten Link",
   "Custom URL": "Eigene URL",
   "User will be immediately redirected to this link after opening of the page": "Der Benutzer wird nach dem Öffnen der Seite sofort zu diesem Link weitergeleitet",
-  "URL must be set": "URL muss festgelegt werden"
+  "URL must be set": "URL muss festgelegt werden",
+  "Logo": "Logobild"
 }

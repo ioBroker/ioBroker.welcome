@@ -107,13 +107,22 @@
           "lg": 2,
           "hidden": "!!data.redirect || !!data.redirectToLink"
         },
-
         "language": {
           "newLine": true,
           "type": "language",
           "label": "Language",
           "system": true,
           "noTranslation": true,
+          "sm": 6,
+          "md": 4,
+          "lg": 2,
+          "hidden": "!!data.redirect || !!data.redirectToLink"
+        },
+        "logo.png": {
+          "newLine": true,
+          "type": "image",
+          "label": "Logo",
+          "accept": "image/png",
           "sm": 6,
           "md": 4,
           "lg": 2,

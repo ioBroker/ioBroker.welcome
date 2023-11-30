@@ -27,6 +27,9 @@ In this case, by opening of http://IP it will be immediately redirected to a spe
 -->
 
 ## Changelog
+### **WORK IN PROGRESS**
+* (bluefox) Allowed adding own logo to the welcome screen
+
 ### 0.2.0 (2023-11-28)
 * (bluefox) Added custom redirect URL
 

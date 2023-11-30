@@ -11,5 +11,6 @@
   "Redirect to custom link": "Перенаправление на пользовательскую ссылку",
   "Custom URL": "Пользовательский URL",
   "User will be immediately redirected to this link after opening of the page": "Пользователь будет немедленно перенаправлен на эту ссылку после открытия страницы.",
-  "URL must be set": "URL-адрес должен быть установлен"
+  "URL must be set": "URL-адрес должен быть установлен",
+  "Logo": "Изображение логотипа"
 }
