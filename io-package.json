@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "welcome",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "title": "Welcome page",
     "titleLang": {
       "en": "Welcome page",
@@ -17,6 +17,19 @@
       "zh-cn": "欢迎页面"
     },
     "news": {
+      "0.3.0": {
+        "en": "Allowed adding own logo to the welcome screen",
+        "de": "Erlaubt, das eigene Logo auf dem Willkommensbildschirm hinzuzufügen",
+        "ru": "Разрешено добавление собственного логотипа на приветственный экран",
+        "pt": "Permite adicionar o próprio logotipo à tela de boas-vindas",
+        "nl": "Staat toe dat je eigen logo toevoegt aan het welkome scherm",
+        "fr": "Permet d'ajouter son propre logo à l'écran de bienvenue",
+        "it": "Consentito aggiungere il proprio logo alla schermata di benvenuto",
+        "es": "Permitido añadir su propio logotipo a la pantalla de bienvenida",
+        "pl": "Wszystko dodaje własne logo do ekranu powitalnego",
+        "uk": "Додайте власний логотип на екран",
+        "zh-cn": "允许在受欢迎的屏幕上增加自己的标志"
+      },
       "0.2.0": {
         "en": "Added custom redirect URL",
         "de": "Hinzugefügt benutzerdefinierte redirect URL",
