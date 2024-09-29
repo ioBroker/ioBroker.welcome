@@ -254,8 +254,8 @@ class App extends React.Component {
                         </Toolbar>
                     </AppBar>
                     <div
-                        style={styles.page}
                         style={{
+                            ...styles.page,
                             backgroundColor: window.IOBROKER_PAGES.backgroundColor || undefined,
                             color: Utils.invertColor(
                                 window.IOBROKER_PAGES.backgroundColor || theme.palette.primary.main,

@@ -88,6 +88,12 @@ async function getPages() {
             icon = `data:image/jpg;base64,${icon.file.toString('base64')}`;
         } else if (instance.common.icon.endsWith('.png')) {
             icon = `data:image/png;base64,${icon.file.toString('base64')}`;
+        } else {
+            if (icon.file instanceof Buffer) {
+                icon = `data:${icon.mimeType};base64,${icon.file.toString('base64')}`;
+            } else {
+                icon = `data:${icon.mimeType};base64,${Buffer.from(icon.file).toString('base64')}`;
+            }
         }
         pages.push({
             icon,
@@ -141,7 +147,7 @@ async function renderIndexHtml() {
         backgroundColor: adapter.config.backgroundColor,
         backgroundToolbarColor: adapter.config.backgroundToolbarColor,
         language: adapter.config.language || systemConfig.common.language,
-        logoPng: logoPng ? `data:image/png;base64,${logoPng.file.toString('base64')}` : '',
+        logoPng: logoPng ? `data:${logoPng.mimeType};base64,${logoPng.file.toString('base64')}` : '',
         pages,
     };
 

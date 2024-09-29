@@ -122,10 +122,10 @@
           "newLine": true,
           "type": "image",
           "label": "Logo",
-          "accept": "image/png",
+          "accept": { "image/*": [] },
           "sm": 6,
           "md": 4,
-          "lg": 2,
+          "lg": 4,
           "hidden": "!!data.redirect || !!data.redirectToLink"
         },
         "_custom": {
@@ -156,7 +156,7 @@
             {
               "type": "image",
               "base64": true,
-              "accept": "image/*",
+              "accept": { "image/*": [] },
               "width": "20%",
               "attr": "icon",
               "title": "Icon",

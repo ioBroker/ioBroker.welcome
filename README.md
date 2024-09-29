@@ -30,6 +30,7 @@ In this case, by opening of http://IP it will be immediately redirected to a spe
 ### **WORK IN PROGRESS**
 * (bluefox) Updated packages
 * (bluefox) Used new eslint-config
+* (bluefox) Added support for SVG files
 
 ### 0.3.0 (2023-11-30)
 * (bluefox) Allowed adding own logo to the welcome screen
