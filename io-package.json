@@ -1,199 +1,217 @@
 {
-    "common": {
-        "name": "welcome",
-        "version": "0.3.0",
-        "title": "Welcome page",
-        "titleLang": {
-            "en": "Welcome page",
-            "de": "Willkommensseite",
-            "ru": "Страница: Добро пожаловать",
-            "pt": "Página de boas-vindas",
-            "nl": "Welkomstpagina",
-            "fr": "Page de bienvenue",
-            "it": "Pagina di benvenuto",
-            "es": "Página de bienvenida",
-            "pl": "Strona powitalna",
-            "uk": "Сторінка: Ласкаво просимо",
-            "zh-cn": "欢迎页面"
-        },
-        "news": {
-            "0.3.0": {
-                "en": "Allowed adding own logo to the welcome screen",
-                "de": "Erlaubt, das eigene Logo auf dem Willkommensbildschirm hinzuzufügen",
-                "ru": "Разрешено добавление собственного логотипа на приветственный экран",
-                "pt": "Permite adicionar o próprio logotipo à tela de boas-vindas",
-                "nl": "Staat toe dat je eigen logo toevoegt aan het welkome scherm",
-                "fr": "Permet d'ajouter son propre logo à l'écran de bienvenue",
-                "it": "Consentito aggiungere il proprio logo alla schermata di benvenuto",
-                "es": "Permitido añadir su propio logotipo a la pantalla de bienvenida",
-                "pl": "Wszystko dodaje własne logo do ekranu powitalnego",
-                "uk": "Додайте власний логотип на екран",
-                "zh-cn": "允许在受欢迎的屏幕上增加自己的标志"
-            },
-            "0.2.0": {
-                "en": "Added custom redirect URL",
-                "de": "Hinzugefügt benutzerdefinierte redirect URL",
-                "ru": "Добавлен пользовательский редирект URL",
-                "pt": "Adicionado URL de redirecionamento personalizado",
-                "nl": "Vertaling:",
-                "fr": "Ajout d'URL de redirection personnalisée",
-                "it": "Aggiunto URL redirect personalizzato",
-                "es": "URL redireccionada personalizada",
-                "pl": "Dostosowywanie do standardu URL",
-                "uk": "Додано користувацький перенаправлений URL",
-                "zh-cn": "增加习俗转用欧元"
-            },
-            "0.1.0": {
-                "en": "Added custom links",
-                "de": "Hinzufügen von benutzerdefinierten Links",
-                "ru": "Добавлены пользовательские ссылки",
-                "pt": "Adicionados links personalizados",
-                "nl": "Toegevoegde gewoonte links",
-                "fr": "Ajout de liens personnalisés",
-                "it": "Aggiunto link personalizzati",
-                "es": "Enlaces personalizados",
-                "pl": "Adddition link",
-                "uk": "Додати користувацькі посилання",
-                "zh-cn": "增加习俗联系"
-            },
-            "0.0.5": {
-                "en": "Corrected the adapter list",
-                "de": "Korrektur der Adapterliste",
-                "ru": "Исправлен список адаптеров",
-                "pt": "Corrigido a lista de adaptadores",
-                "nl": "Vertaling:",
-                "fr": "Correction de la liste d'adaptateur",
-                "it": "Corretto l'elenco dell'adattatore",
-                "es": "Corregido la lista de adaptadores",
-                "pl": "Poprawiona lista adapterów",
-                "uk": "Виправлено список адаптерів",
-                "zh-cn": "修改名单"
-            },
-            "0.0.4": {
-                "en": "First release",
-                "de": "Erste Veröffentlichung",
-                "ru": "Первый выпуск",
-                "pt": "Primeiro lançamento",
-                "nl": "Vertaling:",
-                "fr": "Premier communiqué",
-                "it": "Prima release",
-                "es": "Primera liberación",
-                "pl": "Pierwsze wydanie",
-                "uk": "Перший реліз",
-                "zh-cn": "第一次释放"
-            }
-        },
-        "desc": {
-            "en": "Shows welcome page with list of ioBroker adapters with web servers",
-            "de": "Zeigt die Begrüßungsseite mit einer Liste der ioBroker-Adapter mit Webservern",
-            "ru": "Показывает приветственную страницу со списком адаптеров ioBroker с веб-серверами",
-            "pt": "Mostra a página de boas-vindas com a lista de adaptadores ioBroker com servidores da web",
-            "nl": "Toont welkomstpagina met lijst van ioBroker-adapters met webservers",
-            "fr": "Affiche la page de bienvenue avec la liste des adaptateurs ioBroker avec des serveurs Web",
-            "it": "Mostra la pagina di benvenuto con l'elenco degli adattatori ioBroker con server Web",
-            "es": "Muestra la página de bienvenida con la lista de adaptadores ioBroker con servidores web",
-            "pl": "Pokazuje stronę powitalną z listą adapterów ioBroker z serwerami WWW",
-            "uk": "Показує сторінку вітання зі списком адаптерів ioBroker з веб-серверами",
-            "zh-cn": "显示欢迎页面，其中包含ioBroker适配器列表和Web服务器"
-        },
-        "licenseInformation": {
-            "license": "MIT",
-            "type": "free"
-        },
-        "mode": "daemon",
-        "platform": "Javascript/Node.js",
-        "loglevel": "info",
-        "icon": "welcome.png",
-        "readme": "https://github.com/ioBroker/ioBroker.welcome/blob/master/README.md",
-        "enabled": true,
-        "compact": true,
-        "nogit": true,
-        "keywords": ["welcome", "server", "www", "express"],
-        "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.welcome/master/admin/welcome.png",
-        "type": "general",
-        "adminUI": {
-            "config": "json"
-        },
-        "stopBeforeUpdate": true,
-        "eraseOnUpload": true,
-        "connectionType": "local",
-        "dataSource": "push",
-        "localLinks": {
-            "_default": {
-                "link": "%welcome_protocol%://%welcome_bind%:%welcome_port%/"
-            }
-        },
-        "dependencies": [
-            {
-                "js-controller": ">=3.1.0"
-            }
-        ],
-        "globalDependencies": [
-            {
-                "admin": ">=5.1.0"
-            }
-        ],
-        "authors": [
-            {
-                "name": "bluefox",
-                "email": "dogafox@gmail.com"
-            }
-        ],
-        "plugins": {
-            "sentry": {
-                "dsn": "https://74bef31d2c6844cd85af54300b8a11bc@sentry.iobroker.net/243"
-            }
-        },
-        "tier": 3
+  "common": {
+    "name": "welcome",
+    "version": "1.0.0",
+    "title": "Welcome page",
+    "titleLang": {
+      "en": "Welcome page",
+      "de": "Willkommensseite",
+      "ru": "Страница: Добро пожаловать",
+      "pt": "Página de boas-vindas",
+      "nl": "Welkomstpagina",
+      "fr": "Page de bienvenue",
+      "it": "Pagina di benvenuto",
+      "es": "Página de bienvenida",
+      "pl": "Strona powitalna",
+      "uk": "Сторінка: Ласкаво просимо",
+      "zh-cn": "欢迎页面"
     },
-    "native": {
-        "allInstances": true,
-        "specificInstances": [],
-        "redirect": "",
-        "port": 80,
-        "auth": false,
-        "secure": false,
-        "bind": "0.0.0.0",
-        "language": "",
-        "defaultUser": "admin",
-        "welcomePhrase": "",
-        "backgroundColor": "",
-        "backgroundToolbarColor": "",
-        "retryInterval": 10,
-        "customLinks": [],
-        "redirectToLink": false,
-        "redirectUrl": ""
+    "news": {
+      "1.0.0": {
+        "en": "Updated packages\nUsed new eslint-config\nAdded support for SVG files",
+        "de": "Aktualisierte Pakete\nGebraucht neue eslint-config\nUnterstützung für SVG-Dateien hinzugefügt",
+        "ru": "Обновленные пакеты\nИспользуется новая конфигурация\nДобавлена поддержка файлов SVG",
+        "pt": "Pacotes atualizados\nUsado novo eslint-config\nAdicionado suporte para arquivos SVG",
+        "nl": "Bijgewerkte pakketten\nGebruikte nieuwe eslint-config\nOndersteuning voor SVG-bestanden toegevoegd",
+        "fr": "Paquets mis à jour\nNouveau eslint-config utilisé\nAjout de la prise en charge des fichiers SVG",
+        "it": "Pacchetti aggiornati\nUsato nuovo eslint-config\nAggiunto il supporto per i file SVG",
+        "es": "Paquetes actualizados\nNuevo eslint-config usado\nAñadido soporte para archivos SVG",
+        "pl": "Aktualizacja pakietów\nUżywany nowy eslint- config\nDodano obsługę plików SVG",
+        "uk": "Оновлені пакети\nВикористовується новий eslint-config\nДодано підтримку файлів SVG",
+        "zh-cn": "更新软件包\n使用的新 eslint 配置\n添加对 SVG 文件的支持"
+      },
+      "0.3.0": {
+        "en": "Allowed adding own logo to the welcome screen",
+        "de": "Erlaubt, das eigene Logo auf dem Willkommensbildschirm hinzuzufügen",
+        "ru": "Разрешено добавление собственного логотипа на приветственный экран",
+        "pt": "Permite adicionar o próprio logotipo à tela de boas-vindas",
+        "nl": "Staat toe dat je eigen logo toevoegt aan het welkome scherm",
+        "fr": "Permet d'ajouter son propre logo à l'écran de bienvenue",
+        "it": "Consentito aggiungere il proprio logo alla schermata di benvenuto",
+        "es": "Permitido añadir su propio logotipo a la pantalla de bienvenida",
+        "pl": "Wszystko dodaje własne logo do ekranu powitalnego",
+        "uk": "Додайте власний логотип на екран",
+        "zh-cn": "允许在受欢迎的屏幕上增加自己的标志"
+      },
+      "0.2.0": {
+        "en": "Added custom redirect URL",
+        "de": "Hinzugefügt benutzerdefinierte redirect URL",
+        "ru": "Добавлен пользовательский редирект URL",
+        "pt": "Adicionado URL de redirecionamento personalizado",
+        "nl": "Vertaling:",
+        "fr": "Ajout d'URL de redirection personnalisée",
+        "it": "Aggiunto URL redirect personalizzato",
+        "es": "URL redireccionada personalizada",
+        "pl": "Dostosowywanie do standardu URL",
+        "uk": "Додано користувацький перенаправлений URL",
+        "zh-cn": "增加习俗转用欧元"
+      },
+      "0.1.0": {
+        "en": "Added custom links",
+        "de": "Hinzufügen von benutzerdefinierten Links",
+        "ru": "Добавлены пользовательские ссылки",
+        "pt": "Adicionados links personalizados",
+        "nl": "Toegevoegde gewoonte links",
+        "fr": "Ajout de liens personnalisés",
+        "it": "Aggiunto link personalizzati",
+        "es": "Enlaces personalizados",
+        "pl": "Adddition link",
+        "uk": "Додати користувацькі посилання",
+        "zh-cn": "增加习俗联系"
+      },
+      "0.0.5": {
+        "en": "Corrected the adapter list",
+        "de": "Korrektur der Adapterliste",
+        "ru": "Исправлен список адаптеров",
+        "pt": "Corrigido a lista de adaptadores",
+        "nl": "Vertaling:",
+        "fr": "Correction de la liste d'adaptateur",
+        "it": "Corretto l'elenco dell'adattatore",
+        "es": "Corregido la lista de adaptadores",
+        "pl": "Poprawiona lista adapterów",
+        "uk": "Виправлено список адаптерів",
+        "zh-cn": "修改名单"
+      },
+      "0.0.4": {
+        "en": "First release",
+        "de": "Erste Veröffentlichung",
+        "ru": "Первый выпуск",
+        "pt": "Primeiro lançamento",
+        "nl": "Vertaling:",
+        "fr": "Premier communiqué",
+        "it": "Prima release",
+        "es": "Primera liberación",
+        "pl": "Pierwsze wydanie",
+        "uk": "Перший реліз",
+        "zh-cn": "第一次释放"
+      }
     },
-    "instanceObjects": [
-        {
-            "_id": "",
-            "type": "meta",
-            "common": {
-                "name": "user files and images for background image",
-                "type": "meta.user"
-            },
-            "native": {}
-        },
-        {
-            "_id": "info",
-            "type": "channel",
-            "common": {
-                "name": "Information"
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.connection",
-            "type": "state",
-            "common": {
-                "role": "indicator.connected",
-                "name": "If web server started",
-                "type": "boolean",
-                "read": true,
-                "write": false,
-                "def": false
-            },
-            "native": {}
-        }
-    ]
+    "desc": {
+      "en": "Shows welcome page with list of ioBroker adapters with web servers",
+      "de": "Zeigt die Begrüßungsseite mit einer Liste der ioBroker-Adapter mit Webservern",
+      "ru": "Показывает приветственную страницу со списком адаптеров ioBroker с веб-серверами",
+      "pt": "Mostra a página de boas-vindas com a lista de adaptadores ioBroker com servidores da web",
+      "nl": "Toont welkomstpagina met lijst van ioBroker-adapters met webservers",
+      "fr": "Affiche la page de bienvenue avec la liste des adaptateurs ioBroker avec des serveurs Web",
+      "it": "Mostra la pagina di benvenuto con l'elenco degli adattatori ioBroker con server Web",
+      "es": "Muestra la página de bienvenida con la lista de adaptadores ioBroker con servidores web",
+      "pl": "Pokazuje stronę powitalną z listą adapterów ioBroker z serwerami WWW",
+      "uk": "Показує сторінку вітання зі списком адаптерів ioBroker з веб-серверами",
+      "zh-cn": "显示欢迎页面，其中包含ioBroker适配器列表和Web服务器"
+    },
+    "licenseInformation": {
+      "license": "MIT",
+      "type": "free"
+    },
+    "mode": "daemon",
+    "platform": "Javascript/Node.js",
+    "loglevel": "info",
+    "icon": "welcome.png",
+    "readme": "https://github.com/ioBroker/ioBroker.welcome/blob/master/README.md",
+    "enabled": true,
+    "compact": true,
+    "nogit": true,
+    "keywords": [
+      "welcome",
+      "server",
+      "www",
+      "express"
+    ],
+    "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.welcome/master/admin/welcome.png",
+    "type": "general",
+    "adminUI": {
+      "config": "json"
+    },
+    "stopBeforeUpdate": true,
+    "eraseOnUpload": true,
+    "connectionType": "local",
+    "dataSource": "push",
+    "localLinks": {
+      "_default": {
+        "link": "%welcome_protocol%://%welcome_bind%:%welcome_port%/"
+      }
+    },
+    "dependencies": [
+      {
+        "js-controller": ">=3.1.0"
+      }
+    ],
+    "globalDependencies": [
+      {
+        "admin": ">=5.1.0"
+      }
+    ],
+    "authors": [
+      {
+        "name": "bluefox",
+        "email": "dogafox@gmail.com"
+      }
+    ],
+    "plugins": {
+      "sentry": {
+        "dsn": "https://74bef31d2c6844cd85af54300b8a11bc@sentry.iobroker.net/243"
+      }
+    },
+    "tier": 3
+  },
+  "native": {
+    "allInstances": true,
+    "specificInstances": [],
+    "redirect": "",
+    "port": 80,
+    "auth": false,
+    "secure": false,
+    "bind": "0.0.0.0",
+    "language": "",
+    "defaultUser": "admin",
+    "welcomePhrase": "",
+    "backgroundColor": "",
+    "backgroundToolbarColor": "",
+    "retryInterval": 10,
+    "customLinks": [],
+    "redirectToLink": false,
+    "redirectUrl": ""
+  },
+  "instanceObjects": [
+    {
+      "_id": "",
+      "type": "meta",
+      "common": {
+        "name": "user files and images for background image",
+        "type": "meta.user"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info",
+      "type": "channel",
+      "common": {
+        "name": "Information"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.connection",
+      "type": "state",
+      "common": {
+        "role": "indicator.connected",
+        "name": "If web server started",
+        "type": "boolean",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    }
+  ]
 }
