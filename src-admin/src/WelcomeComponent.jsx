@@ -1,12 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@mui/styles';
 
 import {
-    LinearProgress, Table, TableBody,
-    TableCell, TableContainer,
-    TableHead, TableRow,
-    Paper, Checkbox,
+    LinearProgress,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Paper,
+    Checkbox,
     Switch,
     FormControlLabel
 } from '@mui/material';
@@ -14,20 +18,8 @@ import {
 // invalid
 // import ConfigGeneric from '@iobroker/adapter-react-v5/ConfigGeneric';
 // valid
-import {
-    ConfigGeneric,
-    I18n
-} from '@iobroker/adapter-react-v5';
-
-const styles = () => ({
-    table: {
-        minWidth: 400
-    },
-    header: {
-        fontSize: 16,
-        fontWeight: 'bold'
-    }
-});
+import { I18n } from '@iobroker/adapter-react-v5';
+import { ConfigGeneric } from '@iobroker/json-config';
 
 const SUPPORTED_ADAPTERS = ['admin', 'web'];
 
@@ -39,10 +31,10 @@ class WelcomeComponent extends ConfigGeneric {
         };
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         super.componentDidMount();
 
-        this.readData();
+        await this.readData();
     }
 
     async readData() {
@@ -63,7 +55,9 @@ class WelcomeComponent extends ConfigGeneric {
         const icons = {};
         for (let i = 0; i < result.length; i++) {
             try {
-                const icon = icons[result[i].name] || (await this.props.socket.readFile(`${result[i].name}.admin`, result[i].icon, true));
+                const icon =
+                    icons[result[i].name] ||
+                    (await this.props.socket.readFile(`${result[i].name}.admin`, result[i].icon, true));
                 if (icon) {
                     result[i].icon = `data:${icon.mimeType};base64,${icon.file}`;
                 } else {
@@ -80,17 +74,26 @@ class WelcomeComponent extends ConfigGeneric {
     renderItem() {
         if (!this.state.instances) {
             return <LinearProgress />;
-        } else {
-            return <div style={{ width: '100%'}}>
+        }
+        return (
+            <div style={{ width: '100%' }}>
                 <FormControlLabel
-                    control={<Switch
-                        checked={this.props.data.allInstances !== false}
-                        onChange={e => this.onChange('allInstances', e.target.checked)}
-                    />}
+                    control={
+                        <Switch
+                            checked={this.props.data.allInstances !== false}
+                            onChange={e => this.onChange('allInstances', e.target.checked)}
+                        />
+                    }
                     label={I18n.t('welcome_use_all_instances')}
                 />
-                <TableContainer component={Paper} style={{ width: '100%' }}>
-                    <Table style={{ width: '100%' }} size="small">
+                <TableContainer
+                    component={Paper}
+                    style={{ width: '100%' }}
+                >
+                    <Table
+                        style={{ width: '100%' }}
+                        size="small"
+                    >
                         <TableHead>
                             <TableRow>
                                 <TableCell style={{ width: 50 }}>{I18n.t('welcome_enabled')}</TableCell>
@@ -98,49 +101,65 @@ class WelcomeComponent extends ConfigGeneric {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {this.state.instances.map(instance => <TableRow
-                                key={instance.id}
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            >
-                                <TableCell>
-                                    <Checkbox
-                                        disabled={this.props.data.allInstances === true || this.props.data.allInstances === undefined}
-                                        checked={this.props.data.allInstances === true || this.props.data.allInstances === undefined || this.props.data.specificInstances?.includes(instance.id)}
-                                        onClick={() => {
-                                            const specificInstances = [...(this.props.data.specificInstances || [])];
-                                            const pos = specificInstances.indexOf(instance.id);
-                                            if (pos !== -1) {
-                                                specificInstances.splice(pos, 1);
-                                            } else {
-                                                specificInstances.push(instance.id);
-                                            }
-                                            specificInstances.sort();
-                                            this.onChange('specificInstances', specificInstances);
-                                        }}
-                                    />
-                                </TableCell>
-                                <TableCell
-                                    component="th"
-                                    scope="row"
+                            {this.state.instances.map(instance => (
+                                <TableRow
+                                    key={instance.id}
+                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
-                                    <div
-                                        style={{
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            gap: 5
-                                        }}
+                                    <TableCell>
+                                        <Checkbox
+                                            disabled={
+                                                this.props.data.allInstances === true ||
+                                                this.props.data.allInstances === undefined
+                                            }
+                                            checked={
+                                                this.props.data.allInstances === true ||
+                                                this.props.data.allInstances === undefined ||
+                                                this.props.data.specificInstances?.includes(instance.id)
+                                            }
+                                            onClick={() => {
+                                                const specificInstances = [
+                                                    ...(this.props.data.specificInstances || [])
+                                                ];
+                                                const pos = specificInstances.indexOf(instance.id);
+                                                if (pos !== -1) {
+                                                    specificInstances.splice(pos, 1);
+                                                } else {
+                                                    specificInstances.push(instance.id);
+                                                }
+                                                specificInstances.sort();
+                                                this.onChange('specificInstances', specificInstances);
+                                            }}
+                                        />
+                                    </TableCell>
+                                    <TableCell
+                                        component="th"
+                                        scope="row"
                                     >
-                                        {instance.icon ? <img src={instance.icon} alt={instance.title} style={{ width: 20, height: 20 }} /> : null}
-                                        {instance.id}
-
-                                    </div>
-                                </TableCell>
-                            </TableRow>)}
+                                        <div
+                                            style={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: 5
+                                            }}
+                                        >
+                                            {instance.icon ? (
+                                                <img
+                                                    src={instance.icon}
+                                                    alt={instance.title}
+                                                    style={{ width: 20, height: 20 }}
+                                                />
+                                            ) : null}
+                                            {instance.id}
+                                        </div>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
                         </TableBody>
                     </Table>
                 </TableContainer>
-            </div>;
-        }
+            </div>
+        );
     }
 }
 
@@ -149,7 +168,6 @@ WelcomeComponent.propTypes = {
     themeType: PropTypes.string,
     themeName: PropTypes.string,
     style: PropTypes.object,
-    className: PropTypes.string,
     data: PropTypes.object.isRequired,
     attr: PropTypes.string,
     schema: PropTypes.object,
@@ -157,4 +175,4 @@ WelcomeComponent.propTypes = {
     onChange: PropTypes.func
 };
 
-export default withStyles(styles)(WelcomeComponent);
+export default WelcomeComponent;

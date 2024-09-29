@@ -1,8 +1,3 @@
-/* jshint -W097 */
-/* jshint strict: false */
-/* jslint node: true */
-'use strict';
-
 const express = require('express');
 const fs = require('node:fs');
 const axios = require('axios');
@@ -10,7 +5,7 @@ const utils = require('@iobroker/adapter-core'); // Get common adapter utils
 const IoBWebServer = require('@iobroker/webserver');
 const adapterName = require('./package.json').name.split('.').pop();
 
-let webServer    = null;
+let webServer = null;
 let indexHtml;
 let adapter;
 let logoPng;
@@ -22,9 +17,15 @@ function startAdapter(options) {
         name: adapterName,
         unload: callback => {
             try {
-                webServer && webServer.settings && adapter && adapter.log && adapter.log.debug(`terminating http${webServer.settings.secure ? 's' : ''} server on port ${webServer.settings.port}`);
+                webServer &&
+                    webServer.settings &&
+                    adapter &&
+                    adapter.log &&
+                    adapter.log.debug(
+                        `terminating http${webServer.settings.secure ? 's' : ''} server on port ${webServer.settings.port}`,
+                    );
                 webServer && webServer.server && webServer.server.close();
-            } catch (e) {
+            } catch {
                 callback();
             }
         },
@@ -33,7 +34,7 @@ function startAdapter(options) {
             if (name === 'logo.png') {
                 indexHtml = await renderIndexHtml();
             }
-        }
+        },
     });
 
     adapter = new utils.Adapter(options);
@@ -47,7 +48,7 @@ async function getPages() {
     let redirect = '';
 
     if (adapter.config.redirectToLink) {
-        return {pages: [], redirect: adapter.config.redirectUrl};
+        return { pages: [], redirect: adapter.config.redirectUrl };
     }
 
     const instances = await adapter.getObjectViewAsync('system', 'instance', {});
@@ -63,7 +64,8 @@ async function getPages() {
             redirect = url;
         }
 
-        if (adapter.config.allInstances === false &&
+        if (
+            adapter.config.allInstances === false &&
             adapter.config.specificInstances &&
             !adapter.config.specificInstances.includes(id.substring('system.adapter.'.length))
         ) {
@@ -91,7 +93,7 @@ async function getPages() {
             icon,
             instance: instance._id.substring('system.adapter.'.length),
             title: instance.common.titleLang || instance.common.title,
-            url
+            url,
         });
     }
 
@@ -103,32 +105,35 @@ async function getPages() {
                     instance: item.name,
                     title: item.desc,
                     url: item.link,
-                    blank: item.blank
+                    blank: item.blank,
                 });
             }
         });
     }
 
-    return {pages, redirect};
+    return { pages, redirect };
 }
 
 async function renderIndexHtml() {
     // try to read logo
-    try{
+    try {
         logoPng = await adapter.readFileAsync(adapter.namespace, 'logo.png');
-    } catch (e) {
+    } catch {
         logoPng = null;
     }
 
-    const _indexHtml =
-        fs.existsSync(`${__dirname}/src/build/index.html`) ? fs.readFileSync(`${__dirname}/src/build/index.html`).toString() :
-            fs.readFileSync(`${__dirname}/public/index.html`).toString();
+    const _indexHtml = fs.existsSync(`${__dirname}/src/build/index.html`)
+        ? fs.readFileSync(`${__dirname}/src/build/index.html`).toString()
+        : fs.readFileSync(`${__dirname}/public/index.html`).toString();
 
     const systemConfig = await adapter.getForeignObjectAsync('system.config');
-    const {pages, redirect} = await getPages();
+    const { pages, redirect } = await getPages();
 
     if (redirect) {
-        return _indexHtml.replace('window.REPLACEMENT_TEXT="REPLACEMENT_TEXT"', `window.location="${redirect}".replace('localhost', window.location.hostname);`);
+        return _indexHtml.replace(
+            'window.REPLACEMENT_TEXT="REPLACEMENT_TEXT"',
+            `window.location="${redirect}".replace('localhost', window.location.hostname);`,
+        );
     }
 
     const IOBROKER_PAGES = {
@@ -137,33 +142,38 @@ async function renderIndexHtml() {
         backgroundToolbarColor: adapter.config.backgroundToolbarColor,
         language: adapter.config.language || systemConfig.common.language,
         logoPng: logoPng ? `data:image/png;base64,${logoPng.file.toString('base64')}` : '',
-        pages
+        pages,
     };
 
-    return _indexHtml.replace('window.REPLACEMENT_TEXT="REPLACEMENT_TEXT"', `window.IOBROKER_PAGES=${JSON.stringify(IOBROKER_PAGES)};`);
+    return _indexHtml.replace(
+        'window.REPLACEMENT_TEXT="REPLACEMENT_TEXT"',
+        `window.IOBROKER_PAGES=${JSON.stringify(IOBROKER_PAGES)};`,
+    );
 }
 
 async function main() {
-    adapter.subscribeForeignFiles && await adapter.subscribeForeignFiles(adapter.namespace, 'logo.png');
+    adapter.subscribeForeignFiles && (await adapter.subscribeForeignFiles(adapter.namespace, 'logo.png'));
 
     indexHtml = await renderIndexHtml();
 
     initWebServer(adapter.config)
-        .then(returnedServer => webServer = returnedServer)
+        .then(returnedServer => (webServer = returnedServer))
         .catch(err => {
             adapter.log.error(`Failed to initWebServer: ${err}`);
-            adapter.terminate ? adapter.terminate(utils.EXIT_CODES.ADAPTER_REQUESTED_TERMINATION) : process.exit(utils.EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
+            adapter.terminate
+                ? adapter.terminate(utils.EXIT_CODES.ADAPTER_REQUESTED_TERMINATION)
+                : process.exit(utils.EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
         });
 }
 
 async function renderAliveJson() {
-    const {pages} = await getPages();
+    const { pages } = await getPages();
     const alive = [];
     for (let p = 0; p < pages.length; p++) {
         try {
             const response = await axios.get(pages[p].url, { timeout: 1000 });
             alive[p] = response.status === 200;
-        } catch (e) {
+        } catch {
             pages[p].url = '';
             alive[p] = false;
         }
@@ -180,10 +190,10 @@ async function renderAliveJson() {
 //}
 async function initWebServer(settings) {
     const server = {
-        app:    null,
+        app: null,
         server: null,
-        io:     null,
-        settings
+        io: null,
+        settings,
     };
 
     settings.defaultUser = settings.defaultUser || 'system.user.admin';
@@ -215,23 +225,29 @@ async function initWebServer(settings) {
         }
 
         try {
-            const webserver = new IoBWebServer.WebServer({app: server.app, adapter, secure: settings.secure});
+            const webserver = new IoBWebServer.WebServer({ app: server.app, adapter, secure: settings.secure });
             server.server = await webserver.init();
         } catch (err) {
             adapter.log.error(`Cannot create web-server: ${err}`);
-            adapter.terminate ? adapter.terminate(utils.EXIT_CODES.ADAPTER_REQUESTED_TERMINATION) : process.exit(utils.EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
+            adapter.terminate
+                ? adapter.terminate(utils.EXIT_CODES.ADAPTER_REQUESTED_TERMINATION)
+                : process.exit(utils.EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
             return;
         }
         if (!server.server) {
             adapter.log.error(`Cannot create web-server`);
-            adapter.terminate ? adapter.terminate(utils.EXIT_CODES.ADAPTER_REQUESTED_TERMINATION) : process.exit(utils.EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
+            adapter.terminate
+                ? adapter.terminate(utils.EXIT_CODES.ADAPTER_REQUESTED_TERMINATION)
+                : process.exit(utils.EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
             return;
         }
 
         server.server.__server = server;
     } else {
         adapter.log.error('port missing');
-        adapter.terminate ? adapter.terminate(utils.EXIT_CODES.ADAPTER_REQUESTED_TERMINATION): process.exit(utils.EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
+        adapter.terminate
+            ? adapter.terminate(utils.EXIT_CODES.ADAPTER_REQUESTED_TERMINATION)
+            : process.exit(utils.EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
     }
 
     if (server.server) {
@@ -239,46 +255,59 @@ async function initWebServer(settings) {
         let serverPort;
         server.server.on('error', e => {
             if (e.toString().includes('EACCES') && serverPort <= 1024) {
-                adapter.log.error(`node.js process has no rights to start server on the port ${serverPort}.\n` +
-                    `Do you know that on linux you need special permissions for ports under 1024?\n` +
-                    `You can call in shell following scrip to allow it for node.js: "iobroker fix"`
+                adapter.log.error(
+                    `node.js process has no rights to start server on the port ${serverPort}.\n` +
+                        `Do you know that on linux you need special permissions for ports under 1024?\n` +
+                        `You can call in shell following scrip to allow it for node.js: "iobroker fix"`,
                 );
             } else {
                 adapter.log.error(`Cannot start server on ${settings.bind || '0.0.0.0'}:${serverPort}: ${e}`);
             }
             if (!serverListening) {
-                adapter.terminate ? adapter.terminate(utils.EXIT_CODES.ADAPTER_REQUESTED_TERMINATION) : process.exit(utils.EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
+                adapter.terminate
+                    ? adapter.terminate(utils.EXIT_CODES.ADAPTER_REQUESTED_TERMINATION)
+                    : process.exit(utils.EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
             }
         });
 
         settings.port = parseInt(settings.port, 10) || 8082;
         serverPort = settings.port;
 
-        adapter.getPort(settings.port, (!settings.bind || settings.bind === '0.0.0.0') ? undefined : settings.bind || undefined, port => {
-            port = parseInt(port, 10);
-            if (port !== settings.port && !settings.findNextPort) {
-                adapter.log.error(`port ${settings.port} already in use`);
-                // retry every 10 seconds to open the welcome screen on port 80
-                setTimeout(() => {
-                    initWebServer(settings);
-                }, (parseInt(adapter.config.retryInterval, 10) || 10) * 1000);
-                return;
-            }
-            serverPort = port;
-            server.server.listen(port, (!settings.bind || settings.bind === '0.0.0.0') ? undefined : settings.bind || undefined, () => {
-                serverListening = true;
-                adapter.setState('info.connection', true, true);
-            });
+        adapter.getPort(
+            settings.port,
+            !settings.bind || settings.bind === '0.0.0.0' ? undefined : settings.bind || undefined,
+            port => {
+                port = parseInt(port, 10);
+                if (port !== settings.port && !settings.findNextPort) {
+                    adapter.log.error(`port ${settings.port} already in use`);
+                    // retry every 10 seconds to open the welcome screen on port 80
+                    setTimeout(
+                        () => {
+                            initWebServer(settings);
+                        },
+                        (parseInt(adapter.config.retryInterval, 10) || 10) * 1000,
+                    );
+                    return;
+                }
+                serverPort = port;
+                server.server.listen(
+                    port,
+                    !settings.bind || settings.bind === '0.0.0.0' ? undefined : settings.bind || undefined,
+                    () => {
+                        serverListening = true;
+                        adapter.setState('info.connection', true, true);
+                    },
+                );
 
-            adapter.log.info(`http${settings.secure ? 's' : ''} server listening on port ${port}`);
-        });
+                adapter.log.info(`http${settings.secure ? 's' : ''} server listening on port ${port}`);
+            },
+        );
     }
 
     if (server.server) {
         return server;
-    } else {
-        return null;
     }
+    return null;
 }
 
 // If started as allInOne/compact mode => return function to create instance

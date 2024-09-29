@@ -1,29 +1,16 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
-import { withStyles } from '@mui/styles';
 import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
 import * as Sentry from '@sentry/browser';
 import * as SentryIntegrations from '@sentry/integrations';
 
-import {
-    AppBar, Avatar,
-    Button,
-    Card, CardActions,
-    CardContent, CardMedia,
-    Toolbar, Typography,
-} from '@mui/material';
+import { AppBar, Avatar, Button, Card, CardActions, CardContent, CardMedia, Toolbar, Typography } from '@mui/material';
 
-import {
-    I18n,
-    Theme,
-    Utils,
-    ToggleThemeMenu,
-    Icon,
-} from '@iobroker/adapter-react-v5';
+import { I18n, Theme, Utils, ToggleThemeMenu, Icon } from '@iobroker/adapter-react-v5';
 
 import logo from './assets/logo.png';
 
-const styles = theme => ({
+const styles = {
     page: {
         overflow: 'auto',
         width: '100%',
@@ -31,9 +18,9 @@ const styles = theme => ({
         display: 'flex',
         flexWrap: 'wrap',
         justifyContent: 'center',
-        gap: theme.spacing(2),
+        gap: 16,
         alignSelf: 'center',
-        padding: theme.spacing(3),
+        padding: 24,
     },
     card: {
         width: 300,
@@ -44,7 +31,7 @@ const styles = theme => ({
         height: 32,
         marginRight: 10,
     },
-});
+};
 
 Typography.propTypes = {
     color: PropTypes.string,
@@ -71,16 +58,17 @@ class App extends React.Component {
         };
 
         I18n.setTranslations(translations);
-        I18n.setLanguage(window.IOBROKER_PAGES.language || (window.navigator.userLanguage || window.navigator.language).substring(0, 2));
+        I18n.setLanguage(
+            window.IOBROKER_PAGES.language ||
+                (window.navigator.userLanguage || window.navigator.language).substring(0, 2),
+        );
         extendedProps.sentryDSN = window.sentryDSN;
 
         // activate sentry plugin
         Sentry.init({
             dsn: this.sentryDSN,
             release: `iobroker.welcome@${window.adapterVersion}`,
-            integrations: [
-                new SentryIntegrations.Dedupe(),
-            ],
+            integrations: [new SentryIntegrations.Dedupe()],
         });
         const theme = Theme(Utils.getThemeName(''));
 
@@ -95,8 +83,7 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-        this.checkAllLinksIfTheyAlive()
-            .catch(e => console.error(`Cannot check all links: ${e}`));
+        this.checkAllLinksIfTheyAlive().catch(e => console.error(`Cannot check all links: ${e}`));
     }
 
     async checkAllLinksIfTheyAlive() {
@@ -131,117 +118,157 @@ class App extends React.Component {
 
     renderCard(page, index) {
         if (page.url.includes('127.0.0.1') || page.url.includes('::1')) {
-            if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1' && !window.location.hostname.includes('::1')) {
+            if (
+                window.location.hostname !== 'localhost' &&
+                window.location.hostname !== '127.0.0.1' &&
+                !window.location.hostname.includes('::1')
+            ) {
                 return null;
             }
         }
 
-        return <Card
-            key={page.instance}
-            className={this.props.classes.card}
-            style={this.state.alive[index] === false ? { opacity: 0.3 } : { opacity: 1 }}
-        >
-            <CardMedia
-                sx={{
-                    height: 140,
-                    backgroundSize: 'contain',
-                    marginTop: '10px',
-                    cursor: 'pointer',
-                }}
-                onClick={() => App.openLink(page)}
-                image={page.icon || logo}
-                title={page.instance}
-            />
-            <CardContent
-                onClick={() => App.openLink(page)}
-                sx={{ cursor: 'pointer' }}
+        return (
+            <Card
+                key={page.instance}
+                style={{ ...styles.card, opacity: this.state.alive[index] === false ? 0.3 : 1 }}
             >
-                <Typography gutterBottom variant="h5" component="div" style={{ minHeight: 32 }}>
-                    {page.instance || '&nbsp;'}
-                </Typography>
-                <Typography variant="body2" color="text.secondary" style={{ minHeight: 20 }}>
-                    {App.getText(page.title)}
-                </Typography>
-            </CardContent>
-            <CardActions sx={{ justifyContent: 'space-between' }}>
-                <Button
-                    size="small"
+                <CardMedia
+                    sx={{
+                        height: 140,
+                        backgroundSize: 'contain',
+                        marginTop: '10px',
+                        cursor: 'pointer',
+                    }}
                     onClick={() => App.openLink(page)}
+                    image={page.icon || logo}
+                    title={page.instance}
+                />
+                <CardContent
+                    onClick={() => App.openLink(page)}
+                    sx={{ cursor: 'pointer' }}
                 >
-                    {I18n.t('Open')}
-                </Button>
-                <Button
-                    size="small"
-                    onClick={() => App.openLink(page, true)}
-                >
-                    {I18n.t('Open in new tab')}
-                </Button>
-            </CardActions>
-        </Card>;
+                    <Typography
+                        gutterBottom
+                        variant="h5"
+                        component="div"
+                        style={{ minHeight: 32 }}
+                    >
+                        {page.instance || '&nbsp;'}
+                    </Typography>
+                    <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        style={{ minHeight: 20 }}
+                    >
+                        {App.getText(page.title)}
+                    </Typography>
+                </CardContent>
+                <CardActions sx={{ justifyContent: 'space-between' }}>
+                    <Button
+                        size="small"
+                        onClick={() => App.openLink(page)}
+                    >
+                        {I18n.t('Open')}
+                    </Button>
+                    <Button
+                        size="small"
+                        onClick={() => App.openLink(page, true)}
+                    >
+                        {I18n.t('Open in new tab')}
+                    </Button>
+                </CardActions>
+            </Card>
+        );
     }
 
     toggleTheme(newThemeName) {
         const themeName = this.state.themeName;
 
         // dark => blue => colored => light => dark
-        newThemeName = newThemeName || (themeName === 'dark' ? 'blue' :
-            (themeName === 'blue' ? 'colored' :
-                (themeName === 'colored' ? 'light' : 'dark')));
+        newThemeName =
+            newThemeName ||
+            (themeName === 'dark'
+                ? 'blue'
+                : themeName === 'blue'
+                  ? 'colored'
+                  : themeName === 'colored'
+                    ? 'light'
+                    : 'dark');
 
         if (newThemeName !== themeName) {
             Utils.setThemeName(newThemeName);
 
             const theme = Theme(newThemeName);
 
-            this.setState({
-                theme,
-                themeName: Utils.getThemeName(theme),
-                // themeType: this.getThemeType(theme),
-            }, () => {
-                this.props.onThemeChange && this.props.onThemeChange(newThemeName);
-            });
+            this.setState(
+                {
+                    theme,
+                    themeName: Utils.getThemeName(theme),
+                    // themeType: this.getThemeType(theme),
+                },
+                () => {
+                    this.props.onThemeChange && this.props.onThemeChange(newThemeName);
+                },
+            );
         }
     }
 
     render() {
-        const {
-            theme,
-        } = this.state;
+        const { theme } = this.state;
 
-        return <StyledEngineProvider injectFirst>
-            <ThemeProvider theme={this.state.theme}>
-                <AppBar position="static">
-                    <Toolbar
-                        variant="dense"
-                        sx={{
-                            backgroundColor: window.IOBROKER_PAGES.backgroundToolbarColor || theme.palette.primary.main,
-                            color: Utils.invertColor(window.IOBROKER_PAGES.backgroundToolbarColor || theme.palette.primary.main, true),
+        return (
+            <StyledEngineProvider injectFirst>
+                <ThemeProvider theme={this.state.theme}>
+                    <AppBar position="static">
+                        <Toolbar
+                            variant="dense"
+                            sx={{
+                                backgroundColor:
+                                    window.IOBROKER_PAGES.backgroundToolbarColor || theme.palette.primary.main,
+                                color: Utils.invertColor(
+                                    window.IOBROKER_PAGES.backgroundToolbarColor || theme.palette.primary.main,
+                                    true,
+                                ),
+                            }}
+                        >
+                            {window.IOBROKER_PAGES.logoPng ? (
+                                <Icon
+                                    alt="ioBroker"
+                                    src={window.IOBROKER_PAGES.logoPng || logo}
+                                    style={styles.logo}
+                                />
+                            ) : (
+                                <Avatar
+                                    alt="ioBroker"
+                                    src={logo}
+                                    style={styles.logo}
+                                />
+                            )}
+                            {window.IOBROKER_PAGES.welcomePhrase || I18n.t('ioBroker Welcome page')}
+                            <div style={{ flexGrow: 1 }} />
+                            <ToggleThemeMenu
+                                t={I18n.t}
+                                toggleTheme={() => this.toggleTheme()}
+                                themeName={this.state.themeName}
+                            />
+                        </Toolbar>
+                    </AppBar>
+                    <div
+                        style={styles.page}
+                        style={{
+                            backgroundColor: window.IOBROKER_PAGES.backgroundColor || undefined,
+                            color: Utils.invertColor(
+                                window.IOBROKER_PAGES.backgroundColor || theme.palette.primary.main,
+                                true,
+                            ),
                         }}
                     >
-                        {window.IOBROKER_PAGES.logoPng ?
-                            <Icon alt="ioBroker" src={window.IOBROKER_PAGES.logoPng || logo} className={this.props.classes.logo} /> :
-                            <Avatar alt="ioBroker" src={logo} className={this.props.classes.logo} />}
-                        {window.IOBROKER_PAGES.welcomePhrase || I18n.t('ioBroker Welcome page')}
-                        <div style={{ flexGrow: 1 }} />
-                        <ToggleThemeMenu
-                            t={I18n.t}
-                            toggleTheme={() => this.toggleTheme()}
-                            themeName={this.state.themeName}
-                        />
-                    </Toolbar>
-                </AppBar>
-                <div
-                    className={this.props.classes.page}
-                    style={{
-                        backgroundColor: window.IOBROKER_PAGES.backgroundColor || undefined,
-                        color: Utils.invertColor(window.IOBROKER_PAGES.backgroundColor || theme.palette.primary.main, true),
-                    }}
-                >
-                    {window.IOBROKER_PAGES.pages.map((page, index) => this.renderCard(page, index))}
-                </div>
-            </ThemeProvider>
-        </StyledEngineProvider>;
+                        {window.IOBROKER_PAGES.pages.map((page, index) => this.renderCard(page, index))}
+                    </div>
+                </ThemeProvider>
+            </StyledEngineProvider>
+        );
     }
 }
 
-export default withStyles(styles)(App);
+export default App;
