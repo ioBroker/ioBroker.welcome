@@ -1,171 +1,171 @@
 {
-  "i18n": true,
-  "type": "tabs",
-  "items": {
-    "_config": {
-      "type": "panel",
-      "label": "Web Server",
-      "items": {
-        "bind": {
-          "type": "ip",
-          "label": "Own IP address",
-          "sm": 6,
-          "md": 4,
-          "lg": 2
+    "i18n": true,
+    "type": "tabs",
+    "items": {
+        "_config": {
+            "type": "panel",
+            "label": "Web Server",
+            "items": {
+                "bind": {
+                    "type": "ip",
+                    "label": "Own IP address",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2
+                },
+                "port": {
+                    "type": "port",
+                    "label": "Port",
+                    "default": 80,
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2
+                },
+                "secure": {
+                    "newLine": true,
+                    "type": "checkbox",
+                    "label": "Secure(HTTPS)",
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 2
+                },
+                "_certs": {
+                    "type": "certificates",
+                    "newLine": true,
+                    "hidden": "!data.secure",
+                    "sm": 12
+                },
+                "retryInterval": {
+                    "newLine": true,
+                    "type": "number",
+                    "label": "Retry Interval",
+                    "help": "Adapter will retry every X seconds to open the web server on the given port",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2
+                }
+            }
         },
-        "port": {
-          "type": "port",
-          "label": "Port",
-          "default": 80,
-          "sm": 6,
-          "md": 4,
-          "lg": 2
-        },
-        "secure": {
-          "newLine": true,
-          "type": "checkbox",
-          "label": "Secure(HTTPS)",
-          "sm": 12,
-          "md": 6,
-          "lg": 2
-        },
-        "_certs": {
-          "type": "certificates",
-          "newLine": true,
-          "hidden": "!data.secure",
-          "sm": 12
-        },
-        "retryInterval": {
-          "newLine": true,
-          "type": "number",
-          "label": "Retry Interval",
-          "help": "Adapter will retry every X seconds to open the web server on the given port",
-          "sm": 6,
-          "md": 4,
-          "lg": 2
-        }
-      }
-    },
-    "_settings": {
-      "type": "panel",
-      "label": "Settings",
-      "items": {
-        "redirectToLink": {
-          "newLine": true,
-          "type": "checkbox",
-          "label": "Redirect to custom link",
-          "sm": 12,
-          "md": 6,
-          "lg": 4
-        },
-        "redirectUrl": {
-          "newLine": true,
-          "type": "text",
-          "label": "Custom URL",
-          "validator": "!data.redirectToLink || !!data.redirectUrl",
-          "validatorErrorText": "URL must be set",
-          "validatorNoSaveOnError": true,
-          "tooltip": "User will be immediately redirected to this link after opening of the page",
-          "sm": 12,
-          "md": 6,
-          "lg": 4,
-          "hidden": "!data.redirectToLink"
-        },
-        "redirect": {
-          "newLine": true,
-          "type": "instance",
-          "label": "Redirect to instance by opening of the page",
-          "default": "",
-          "adapters": ["admin", "web"],
-          "sm": 12,
-          "md": 6,
-          "lg": 4,
-          "hidden": "!!data.redirectToLink"
-        },
-        "welcomePhrase": {
-          "newLine": true,
-          "type": "text",
-          "label": "Welcome Phrase",
-          "sm": 12,
-          "hidden": "!!data.redirect || !!data.redirectToLink"
-        },
-        "backgroundColor": {
-          "newLine": true,
-          "type": "color",
-          "label": "Background Color",
-          "sm": 6,
-          "md": 4,
-          "lg": 2,
-          "hidden": "!!data.redirect || !!data.redirectToLink"
-        },
-        "backgroundToolbarColor": {
-          "newLine": true,
-          "type": "color",
-          "label": "Toolbar background Color",
-          "sm": 6,
-          "md": 4,
-          "lg": 2,
-          "hidden": "!!data.redirect || !!data.redirectToLink"
-        },
-        "language": {
-          "newLine": true,
-          "type": "language",
-          "label": "Language",
-          "system": true,
-          "noTranslation": true,
-          "sm": 6,
-          "md": 4,
-          "lg": 2,
-          "hidden": "!!data.redirect || !!data.redirectToLink"
-        },
-        "logo.png": {
-          "newLine": true,
-          "type": "image",
-          "label": "Logo",
-          "accept": { "image/*": [] },
-          "sm": 6,
-          "md": 4,
-          "lg": 4,
-          "hidden": "!!data.redirect || !!data.redirectToLink"
+        "_settings": {
+            "type": "panel",
+            "label": "Settings",
+            "items": {
+                "redirectToLink": {
+                    "newLine": true,
+                    "type": "checkbox",
+                    "label": "Redirect to custom link",
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4
+                },
+                "redirectUrl": {
+                    "newLine": true,
+                    "type": "text",
+                    "label": "Custom URL",
+                    "validator": "!data.redirectToLink || !!data.redirectUrl",
+                    "validatorErrorText": "URL must be set",
+                    "validatorNoSaveOnError": true,
+                    "tooltip": "User will be immediately redirected to this link after opening of the page",
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "hidden": "!data.redirectToLink"
+                },
+                "redirect": {
+                    "newLine": true,
+                    "type": "instance",
+                    "label": "Redirect to instance by opening of the page",
+                    "default": "",
+                    "adapters": ["admin", "web"],
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "hidden": "!!data.redirectToLink"
+                },
+                "welcomePhrase": {
+                    "newLine": true,
+                    "type": "text",
+                    "label": "Welcome Phrase",
+                    "sm": 12,
+                    "hidden": "!!data.redirect || !!data.redirectToLink"
+                },
+                "backgroundColor": {
+                    "newLine": true,
+                    "type": "color",
+                    "label": "Background Color",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "hidden": "!!data.redirect || !!data.redirectToLink"
+                },
+                "backgroundToolbarColor": {
+                    "newLine": true,
+                    "type": "color",
+                    "label": "Toolbar background Color",
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "hidden": "!!data.redirect || !!data.redirectToLink"
+                },
+                "language": {
+                    "newLine": true,
+                    "type": "language",
+                    "label": "Language",
+                    "system": true,
+                    "noTranslation": true,
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 2,
+                    "hidden": "!!data.redirect || !!data.redirectToLink"
+                },
+                "logo.png": {
+                    "newLine": true,
+                    "type": "image",
+                    "label": "Logo",
+                    "accept": { "image/*": [] },
+                    "sm": 6,
+                    "md": 4,
+                    "lg": 4,
+                    "hidden": "!!data.redirect || !!data.redirectToLink"
+                },
+                "_custom": {
+                    "newLine": true,
+                    "type": "custom",
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 6,
+                    "i18n": true,
+                    "url": "custom/customComponents.js",
+                    "name": "ConfigCustomWelcomeSet/Components/WelcomeComponent",
+                    "hidden": "!!data.redirect || !!data.redirectToLink"
+                }
+            }
         },
         "_custom": {
-          "newLine": true,
-          "type": "custom",
-          "sm": 12,
-          "md": 6,
-          "lg": 6,
-          "i18n": true,
-          "url": "custom/customComponents.js",
-          "name": "ConfigCustomWelcomeSet/Components/WelcomeComponent",
-          "hidden": "!!data.redirect || !!data.redirectToLink"
-        }
-      }
-    },
-    "_custom": {
-      "type": "panel",
-      "label": "Custom links",
-      "hidden": "!!data.redirect || !!data.redirectToLink",
-      "items": {
-        "customLinks": {
-          "type": "table",
-          "items": [
-            {"type": "checkbox", "width": 50, "attr": "enabled", "title": "Enabled"},
-            {"type": "text", "width": "20%", "attr": "name", "title": "Name"},
-            {"type": "text", "width": "20%", "attr": "link", "title": "Link"},
-            {"type": "text", "width": "20%", "attr": "desc", "title": "Description"},
-            {
-              "type": "image",
-              "base64": true,
-              "accept": { "image/*": [] },
-              "width": "20%",
-              "attr": "icon",
-              "title": "Icon",
-              "maxSize": 1024000
+            "type": "panel",
+            "label": "Custom links",
+            "hidden": "!!data.redirect || !!data.redirectToLink",
+            "items": {
+                "customLinks": {
+                    "type": "table",
+                    "items": [
+                        { "type": "checkbox", "width": 50, "attr": "enabled", "title": "Enabled" },
+                        { "type": "text", "width": "20%", "attr": "name", "title": "Name" },
+                        { "type": "text", "width": "20%", "attr": "link", "title": "Link" },
+                        { "type": "text", "width": "20%", "attr": "desc", "title": "Description" },
+                        {
+                            "type": "image",
+                            "base64": true,
+                            "accept": { "image/*": [] },
+                            "width": "20%",
+                            "attr": "icon",
+                            "title": "Icon",
+                            "maxSize": 1024000
+                        }
+                    ],
+                    "xs": 12
+                }
             }
-          ],
-          "xs": 12
         }
-      }
     }
-  }
 }

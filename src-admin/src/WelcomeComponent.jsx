@@ -12,7 +12,7 @@ import {
     Paper,
     Checkbox,
     Switch,
-    FormControlLabel
+    FormControlLabel,
 } from '@mui/material';
 // important to make from package and not from some children.
 // invalid
@@ -27,7 +27,7 @@ class WelcomeComponent extends ConfigGeneric {
     constructor(props) {
         super(props);
         this.state = {
-            instances: null
+            instances: null,
         };
     }
 
@@ -46,7 +46,7 @@ class WelcomeComponent extends ConfigGeneric {
                     id: id.replace('system.adapter.', ''),
                     icon: instances[id].common.icon,
                     title: instances[id].common.title,
-                    name: instances[id].common.name
+                    name: instances[id].common.name,
                 });
             }
         });
@@ -119,7 +119,7 @@ class WelcomeComponent extends ConfigGeneric {
                                             }
                                             onClick={() => {
                                                 const specificInstances = [
-                                                    ...(this.props.data.specificInstances || [])
+                                                    ...(this.props.data.specificInstances || []),
                                                 ];
                                                 const pos = specificInstances.indexOf(instance.id);
                                                 if (pos !== -1) {
@@ -140,7 +140,7 @@ class WelcomeComponent extends ConfigGeneric {
                                             style={{
                                                 display: 'flex',
                                                 alignItems: 'center',
-                                                gap: 5
+                                                gap: 5,
                                             }}
                                         >
                                             {instance.icon ? (
@@ -172,7 +172,7 @@ WelcomeComponent.propTypes = {
     attr: PropTypes.string,
     schema: PropTypes.object,
     onError: PropTypes.func,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
 };
 
 export default WelcomeComponent;
