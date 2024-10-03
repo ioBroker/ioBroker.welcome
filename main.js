@@ -9,6 +9,7 @@ let webServer = null;
 let indexHtml;
 let adapter;
 let logoPng;
+let startTimeout = null;
 
 function startAdapter(options) {
     options = options || {};
@@ -16,6 +17,10 @@ function startAdapter(options) {
     Object.assign(options, {
         name: adapterName,
         unload: callback => {
+            if (startTimeout) {
+                clearTimeout(startTimeout);
+                startTimeout = null;
+            }
             try {
                 webServer &&
                     webServer.settings &&
@@ -24,10 +29,11 @@ function startAdapter(options) {
                     adapter.log.debug(
                         `terminating http${webServer.settings.secure ? 's' : ''} server on port ${webServer.settings.port}`,
                     );
-                webServer && webServer.server && webServer.server.close();
+                webServer?.server?.close();
             } catch {
-                callback();
+                // ignore
             }
+            callback();
         },
         ready: async () => main(),
         fileChange: async (id, name) => {
@@ -287,8 +293,12 @@ async function initWebServer(settings) {
                 if (port !== settings.port && !settings.findNextPort) {
                     adapter.log.error(`port ${settings.port} already in use`);
                     // retry every 10 seconds to open the welcome screen on port 80
-                    setTimeout(
+                    if (startTimeout) {
+                        clearTimeout(startTimeout);
+                    }
+                    startTimeout = setTimeout(
                         () => {
+                            startTimeout = null;
                             initWebServer(settings);
                         },
                         (parseInt(adapter.config.retryInterval, 10) || 10) * 1000,
