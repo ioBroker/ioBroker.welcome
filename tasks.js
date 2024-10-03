@@ -22,7 +22,7 @@ if (process.argv.includes('--0-admin-clean')) {
 } else if (process.argv.includes('--1-admin-npm')) {
     npmInstall(`${__dirname}/src-admin`).catch(e => console.error(`Cannot install npm: ${e}`));
 } else if (process.argv.includes('--2-admin-build')) {
-    buildReact(`${__dirname}/src-admin`, { rootDir: __dirname, craco: true })
+    buildReact(`${__dirname}/src-admin`, { rootDir: __dirname, craco: true, exec: true })
         .then(() => {
             if (!existsSync(`${__dirname}/src-admin/build/index.html`)) {
                 console.error(`Cannot find ${__dirname}/src-admin/build/index.html after build`);
@@ -35,7 +35,7 @@ if (process.argv.includes('--0-admin-clean')) {
 } else if (process.argv.includes('--admin')) {
     adminClean();
     npmInstall(`${__dirname}/src-admin`)
-        .then(() => buildReact(`${__dirname}/src-admin`, { rootDir: __dirname, craco: true }))
+        .then(() => buildReact(`${__dirname}/src-admin`, { rootDir: __dirname, craco: true, exec: true }))
         .then(() => {
             if (!existsSync(`${__dirname}/src-admin/build/index.html`)) {
                 console.error(`Cannot find ${__dirname}/src-admin/build/index.html after build`);
@@ -48,7 +48,7 @@ if (process.argv.includes('--0-admin-clean')) {
 } else if (process.argv.includes('--1-npm')) {
     npmInstall(`${__dirname}/src`).catch(e => console.error(`Cannot install npm: ${e}`));
 } else if (process.argv.includes('--2-build')) {
-    buildReact(`${__dirname}/src`, { rootDir: __dirname })
+    buildReact(`${__dirname}/src`, { rootDir: __dirname, exec: true })
         .then(() => {
             if (!existsSync(`${__dirname}/src/build/index.html`)) {
                 console.error(`Cannot find ${__dirname}/src/build/index.html after build`);
@@ -64,7 +64,7 @@ if (process.argv.includes('--0-admin-clean')) {
 } else if (process.argv.includes('--build-src')) {
     deleteFoldersRecursive('public');
     npmInstall(`${__dirname}/src`)
-        .then(() => buildReact(`${__dirname}/src`, { rootDir: __dirname }))
+        .then(() => buildReact(`${__dirname}/src`, { rootDir: __dirname, exec: true }))
         .then(() => {
             if (!existsSync(`${__dirname}/src/build/index.html`)) {
                 console.error(`Cannot find ${__dirname}/src/build/index.html after build`);
@@ -82,7 +82,7 @@ if (process.argv.includes('--0-admin-clean')) {
     adminClean();
     deleteFoldersRecursive('public');
     npmInstall(`${__dirname}/src-admin`)
-        .then(() => buildReact(`${__dirname}/src-admin`, { rootDir: __dirname, craco: true }))
+        .then(() => buildReact(`${__dirname}/src-admin`, { rootDir: __dirname, craco: true, exec: true }))
         .then(() => {
             if (!existsSync(`${__dirname}/src-admin/build/index.html`)) {
                 console.error(`Cannot find ${__dirname}/src-admin/build/index.html after build`);
@@ -91,7 +91,7 @@ if (process.argv.includes('--0-admin-clean')) {
         })
         .then(() => adminCopyAllFiles())
         .then(() => npmInstall(`${__dirname}/src`))
-        .then(() => buildReact(`${__dirname}/src`, { rootDir: __dirname }))
+        .then(() => buildReact(`${__dirname}/src`, { rootDir: __dirname, exec: true }))
         .then(() => {
             if (!existsSync(`${__dirname}/src/build/index.html`)) {
                 console.error(`Cannot find ${__dirname}/src/build/index.html after build`);
