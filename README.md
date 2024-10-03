@@ -28,7 +28,7 @@ In this case, by opening of http://IP it will be immediately redirected to a spe
 -->
 
 ## Changelog
-### **WORK IN PROGRESS**
+### 1.0.1 (2024-10-03)
 
 -   (@GermanBluefox) Corrected CI
 

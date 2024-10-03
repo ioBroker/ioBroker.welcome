@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "welcome",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "title": "Welcome page",
     "titleLang": {
       "en": "Welcome page",
@@ -17,6 +17,19 @@
       "zh-cn": "欢迎页面"
     },
     "news": {
+      "1.0.1": {
+        "en": "Corrected CI",
+        "de": "Korrigiertes CI",
+        "ru": "Исправлено CI",
+        "pt": "CI corrigido",
+        "nl": "Gecorrigeerde CI",
+        "fr": "IC corrigé",
+        "it": "Corretto CI",
+        "es": "CI corregido",
+        "pl": "Poprawiony CI",
+        "uk": "Виправлено CI",
+        "zh-cn": "已更正 CI"
+      },
       "1.0.0": {
         "en": "Updated packages\nUsed new eslint-config\nAdded support for SVG files",
         "de": "Aktualisierte Pakete\nGebraucht neue eslint-config\nUnterstützung für SVG-Dateien hinzugefügt",
