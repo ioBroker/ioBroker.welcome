@@ -28,6 +28,10 @@ In this case, by opening of http://IP it will be immediately redirected to a spe
 -->
 
 ## Changelog
+### **WORK IN PROGRESS**
+
+-   (@GermanBluefox) Corrected CI
+
 ### 1.0.0 (2024-09-29)
 
 -   (@GermanBluefox) Updated packages
