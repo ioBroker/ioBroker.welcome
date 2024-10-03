@@ -2,7 +2,6 @@ import React from 'react';
 import * as PropTypes from 'prop-types';
 import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
 import * as Sentry from '@sentry/browser';
-import * as SentryIntegrations from '@sentry/integrations';
 
 import { AppBar, Avatar, Button, Card, CardActions, CardContent, CardMedia, Toolbar, Typography } from '@mui/material';
 
@@ -68,8 +67,9 @@ class App extends React.Component {
         Sentry.init({
             dsn: this.sentryDSN,
             release: `iobroker.welcome@${window.adapterVersion}`,
-            integrations: [new SentryIntegrations.Dedupe()],
+            integrations: [Sentry.dedupeIntegration()],
         });
+
         const theme = Theme(Utils.getThemeName(''));
 
         this.state = {
