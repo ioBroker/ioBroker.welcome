@@ -29,7 +29,7 @@
     "@alcalzone/release-script-plugin-iobroker": "^3.7.2",
     "@alcalzone/release-script-plugin-license": "^3.7.0",
     "@iobroker/eslint-config": "^0.1.6",
-    "@iobroker/build-tools": "^2.0.1",
+    "@iobroker/build-tools": "^2.0.2",
     "@iobroker/legacy-testing": "^1.0.13",
     "@iobroker/testing": "^5.0.0",
     "sinon-chai": "^3.7.0",

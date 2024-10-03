@@ -103,6 +103,5 @@ if (process.argv.includes('--0-admin-clean')) {
                 ['src/build/*/**', 'src/build/*', '!src/build/static/media/*.svg', '!src/build/static/media/*.txt'],
                 'public/',
             ),
-        )
-        .catch(e => console.error(`Cannot build: ${e}`));
+        );
 }
