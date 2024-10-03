@@ -28,11 +28,7 @@ In this case, by opening of http://IP it will be immediately redirected to a spe
 -->
 
 ## Changelog
-### 1.0.1 (2024-10-03)
-
--   (@GermanBluefox) Corrected CI
-
-### 1.0.0 (2024-09-29)
+### **WORK IN PROGRESS**
 
 -   (@GermanBluefox) Updated packages
 -   (@GermanBluefox) Used new eslint-config
