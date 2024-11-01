@@ -37,7 +37,7 @@
     "colorette": "^2.0.20",
     "chai-as-promised": "^7.1.2",
     "chai": "^4.5.0",
-    "mocha": "^10.7.3"
+    "mocha": "^10.8.2"
   },
   "bugs": {
     "url": "https://github.com/ioBroker/ioBroker.welcome/issues"
