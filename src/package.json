@@ -8,7 +8,7 @@
         "@mui/icons-material": "^6.1.9",
         "@mui/material": "^6.1.9",
         "@mui/utils": "^6.1.9",
-        "@sentry/browser": "^8.33.0",
+        "@sentry/browser": "^8.47.0",
         "prop-types": "^15.8.1",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
