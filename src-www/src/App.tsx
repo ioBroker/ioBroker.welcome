@@ -1,15 +1,26 @@
 import React from 'react';
-import * as PropTypes from 'prop-types';
 import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
 import * as Sentry from '@sentry/browser';
 
 import { AppBar, Avatar, Button, Card, CardActions, CardContent, CardMedia, Toolbar, Typography } from '@mui/material';
 
-import { I18n, Theme, Utils, ToggleThemeMenu, Icon } from '@iobroker/adapter-react-v5';
+import { I18n, Theme, Utils, ToggleThemeMenu, Icon, type IobTheme } from '@iobroker/adapter-react-v5';
 
 import logo from './assets/logo.png';
 
-const styles = {
+import enLang from './i18n/en.json';
+import deLang from './i18n/de.json';
+import ruLang from './i18n/ru.json';
+import ptLang from './i18n/pt.json';
+import nlLang from './i18n/nl.json';
+import frLang from './i18n/fr.json';
+import itLang from './i18n/it.json';
+import esLang from './i18n/es.json';
+import plLang from './i18n/pl.json';
+import ukLang from './i18n/uk.json';
+import zhLang from './i18n/zh-cn.json';
+
+const styles: Record<'page' | 'card' | 'logo', React.CSSProperties> = {
     page: {
         overflow: 'auto',
         width: '100%',
@@ -32,48 +43,53 @@ const styles = {
     },
 };
 
-Typography.propTypes = {
-    color: PropTypes.string,
-    variant: PropTypes.string,
-    children: PropTypes.node,
-};
+interface AppProps {
+    adapterVersion: string;
+}
 
-class App extends React.Component {
-    constructor(props) {
+interface AppState {
+    themeName: 'dark' | 'light';
+    theme: IobTheme;
+    alive: (boolean | undefined)[];
+}
+
+class App extends React.Component<AppProps, AppState> {
+    constructor(props: AppProps) {
         super(props);
-        const extendedProps = { ...props };
         const translations = {
-            en: require('./i18n/en.json'),
-            de: require('./i18n/de.json'),
-            ru: require('./i18n/ru.json'),
-            pt: require('./i18n/pt.json'),
-            nl: require('./i18n/nl.json'),
-            fr: require('./i18n/fr.json'),
-            it: require('./i18n/it.json'),
-            es: require('./i18n/es.json'),
-            pl: require('./i18n/pl.json'),
-            uk: require('./i18n/uk.json'),
-            'zh-cn': require('./i18n/zh-cn.json'),
+            en: enLang,
+            de: deLang,
+            ru: ruLang,
+            pt: ptLang,
+            nl: nlLang,
+            fr: frLang,
+            it: itLang,
+            es: esLang,
+            pl: plLang,
+            uk: ukLang,
+            'zh-cn': zhLang,
         };
 
         I18n.setTranslations(translations);
         I18n.setLanguage(
             window.IOBROKER_PAGES.language ||
+                // @ts-expect-error userLanguage is deprecated
                 (window.navigator.userLanguage || window.navigator.language).substring(0, 2),
         );
-        extendedProps.sentryDSN = window.sentryDSN;
 
         // activate sentry plugin
-        Sentry.init({
-            dsn: this.sentryDSN,
-            release: `iobroker.welcome@${window.adapterVersion}`,
-            integrations: [Sentry.dedupeIntegration()],
-        });
+        if (window.sentryDSN) {
+            Sentry.init({
+                dsn: window.sentryDSN,
+                release: `iobroker.welcome@${props.adapterVersion}`,
+                integrations: [Sentry.dedupeIntegration()],
+            });
+        }
 
-        const theme = Theme(Utils.getThemeName(''));
+        const theme = Theme(Utils.getThemeName());
 
         this.state = {
-            themeName: Utils.getThemeName(),
+            themeName: Utils.getThemeName() as 'dark' | 'light',
             theme,
             alive: [],
         };
@@ -96,7 +112,7 @@ class App extends React.Component {
         }
     }
 
-    static getText(text) {
+    static getText(text: ioBroker.StringOrTranslated): string {
         if (!text) {
             return '';
         }
@@ -107,16 +123,16 @@ class App extends React.Component {
         return text;
     }
 
-    static openLink = (page, inNewPage) => {
+    static openLink = (page: { url: string; instance: string }, inNewPage?: boolean): void => {
         const url = page.url.replace('localhost', window.location.hostname);
         if (!inNewPage) {
-            window.location = url;
+            window.location.href = url;
         } else {
             window.open(url, page.instance);
         }
     };
 
-    renderCard(page, index) {
+    renderCard(page: { url: string; instance: string, icon: string, title: string }, index: number): React.JSX.Element | null {
         if (page.url.includes('127.0.0.1') || page.url.includes('::1')) {
             if (
                 window.location.hostname !== 'localhost' &&
@@ -181,19 +197,11 @@ class App extends React.Component {
         );
     }
 
-    toggleTheme(newThemeName) {
+    toggleTheme(newThemeName?: 'dark' | 'light'): void {
         const themeName = this.state.themeName;
 
-        // dark => blue => colored => light => dark
-        newThemeName =
-            newThemeName ||
-            (themeName === 'dark'
-                ? 'blue'
-                : themeName === 'blue'
-                  ? 'colored'
-                  : themeName === 'colored'
-                    ? 'light'
-                    : 'dark');
+        // dark => light => dark
+        newThemeName = newThemeName || (themeName === 'dark' ? 'light' : 'dark');
 
         if (newThemeName !== themeName) {
             Utils.setThemeName(newThemeName);
@@ -203,11 +211,7 @@ class App extends React.Component {
             this.setState(
                 {
                     theme,
-                    themeName: Utils.getThemeName(theme),
-                    // themeType: this.getThemeType(theme),
-                },
-                () => {
-                    this.props.onThemeChange && this.props.onThemeChange(newThemeName);
+                    themeName: newThemeName,
                 },
             );
         }
