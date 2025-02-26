@@ -46,34 +46,39 @@ if (process.argv.includes('--0-admin-clean')) {
 } else if (process.argv.includes('--0-clean')) {
     deleteFoldersRecursive('public');
 } else if (process.argv.includes('--1-npm')) {
-    npmInstall(`${__dirname}/src`).catch(e => console.error(`Cannot install npm: ${e}`));
+    npmInstall(`${__dirname}/src-www`).catch(e => console.error(`Cannot install npm: ${e}`));
 } else if (process.argv.includes('--2-build')) {
     buildReact(`${__dirname}/src`, { rootDir: __dirname, vite: true, tsc: true })
         .then(() => {
-            if (!existsSync(`${__dirname}/src/build/index.html`)) {
-                console.error(`Cannot find ${__dirname}/src/build/index.html after build`);
+            if (!existsSync(`${__dirname}/src-www/build/index.html`)) {
+                console.error(`Cannot find ${__dirname}/src-www/build/index.html after build`);
                 process.exit(1);
             }
         })
         .catch(e => console.error(`Cannot build: ${e}`));
 } else if (process.argv.includes('--3-copy')) {
     copyFiles(
-        ['src/build/*/**', 'src/build/*', '!src/build/static/media/*.svg', '!src/build/static/media/*.txt'],
+        ['src-www/build/*/**', 'src-www/build/*', '!src/build/static/media/*.svg', '!src-www/build/static/media/*.txt'],
         'public/',
     );
 } else if (process.argv.includes('--build-src')) {
     deleteFoldersRecursive('public');
-    npmInstall(`${__dirname}/src`)
-        .then(() => buildReact(`${__dirname}/src`, { rootDir: __dirname, vite: true, tsc: true }))
+    npmInstall(`${__dirname}/src-www`)
+        .then(() => buildReact(`${__dirname}/src-www`, { rootDir: __dirname, vite: true, tsc: true }))
         .then(() => {
-            if (!existsSync(`${__dirname}/src/build/index.html`)) {
-                console.error(`Cannot find ${__dirname}/src/build/index.html after build`);
+            if (!existsSync(`${__dirname}/src-www/build/index.html`)) {
+                console.error(`Cannot find ${__dirname}/src-www/build/index.html after build`);
                 process.exit(1);
             }
         })
         .then(() =>
             copyFiles(
-                ['src/build/*/**', 'src/build/*', '!src/build/static/media/*.svg', '!src/build/static/media/*.txt'],
+                [
+                    'src-www/build/*/**',
+                    'src-www/build/*',
+                    '!src-www/build/static/media/*.svg',
+                    '!src-www/build/static/media/*.txt',
+                ],
                 'public/',
             ),
         )
@@ -90,17 +95,22 @@ if (process.argv.includes('--0-admin-clean')) {
             }
         })
         .then(() => adminCopyAllFiles())
-        .then(() => npmInstall(`${__dirname}/src`))
-        .then(() => buildReact(`${__dirname}/src`, { rootDir: __dirname, vite: true, tsc: true }))
+        .then(() => npmInstall(`${__dirname}/src-www`))
+        .then(() => buildReact(`${__dirname}/src-www`, { rootDir: __dirname, vite: true, tsc: true }))
         .then(() => {
-            if (!existsSync(`${__dirname}/src/build/index.html`)) {
-                console.error(`Cannot find ${__dirname}/src/build/index.html after build`);
+            if (!existsSync(`${__dirname}/src-www/build/index.html`)) {
+                console.error(`Cannot find ${__dirname}/src-www/build/index.html after build`);
                 process.exit(1);
             }
         })
         .then(() =>
             copyFiles(
-                ['src/build/*/**', 'src/build/*', '!src/build/static/media/*.svg', '!src/build/static/media/*.txt'],
+                [
+                    'src-www/build/*/**',
+                    'src-www/build/*',
+                    '!src-www/build/static/media/*.svg',
+                    '!src-www/build/static/media/*.txt',
+                ],
                 'public/',
             ),
         );

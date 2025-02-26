@@ -70,8 +70,8 @@
     "release-patch": "release-script patch --yes",
     "release-minor": "release-script minor --yes",
     "release-major": "release-script major --yes",
-    "update-packages": "npx -y npm-check-updates --upgrade && cd src && npx -y npm-check-updates --upgrade && cd ../src-admin && npx -y npm-check-updates --upgrade",
-    "npm": "npm i && cd src && npm i -f && cd ../src-admin && npm i -f"
+    "update-packages": "npx -y npm-check-updates --upgrade && cd src-www && npx -y npm-check-updates --upgrade && cd ../src-admin && npx -y npm-check-updates --upgrade",
+    "npm": "npm i && cd src-www && npm i -f && cd ../src-admin && npm i -f"
   },
   "license": "MIT",
   "maintainers": [
