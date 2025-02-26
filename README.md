@@ -28,7 +28,7 @@ In this case, by opening of http://IP it will be immediately redirected to a spe
 -->
 
 ## Changelog
-### **WORK IN PROGRESS**
+### 1.1.0 (2025-02-26)
 
 -   (@GermanBluefox) Adapter was migrated to TypeScript and vite
 -   (@GermanBluefox) Added support for websites with custom certificates

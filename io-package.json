@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "welcome",
-    "version": "1.0.2",
+    "version": "1.1.0",
     "titleLang": {
       "en": "Welcome page",
       "de": "Willkommensseite",
@@ -16,6 +16,19 @@
       "zh-cn": "欢迎页面"
     },
     "news": {
+      "1.1.0": {
+        "en": "Adapter was migrated to TypeScript and vite\nAdded support for websites with custom certificates",
+        "de": "Adapter wurde auf TypeScript und Vite migriert\nUnterstützung für Websites mit benutzerdefinierten Zertifikaten",
+        "ru": "Адаптер мигрировал в TypeScript и Vite\nДобавлена поддержка сайтов с пользовательскими сертификатами",
+        "pt": "Adapter foi migrado para TypeScript e vite\nAdicionado suporte para sites com certificados personalizados",
+        "nl": "Adapter werd gemigreerd naar TypeScript en vite\nExtra ondersteuning voor websites met aangepaste certificaten",
+        "fr": "Adapter a été migré vers TypeScript et rite\nAjout d'un support pour les sites Web avec des certificats personnalisés",
+        "it": "L'adattatore è stato migrato a TypeScript e vite\nAggiunto supporto per siti web con certificati personalizzati",
+        "es": "Adaptador fue migrado a TipoScript y vite\nSoporte añadido para sitios web con certificados personalizados",
+        "pl": "Adapter został przeniesiony do TypeScript i vite\nDodano wsparcie dla stron internetowych z certyfikatami",
+        "uk": "Адаптер був мігрований до TypeScript і vite\nДодана підтримка сайтів з індивідуальними сертифікатами",
+        "zh-cn": "适配器已迁移到类型脚本和 vite\n添加对带有自定义证书的网站的支持"
+      },
       "1.0.2": {
         "en": "Updated packages\nUsed new eslint-config\nAdded support for SVG files",
         "de": "Aktualisierte Pakete\nGebraucht neue eslint-config\nUnterstützung für SVG-Dateien hinzugefügt",
@@ -93,19 +106,6 @@
         "pl": "Poprawiona lista adapterów",
         "uk": "Виправлено список адаптерів",
         "zh-cn": "修改名单"
-      },
-      "0.0.4": {
-        "en": "First release",
-        "de": "Erste Veröffentlichung",
-        "ru": "Первый выпуск",
-        "pt": "Primeiro lançamento",
-        "nl": "Vertaling:",
-        "fr": "Premier communiqué",
-        "it": "Prima release",
-        "es": "Primera liberación",
-        "pl": "Pierwsze wydanie",
-        "uk": "Перший реліз",
-        "zh-cn": "第一次释放"
       }
     },
     "desc": {
