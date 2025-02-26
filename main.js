@@ -15,13 +15,23 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -32,6 +42,7 @@ const node_fs_1 = require("node:fs");
 const axios_1 = __importDefault(require("axios"));
 const adapter_core_1 = require("@iobroker/adapter-core"); // Get common adapter utils
 const IoBWebServer = __importStar(require("@iobroker/webserver"));
+const node_https_1 = require("node:https");
 const SUPPORTED_ADAPTERS = ['admin', 'web'];
 class WelcomeAdapter extends adapter_core_1.Adapter {
     startTimeout = null;
@@ -39,6 +50,7 @@ class WelcomeAdapter extends adapter_core_1.Adapter {
     logoPng = null;
     indexHtml = '';
     welcomeConfig;
+    httpsAxios;
     constructor(options = {}) {
         super({
             ...options,
@@ -48,6 +60,11 @@ class WelcomeAdapter extends adapter_core_1.Adapter {
         this.on('fileChange', (id, fileName) => this.#onFileChange(id, fileName));
         this.on('unload', callback => this.#onUnload(callback));
         this.welcomeConfig = this.config;
+        this.httpsAxios = axios_1.default.create({
+            httpsAgent: new node_https_1.Agent({
+                rejectUnauthorized: false,
+            }),
+        });
     }
     async #onFileChange(_id, fileName) {
         if (fileName === 'logo.png') {
@@ -102,7 +119,9 @@ class WelcomeAdapter extends adapter_core_1.Adapter {
             if (!SUPPORTED_ADAPTERS.includes(instance.common.name)) {
                 continue;
             }
-            let iconFile = instance.common.icon ? await this.readFileAsync(`${instance.common.name}.admin`, instance.common.icon) : null;
+            const iconFile = instance.common.icon
+                ? await this.readFileAsync(`${instance.common.name}.admin`, instance.common.icon)
+                : null;
             let icon;
             if (iconFile && instance.common.icon?.endsWith('.jpg')) {
                 icon = `data:image/jpg;base64,${iconFile.file.toString('base64')}`;
@@ -123,19 +142,17 @@ class WelcomeAdapter extends adapter_core_1.Adapter {
                 url,
             });
         }
-        if (this.welcomeConfig.customLinks) {
-            this.welcomeConfig.customLinks.map(item => {
-                if (item.enabled) {
-                    pages.push({
-                        icon: item.icon,
-                        instance: item.name,
-                        title: item.desc,
-                        url: item.link,
-                        blank: item.blank,
-                    });
-                }
-            });
-        }
+        this.welcomeConfig.customLinks?.map(item => {
+            if (item.enabled) {
+                pages.push({
+                    icon: item.icon,
+                    instance: item.name,
+                    title: item.desc,
+                    url: item.link,
+                    blank: item.blank,
+                });
+            }
+        });
         return { pages, redirect };
     }
     async renderIndexHtml() {
@@ -180,12 +197,21 @@ class WelcomeAdapter extends adapter_core_1.Adapter {
     async renderAliveJson() {
         const { pages } = await this.getPages();
         const alive = [];
+        this.log.debug(`Checking pages`);
         for (let p = 0; p < pages.length; p++) {
             try {
-                const response = await axios_1.default.get(pages[p].url, { timeout: 1000 });
+                let response;
+                if (pages[p].url.startsWith('https://')) {
+                    response = await this.httpsAxios.get(pages[p].url, { timeout: 1000 });
+                }
+                else {
+                    response = await axios_1.default.get(pages[p].url, { timeout: 1000 });
+                }
+                this.log.debug(`Checking ${pages[p].url}: ${response.status}`);
                 alive[p] = response.status === 200;
             }
-            catch {
+            catch (e) {
+                this.log.debug(`Checking ${pages[p].url}: ${e.toString()}`);
                 pages[p].url = '';
                 alive[p] = false;
             }

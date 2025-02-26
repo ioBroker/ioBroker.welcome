@@ -1,10 +1,10 @@
-import express from 'express';
-import type { Express } from 'express';
+import express, { type Express } from 'express';
 import { existsSync, readFileSync } from 'node:fs';
-import axios from 'axios';
+import axios, { type AxiosInstance, type AxiosResponse } from 'axios';
 import { Adapter, type AdapterOptions, EXIT_CODES } from '@iobroker/adapter-core'; // Get common adapter utils
 import * as IoBWebServer from '@iobroker/webserver';
 import type { Server } from 'node:http';
+import { Agent } from 'node:https';
 
 const SUPPORTED_ADAPTERS = ['admin', 'web'];
 
@@ -39,6 +39,7 @@ export class WelcomeAdapter extends Adapter {
     private logoPng: { file: string | Buffer; mimeType?: string } | null = null;
     private indexHtml = '';
     private welcomeConfig: WelcomeConfig;
+    private readonly httpsAxios: AxiosInstance;
 
     public constructor(options: Partial<AdapterOptions> = {}) {
         super({
@@ -49,6 +50,11 @@ export class WelcomeAdapter extends Adapter {
         this.on('fileChange', (id, fileName) => this.#onFileChange(id, fileName));
         this.on('unload', callback => this.#onUnload(callback));
         this.welcomeConfig = this.config as WelcomeConfig;
+        this.httpsAxios = axios.create({
+            httpsAgent: new Agent({
+                rejectUnauthorized: false,
+            }),
+        });
     }
 
     async #onFileChange(_id: string, fileName: string): Promise<void> {
@@ -74,7 +80,10 @@ export class WelcomeAdapter extends Adapter {
         callback();
     }
 
-    async getPages() {
+    async getPages(): Promise<{
+        pages: { icon?: string; instance: string; title?: ioBroker.StringOrTranslated; url: string; blank?: boolean }[];
+        redirect: string;
+    }> {
         let redirect = '';
 
         if (this.welcomeConfig.redirectToLink) {
@@ -86,7 +95,13 @@ export class WelcomeAdapter extends Adapter {
         for (let r = 0; r < instances.rows.length; r++) {
             mapInstance[instances.rows[r].id] = instances.rows[r].value;
         }
-        const pages = [];
+        const pages: {
+            icon?: string;
+            instance: string;
+            title?: ioBroker.StringOrTranslated;
+            url: string;
+            blank?: boolean;
+        }[] = [];
         for (const id in mapInstance) {
             const instance = mapInstance[id];
             const url = `http${instance.native.secure ? 's' : ''}://${instance.native.bind === '0.0.0.0' ? 'localhost' : instance.native.bind}:${instance.native.port}/`;
@@ -112,7 +127,9 @@ export class WelcomeAdapter extends Adapter {
             if (!SUPPORTED_ADAPTERS.includes(instance.common.name)) {
                 continue;
             }
-            let iconFile = instance.common.icon ? await this.readFileAsync(`${instance.common.name}.admin`, instance.common.icon) : null;
+            const iconFile = instance.common.icon
+                ? await this.readFileAsync(`${instance.common.name}.admin`, instance.common.icon)
+                : null;
             let icon: string | undefined;
             if (iconFile && instance.common.icon?.endsWith('.jpg')) {
                 icon = `data:image/jpg;base64,${iconFile.file.toString('base64')}`;
@@ -131,24 +148,22 @@ export class WelcomeAdapter extends Adapter {
             });
         }
 
-        if (this.welcomeConfig.customLinks) {
-            this.welcomeConfig.customLinks.map(item => {
-                if (item.enabled) {
-                    pages.push({
-                        icon: item.icon,
-                        instance: item.name,
-                        title: item.desc,
-                        url: item.link,
-                        blank: item.blank,
-                    });
-                }
-            });
-        }
+        this.welcomeConfig.customLinks?.map(item => {
+            if (item.enabled) {
+                pages.push({
+                    icon: item.icon,
+                    instance: item.name,
+                    title: item.desc,
+                    url: item.link,
+                    blank: item.blank,
+                });
+            }
+        });
 
         return { pages, redirect };
     }
 
-    async renderIndexHtml() {
+    async renderIndexHtml(): Promise<string> {
         // try to read logo
         try {
             this.logoPng = await this.readFileAsync(this.namespace, 'logo.png');
@@ -160,7 +175,8 @@ export class WelcomeAdapter extends Adapter {
             ? readFileSync(`${__dirname}/../src-www/build/index.html`).toString()
             : readFileSync(`${__dirname}/public/index.html`).toString();
 
-        const systemConfig: ioBroker.SystemConfigObject | null | undefined = await this.getForeignObjectAsync('system.config');
+        const systemConfig: ioBroker.SystemConfigObject | null | undefined =
+            await this.getForeignObjectAsync('system.config');
         const { pages, redirect } = await this.getPages();
 
         if (redirect) {
@@ -185,7 +201,7 @@ export class WelcomeAdapter extends Adapter {
         );
     }
 
-    async #onReady() {
+    async #onReady(): Promise<void> {
         this.welcomeConfig = this.config as WelcomeConfig;
         this.subscribeForeignFiles && (await this.subscribeForeignFiles(this.namespace, 'logo.png'));
 
@@ -204,11 +220,20 @@ export class WelcomeAdapter extends Adapter {
     async renderAliveJson(): Promise<boolean[]> {
         const { pages } = await this.getPages();
         const alive: boolean[] = [];
+        this.log.debug(`Checking pages`);
+
         for (let p = 0; p < pages.length; p++) {
             try {
-                const response = await axios.get(pages[p].url, { timeout: 1000 });
-                alive[p] = response.status === 200;
-            } catch {
+                let response: AxiosResponse<any, any>;
+                if (pages[p].url.startsWith('https://')) {
+                    response = await this.httpsAxios.get(pages[p].url, { timeout: 1000 });
+                } else {
+                    response = await axios.get(pages[p].url, { timeout: 1000 });
+                }
+                this.log.debug(`Checking ${pages[p].url}: ${response.status}`);
+                alive[p] = response.status === 200 || response.status === 403 || response.status === 401;
+            } catch (e) {
+                this.log.debug(`Checking ${pages[p].url}: ${e.toString()}`);
                 pages[p].url = '';
                 alive[p] = false;
             }
