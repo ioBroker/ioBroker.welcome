@@ -19,7 +19,7 @@
     "node": ">=16"
   },
   "dependencies": {
-    "@iobroker/webserver": "^1.1.6",
+    "@iobroker/webserver": "^1.1.7",
     "@iobroker/adapter-core": "^3.2.3",
     "express": "^4.21.2",
     "axios": "^1.8.1"
