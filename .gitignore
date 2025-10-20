@@ -12,3 +12,6 @@ src-admin/build
 !src/public
 src/node_modules
 admin/custom
+
+#ignore .commitinfo created by ioBroker release script
+.commitinfo
