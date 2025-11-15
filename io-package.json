@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "welcome",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "titleLang": {
       "en": "Welcome page",
       "de": "Willkommensseite",
@@ -16,6 +16,19 @@
       "zh-cn": "欢迎页面"
     },
     "news": {
+      "1.1.1": {
+        "en": "Migrated admin component to TypeScript and vite",
+        "de": "Geförderte Admin-Komponente zu TypeScript und vite",
+        "ru": "Миграционный компонент администратора для TypeScript и vite",
+        "pt": "Componente de administração migrado para TypeScript e Vite",
+        "nl": "Gemigreerd admin component naar TypeScript en vite",
+        "fr": "Migré le composant admin pour TypeScript et rite",
+        "it": "Componente amministratore migrato a TypeScript e vite",
+        "es": "Componente de administración migrado a TypeScript y vite",
+        "pl": "Migrated admin komponent do TypeScript i vite",
+        "uk": "Migrated admin компонент для TypeScript і vite",
+        "zh-cn": "将管理员组件移到类型脚本和 vite"
+      },
       "1.1.0": {
         "en": "Adapter was migrated to TypeScript and vite\nAdded support for websites with custom certificates",
         "de": "Adapter wurde auf TypeScript und Vite migriert\nUnterstützung für Websites mit benutzerdefinierten Zertifikaten",
@@ -93,19 +106,6 @@
         "pl": "Adddition link",
         "uk": "Додати користувацькі посилання",
         "zh-cn": "增加习俗联系"
-      },
-      "0.0.5": {
-        "en": "Corrected the adapter list",
-        "de": "Korrektur der Adapterliste",
-        "ru": "Исправлен список адаптеров",
-        "pt": "Corrigido a lista de adaptadores",
-        "nl": "Vertaling:",
-        "fr": "Correction de la liste d'adaptateur",
-        "it": "Corretto l'elenco dell'adattatore",
-        "es": "Corregido la lista de adaptadores",
-        "pl": "Poprawiona lista adapterów",
-        "uk": "Виправлено список адаптерів",
-        "zh-cn": "修改名单"
       }
     },
     "desc": {
