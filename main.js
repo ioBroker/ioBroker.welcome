@@ -49,6 +49,8 @@ class WelcomeAdapter extends adapter_core_1.Adapter {
     webServer = null;
     logoPng = null;
     indexHtml = '';
+    favicon = '';
+    systemConfigOwn = null;
     welcomeConfig;
     httpsAxios;
     constructor(options = {}) {
@@ -166,7 +168,6 @@ class WelcomeAdapter extends adapter_core_1.Adapter {
         const _indexHtml = (0, node_fs_1.existsSync)(`${__dirname}/../src-www/build/index.html`)
             ? (0, node_fs_1.readFileSync)(`${__dirname}/../src-www/build/index.html`).toString()
             : (0, node_fs_1.readFileSync)(`${__dirname}/public/index.html`).toString();
-        const systemConfig = await this.getForeignObjectAsync('system.config');
         const { pages, redirect } = await this.getPages();
         if (redirect) {
             return _indexHtml.replace('window.REPLACEMENT_TEXT="REPLACEMENT_TEXT"', `window.location="${redirect}".replace('localhost', window.location.hostname);`);
@@ -175,7 +176,7 @@ class WelcomeAdapter extends adapter_core_1.Adapter {
             welcomePhrase: this.welcomeConfig.welcomePhrase,
             backgroundColor: this.welcomeConfig.backgroundColor,
             backgroundToolbarColor: this.welcomeConfig.backgroundToolbarColor,
-            language: this.welcomeConfig.language || systemConfig?.common?.language || 'en',
+            language: this.welcomeConfig.language || this.systemConfigOwn?.common?.language || 'en',
             logoPng: this.logoPng ? `data:${this.logoPng.mimeType};base64,${this.logoPng.file.toString('base64')}` : '',
             pages,
         };
@@ -186,15 +187,18 @@ class WelcomeAdapter extends adapter_core_1.Adapter {
         if (this.subscribeForeignFiles) {
             await this.subscribeForeignFiles(this.namespace, 'logo.png');
         }
+        this.systemConfigOwn = await this.getForeignObjectAsync('system.config');
         // If in system.config the vendor information is present, try to use logo from there
-        const systemConfig = await this.getForeignObjectAsync('system.config');
-        const icon = systemConfig?.native?.vendor?.logo || systemConfig?.native?.vendor?.icon;
+        const icon = this.systemConfigOwn?.native?.vendor?.logo || this.systemConfigOwn?.native?.vendor?.icon;
         if (icon) {
             // icon is `data:image/svg+xml;base64,...`. Split it into file and mimeType
             this.logoPng = {
                 file: Buffer.from(icon.split(',')[1], 'base64'),
                 mimeType: icon.substring(5, icon.indexOf(';base64')),
             };
+        }
+        if (this.systemConfigOwn?.native?.vendor?.icon) {
+            this.favicon = this.systemConfigOwn.native.vendor.icon;
         }
         this.indexHtml = await this.renderIndexHtml();
         this.initWebServer(this.welcomeConfig)
@@ -258,6 +262,13 @@ class WelcomeAdapter extends adapter_core_1.Adapter {
                 }
                 else if (url === '/alive.json' || url === 'alive.json') {
                     res.json(await this.renderAliveJson());
+                }
+                else if (url === '/favicon.ico' && this.favicon?.startsWith('data:')) {
+                    // data:<mime-type>;base64,<data>
+                    const mimeType = this.favicon.substring(5, this.favicon.indexOf(';base64'));
+                    const data = this.favicon.split(',')[1];
+                    res.set('Content-Type', mimeType);
+                    res.send(Buffer.from(data, 'base64'));
                 }
                 else {
                     next();

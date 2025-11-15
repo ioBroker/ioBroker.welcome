@@ -38,6 +38,8 @@ export class WelcomeAdapter extends Adapter {
     } = null;
     private logoPng: { file: string | Buffer; mimeType?: string } | null = null;
     private indexHtml = '';
+    private favicon = '';
+    private systemConfigOwn: ioBroker.SystemConfigObject | null | undefined = null;
     private welcomeConfig: WelcomeConfig;
     private readonly httpsAxios: AxiosInstance;
 
@@ -175,8 +177,6 @@ export class WelcomeAdapter extends Adapter {
             ? readFileSync(`${__dirname}/../src-www/build/index.html`).toString()
             : readFileSync(`${__dirname}/public/index.html`).toString();
 
-        const systemConfig: ioBroker.SystemConfigObject | null | undefined =
-            await this.getForeignObjectAsync('system.config');
         const { pages, redirect } = await this.getPages();
 
         if (redirect) {
@@ -190,7 +190,7 @@ export class WelcomeAdapter extends Adapter {
             welcomePhrase: this.welcomeConfig.welcomePhrase,
             backgroundColor: this.welcomeConfig.backgroundColor,
             backgroundToolbarColor: this.welcomeConfig.backgroundToolbarColor,
-            language: this.welcomeConfig.language || systemConfig?.common?.language || 'en',
+            language: this.welcomeConfig.language || this.systemConfigOwn?.common?.language || 'en',
             logoPng: this.logoPng ? `data:${this.logoPng.mimeType};base64,${this.logoPng.file.toString('base64')}` : '',
             pages,
         };
@@ -206,18 +206,20 @@ export class WelcomeAdapter extends Adapter {
         if (this.subscribeForeignFiles) {
             await this.subscribeForeignFiles(this.namespace, 'logo.png');
         }
+        this.systemConfigOwn = await this.getForeignObjectAsync('system.config');
 
         // If in system.config the vendor information is present, try to use logo from there
-        const systemConfig: ioBroker.SystemConfigObject | null | undefined =
-            await this.getForeignObjectAsync('system.config');
-
-        const icon: string | undefined = systemConfig?.native?.vendor?.logo || systemConfig?.native?.vendor?.icon;
+        const icon: string | undefined =
+            this.systemConfigOwn?.native?.vendor?.logo || this.systemConfigOwn?.native?.vendor?.icon;
         if (icon) {
             // icon is `data:image/svg+xml;base64,...`. Split it into file and mimeType
             this.logoPng = {
                 file: Buffer.from(icon.split(',')[1], 'base64'),
                 mimeType: icon.substring(5, icon.indexOf(';base64')),
             };
+        }
+        if (this.systemConfigOwn?.native?.vendor?.icon) {
+            this.favicon = this.systemConfigOwn.native.vendor.icon;
         }
 
         this.indexHtml = await this.renderIndexHtml();
@@ -293,6 +295,12 @@ export class WelcomeAdapter extends Adapter {
                     res.send(this.indexHtml);
                 } else if (url === '/alive.json' || url === 'alive.json') {
                     res.json(await this.renderAliveJson());
+                } else if (url === '/favicon.ico' && this.favicon?.startsWith('data:')) {
+                    // data:<mime-type>;base64,<data>
+                    const mimeType = this.favicon.substring(5, this.favicon.indexOf(';base64'));
+                    const data = this.favicon.split(',')[1];
+                    res.set('Content-Type', mimeType);
+                    res.send(Buffer.from(data, 'base64'));
                 } else {
                     next();
                 }
@@ -303,7 +311,7 @@ export class WelcomeAdapter extends Adapter {
             try {
                 const webserver: any = new IoBWebServer.WebServer({
                     app: server.app,
-                    adapter: this,
+                    adapter: this as unknown as ioBroker.Adapter,
                     secure: settings.secure,
                 });
                 server.server = await webserver.init();
