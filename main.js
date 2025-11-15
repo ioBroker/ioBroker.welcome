@@ -158,7 +158,7 @@ class WelcomeAdapter extends adapter_core_1.Adapter {
     async renderIndexHtml() {
         // try to read logo
         try {
-            this.logoPng = await this.readFileAsync(this.namespace, 'logo.png');
+            this.logoPng ||= await this.readFileAsync(this.namespace, 'logo.png');
         }
         catch {
             this.logoPng = null;
@@ -179,11 +179,23 @@ class WelcomeAdapter extends adapter_core_1.Adapter {
             logoPng: this.logoPng ? `data:${this.logoPng.mimeType};base64,${this.logoPng.file.toString('base64')}` : '',
             pages,
         };
-        return _indexHtml.replace('window.REPLACEMENT_TEXT="REPLACEMENT_TEXT"', `window.IOBROKER_PAGES=${JSON.stringify(IOBROKER_PAGES)};`);
+        return _indexHtml.replace("window.REPLACEMENT_TEXT = 'REPLACEMENT_TEXT'", `window.IOBROKER_PAGES=${JSON.stringify(IOBROKER_PAGES)};`);
     }
     async #onReady() {
         this.welcomeConfig = this.config;
-        this.subscribeForeignFiles && (await this.subscribeForeignFiles(this.namespace, 'logo.png'));
+        if (this.subscribeForeignFiles) {
+            await this.subscribeForeignFiles(this.namespace, 'logo.png');
+        }
+        // If in system.config the vendor information is present, try to use logo from there
+        const systemConfig = await this.getForeignObjectAsync('system.config');
+        const icon = systemConfig?.native?.vendor?.logo || systemConfig?.native?.vendor?.icon;
+        if (icon) {
+            // icon is `data:image/svg+xml;base64,...`. Split it into file and mimeType
+            this.logoPng = {
+                file: Buffer.from(icon.split(',')[1], 'base64'),
+                mimeType: icon.substring(5, icon.indexOf(';base64')),
+            };
+        }
         this.indexHtml = await this.renderIndexHtml();
         this.initWebServer(this.welcomeConfig)
             .then(returnedServer => (this.webServer = returnedServer))
@@ -208,7 +220,7 @@ class WelcomeAdapter extends adapter_core_1.Adapter {
                     response = await axios_1.default.get(pages[p].url, { timeout: 1000 });
                 }
                 this.log.debug(`Checking ${pages[p].url}: ${response.status}`);
-                alive[p] = response.status === 200;
+                alive[p] = response.status === 200 || response.status === 403 || response.status === 401;
             }
             catch (e) {
                 this.log.debug(`Checking ${pages[p].url}: ${e.toString()}`);

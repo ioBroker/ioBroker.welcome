@@ -166,7 +166,7 @@ export class WelcomeAdapter extends Adapter {
     async renderIndexHtml(): Promise<string> {
         // try to read logo
         try {
-            this.logoPng = await this.readFileAsync(this.namespace, 'logo.png');
+            this.logoPng ||= await this.readFileAsync(this.namespace, 'logo.png');
         } catch {
             this.logoPng = null;
         }
@@ -196,14 +196,29 @@ export class WelcomeAdapter extends Adapter {
         };
 
         return _indexHtml.replace(
-            'window.REPLACEMENT_TEXT="REPLACEMENT_TEXT"',
+            "window.REPLACEMENT_TEXT = 'REPLACEMENT_TEXT'",
             `window.IOBROKER_PAGES=${JSON.stringify(IOBROKER_PAGES)};`,
         );
     }
 
     async #onReady(): Promise<void> {
         this.welcomeConfig = this.config as WelcomeConfig;
-        this.subscribeForeignFiles && (await this.subscribeForeignFiles(this.namespace, 'logo.png'));
+        if (this.subscribeForeignFiles) {
+            await this.subscribeForeignFiles(this.namespace, 'logo.png');
+        }
+
+        // If in system.config the vendor information is present, try to use logo from there
+        const systemConfig: ioBroker.SystemConfigObject | null | undefined =
+            await this.getForeignObjectAsync('system.config');
+
+        const icon: string | undefined = systemConfig?.native?.vendor?.logo || systemConfig?.native?.vendor?.icon;
+        if (icon) {
+            // icon is `data:image/svg+xml;base64,...`. Split it into file and mimeType
+            this.logoPng = {
+                file: Buffer.from(icon.split(',')[1], 'base64'),
+                mimeType: icon.substring(5, icon.indexOf(';base64')),
+            };
+        }
 
         this.indexHtml = await this.renderIndexHtml();
 

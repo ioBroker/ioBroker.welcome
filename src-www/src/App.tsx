@@ -6,7 +6,7 @@ import { AppBar, Avatar, Button, Card, CardActions, CardContent, CardMedia, Tool
 
 import { I18n, Theme, Utils, ToggleThemeMenu, Icon, type IobTheme } from '@iobroker/adapter-react-v5';
 
-import logo from './assets/logo.png';
+import logo from './assets/logo.svg';
 
 import enLang from './i18n/en.json';
 import deLang from './i18n/de.json';
@@ -53,7 +53,7 @@ interface AppState {
     alive: (boolean | undefined)[];
 }
 
-class App extends React.Component<AppProps, AppState> {
+export default class App extends React.Component<AppProps, AppState> {
     constructor(props: AppProps) {
         super(props);
         const translations = {
@@ -98,11 +98,11 @@ class App extends React.Component<AppProps, AppState> {
         document.body.style.color = theme.palette.mode === 'dark' ? '#EEE' : '#111';
     }
 
-    componentDidMount() {
+    componentDidMount(): void {
         this.checkAllLinksIfTheyAlive().catch(e => console.error(`Cannot check all links: ${e}`));
     }
 
-    async checkAllLinksIfTheyAlive() {
+    async checkAllLinksIfTheyAlive(): Promise<void> {
         try {
             const response = await fetch(`./alive.json?t=${Date.now()}`);
             const alive = await response.json();
@@ -132,7 +132,10 @@ class App extends React.Component<AppProps, AppState> {
         }
     };
 
-    renderCard(page: { url: string; instance: string, icon: string, title: string }, index: number): React.JSX.Element | null {
+    renderCard(
+        page: { url: string; instance: string; icon: string; title: string },
+        index: number,
+    ): React.JSX.Element | null {
         if (page.url.includes('127.0.0.1') || page.url.includes('::1')) {
             if (
                 window.location.hostname !== 'localhost' &&
@@ -208,16 +211,14 @@ class App extends React.Component<AppProps, AppState> {
 
             const theme = Theme(newThemeName);
 
-            this.setState(
-                {
-                    theme,
-                    themeName: newThemeName,
-                },
-            );
+            this.setState({
+                theme,
+                themeName: newThemeName,
+            });
         }
     }
 
-    render() {
+    render(): React.JSX.Element {
         const { theme } = this.state;
 
         return (
@@ -274,5 +275,3 @@ class App extends React.Component<AppProps, AppState> {
         );
     }
 }
-
-export default App;

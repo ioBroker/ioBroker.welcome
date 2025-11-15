@@ -12,3 +12,4 @@ src-admin/build
 !src/public
 src/node_modules
 admin/custom
+/src-admin/.__mf__temp/
