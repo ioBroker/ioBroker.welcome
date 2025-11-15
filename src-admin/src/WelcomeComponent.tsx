@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import {
     LinearProgress,
@@ -19,51 +18,66 @@ import {
 // import ConfigGeneric from '@iobroker/adapter-react-v5/ConfigGeneric';
 // valid
 import { I18n } from '@iobroker/adapter-react-v5';
-import { ConfigGeneric } from '@iobroker/json-config';
+import { ConfigGeneric, type ConfigGenericProps, type ConfigGenericState } from '@iobroker/json-config';
 
 const SUPPORTED_ADAPTERS = ['admin', 'web'];
 
-class WelcomeComponent extends ConfigGeneric {
-    constructor(props) {
+function getText(word: ioBroker.StringOrTranslated): string {
+    if (typeof word === 'string') {
+        return word;
+    }
+    return word[I18n.getLanguage()] || word.en || '';
+}
+
+interface WelcomeComponentState extends ConfigGenericState {
+    instances: { id: string; icon?: string | null; title: ioBroker.StringOrTranslated; name: string }[] | null;
+}
+
+export default class WelcomeComponent extends ConfigGeneric<ConfigGenericProps, WelcomeComponentState> {
+    constructor(props: ConfigGenericProps) {
         super(props);
         this.state = {
+            ...this.state,
             instances: null,
         };
     }
 
-    async componentDidMount() {
+    async componentDidMount(): Promise<void> {
         super.componentDidMount();
 
         await this.readData();
     }
 
-    async readData() {
-        const instances = await this.props.socket.getObjectViewSystem('instance', 'system.adapter.');
-        const result = [];
+    async readData(): Promise<void> {
+        const instances = await this.props.oContext.socket.getObjectViewSystem('instance', 'system.adapter.');
+        const result: { id: string; icon?: string | null; title: ioBroker.StringOrTranslated; name: string }[] = [];
         Object.keys(instances).forEach(id => {
             if (SUPPORTED_ADAPTERS.includes(instances[id].common.name)) {
                 result.push({
                     id: id.replace('system.adapter.', ''),
                     icon: instances[id].common.icon,
-                    title: instances[id].common.title,
+                    title: instances[id].common.titleLang ||
+                        instances[id].common.title || { en: instances[id].common.name },
                     name: instances[id].common.name,
                 });
             }
         });
         result.sort((a, b) => a.id.localeCompare(b.id));
 
-        const icons = {};
+        const icons: { [name: string]: { mimeType: string; file: string } } = {};
         for (let i = 0; i < result.length; i++) {
+            const iconName = result[i].icon;
             try {
                 const icon =
                     icons[result[i].name] ||
-                    (await this.props.socket.readFile(`${result[i].name}.admin`, result[i].icon, true));
+                    (iconName &&
+                        (await this.props.oContext.socket.readFile(`${result[i].name}.admin`, iconName, true)));
                 if (icon) {
                     result[i].icon = `data:${icon.mimeType};base64,${icon.file}`;
                 } else {
                     result[i].icon = null;
                 }
-            } catch (e) {
+            } catch {
                 result[i].icon = null;
             }
         }
@@ -71,7 +85,7 @@ class WelcomeComponent extends ConfigGeneric {
         this.setState({ instances: result });
     }
 
-    renderItem() {
+    renderItem(): React.JSX.Element {
         if (!this.state.instances) {
             return <LinearProgress />;
         }
@@ -146,7 +160,7 @@ class WelcomeComponent extends ConfigGeneric {
                                             {instance.icon ? (
                                                 <img
                                                     src={instance.icon}
-                                                    alt={instance.title}
+                                                    alt={getText(instance.title)}
                                                     style={{ width: 20, height: 20 }}
                                                 />
                                             ) : null}
@@ -162,17 +176,3 @@ class WelcomeComponent extends ConfigGeneric {
         );
     }
 }
-
-WelcomeComponent.propTypes = {
-    socket: PropTypes.object.isRequired,
-    themeType: PropTypes.string,
-    themeName: PropTypes.string,
-    style: PropTypes.object,
-    data: PropTypes.object.isRequired,
-    attr: PropTypes.string,
-    schema: PropTypes.object,
-    onError: PropTypes.func,
-    onChange: PropTypes.func,
-};
-
-export default WelcomeComponent;

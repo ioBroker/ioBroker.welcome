@@ -1,0 +1,3 @@
+void import('./bootstrap');
+
+export {};
