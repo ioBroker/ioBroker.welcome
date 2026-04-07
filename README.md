@@ -28,6 +28,9 @@ In this case, by opening of http://IP it will be immediately redirected to a spe
 -->
 
 ## Changelog
+
+### **WORK IN PROGRESS**
+- (iobroker-bot) Adapter requires node.js >= 20 now.
 ### 1.1.1 (2025-11-15)
 -   (@GermanBluefox) Migrated admin component to TypeScript and vite
 
