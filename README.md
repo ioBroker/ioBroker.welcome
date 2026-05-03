@@ -66,6 +66,8 @@ In this case, by opening of http://IP it will be immediately redirected to a spe
 
 -   (@GermanBluefox) Initial commit
 
+[Older changelogs can be found there](CHANGELOG_OLD.md)
+
 ## License
 
 The MIT License (MIT)
