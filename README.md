@@ -28,6 +28,10 @@ In this case, by opening of http://IP it will be immediately redirected to a spe
 -->
 
 ## Changelog
+
+### **WORK IN PROGRESS**
+- (ioBroker-Bot) Adapter requires js-controller >= 6.0.11 now.
+
 ### 1.1.1 (2025-11-15)
 -   (@GermanBluefox) Migrated admin component to TypeScript and vite
 
