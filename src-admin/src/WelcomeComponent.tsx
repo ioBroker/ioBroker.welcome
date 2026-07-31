@@ -15,9 +15,9 @@ import {
 } from '@mui/material';
 // important to make from package and not from some children.
 // invalid
-// import ConfigGeneric from '@iobroker/adapter-react-v5/ConfigGeneric';
+// import ConfigGeneric from '@iobroker/gui-components/ConfigGeneric';
 // valid
-import { I18n } from '@iobroker/adapter-react-v5';
+import { I18n } from '@iobroker/gui-components';
 import { ConfigGeneric, type ConfigGenericProps, type ConfigGenericState } from '@iobroker/json-config';
 
 const SUPPORTED_ADAPTERS = ['admin', 'web'];

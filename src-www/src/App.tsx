@@ -4,7 +4,7 @@ import * as Sentry from '@sentry/browser';
 
 import { AppBar, Avatar, Button, Card, CardActions, CardContent, CardMedia, Toolbar, Typography } from '@mui/material';
 
-import { I18n, Theme, Utils, ToggleThemeMenu, Icon, type IobTheme } from '@iobroker/adapter-react-v5';
+import { I18n, Theme, Utils, ToggleThemeMenu, Icon, type IobTheme } from '@iobroker/gui-components';
 
 import logo from './assets/logo.svg';
 

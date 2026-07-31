@@ -44,6 +44,8 @@ const adapter_core_1 = require("@iobroker/adapter-core"); // Get common adapter 
 const IoBWebServer = __importStar(require("@iobroker/webserver"));
 const node_https_1 = require("node:https");
 const SUPPORTED_ADAPTERS = ['admin', 'web'];
+/** Placeholder in index.html. Quoting and spacing depend on whether the file was minified by the build */
+const REPLACEMENT_PATTERN = /window\.REPLACEMENT_TEXT\s*=\s*(['"])REPLACEMENT_TEXT\1/;
 class WelcomeAdapter extends adapter_core_1.Adapter {
     startTimeout = null;
     webServer = null;
@@ -167,10 +169,10 @@ class WelcomeAdapter extends adapter_core_1.Adapter {
         }
         const _indexHtml = (0, node_fs_1.existsSync)(`${__dirname}/../src-www/build/index.html`)
             ? (0, node_fs_1.readFileSync)(`${__dirname}/../src-www/build/index.html`).toString()
-            : (0, node_fs_1.readFileSync)(`${__dirname}/public/index.html`).toString();
+            : (0, node_fs_1.readFileSync)(`${__dirname}/../public/index.html`).toString();
         const { pages, redirect } = await this.getPages();
         if (redirect) {
-            return _indexHtml.replace('window.REPLACEMENT_TEXT="REPLACEMENT_TEXT"', `window.location="${redirect}".replace('localhost', window.location.hostname);`);
+            return _indexHtml.replace(REPLACEMENT_PATTERN, () => `window.location="${redirect}".replace('localhost', window.location.hostname);`);
         }
         const IOBROKER_PAGES = {
             welcomePhrase: this.welcomeConfig.welcomePhrase,
@@ -180,7 +182,7 @@ class WelcomeAdapter extends adapter_core_1.Adapter {
             logoPng: this.logoPng ? `data:${this.logoPng.mimeType};base64,${this.logoPng.file.toString('base64')}` : '',
             pages,
         };
-        return _indexHtml.replace("window.REPLACEMENT_TEXT = 'REPLACEMENT_TEXT'", `window.IOBROKER_PAGES=${JSON.stringify(IOBROKER_PAGES)};`);
+        return _indexHtml.replace(REPLACEMENT_PATTERN, () => `window.IOBROKER_PAGES=${JSON.stringify(IOBROKER_PAGES)};`);
     }
     async #onReady() {
         this.welcomeConfig = this.config;
@@ -274,7 +276,7 @@ class WelcomeAdapter extends adapter_core_1.Adapter {
                     next();
                 }
             });
-            server.app.use(express_1.default.static(`${__dirname}/public`));
+            server.app.use(express_1.default.static(`${__dirname}/../public`));
             try {
                 const webserver = new IoBWebServer.WebServer({
                     app: server.app,

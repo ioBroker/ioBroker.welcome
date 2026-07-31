@@ -8,6 +8,9 @@ import { Agent } from 'node:https';
 
 const SUPPORTED_ADAPTERS = ['admin', 'web'];
 
+/** Placeholder in index.html. Quoting and spacing depend on whether the file was minified by the build */
+const REPLACEMENT_PATTERN = /window\.REPLACEMENT_TEXT\s*=\s*(['"])REPLACEMENT_TEXT\1/;
+
 interface WelcomeConfig {
     allInstances?: boolean;
     specificInstances?: string[];
@@ -175,14 +178,14 @@ export class WelcomeAdapter extends Adapter {
 
         const _indexHtml = existsSync(`${__dirname}/../src-www/build/index.html`)
             ? readFileSync(`${__dirname}/../src-www/build/index.html`).toString()
-            : readFileSync(`${__dirname}/public/index.html`).toString();
+            : readFileSync(`${__dirname}/../public/index.html`).toString();
 
         const { pages, redirect } = await this.getPages();
 
         if (redirect) {
             return _indexHtml.replace(
-                'window.REPLACEMENT_TEXT="REPLACEMENT_TEXT"',
-                `window.location="${redirect}".replace('localhost', window.location.hostname);`,
+                REPLACEMENT_PATTERN,
+                () => `window.location="${redirect}".replace('localhost', window.location.hostname);`,
             );
         }
 
@@ -196,8 +199,8 @@ export class WelcomeAdapter extends Adapter {
         };
 
         return _indexHtml.replace(
-            "window.REPLACEMENT_TEXT = 'REPLACEMENT_TEXT'",
-            `window.IOBROKER_PAGES=${JSON.stringify(IOBROKER_PAGES)};`,
+            REPLACEMENT_PATTERN,
+            () => `window.IOBROKER_PAGES=${JSON.stringify(IOBROKER_PAGES)};`,
         );
     }
 
@@ -306,7 +309,7 @@ export class WelcomeAdapter extends Adapter {
                 }
             });
 
-            server.app.use(express.static(`${__dirname}/public`));
+            server.app.use(express.static(`${__dirname}/../public`));
 
             try {
                 const webserver: any = new IoBWebServer.WebServer({
