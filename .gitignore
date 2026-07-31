@@ -4,8 +4,11 @@ tmp
 iob_npm.done
 *.tgz
 public
+/build
 src-admin/node_modules
 src-admin/build
+src-www/node_modules
+src-www/build
 src/node_modules
 admin/custom
 /src-admin/.__mf__temp/

@@ -1,5 +1,5 @@
-// Specialized tsconfig for the admin directory,
-// includes DOM typings and configures the admin build
+// Specialized tsconfig for the welcome page (src-www),
+// includes DOM typings. The JS output is produced by vite, so nothing is emitted here
 {
     "compilerOptions": {
         "module": "esnext",
@@ -12,10 +12,7 @@
         "target": "ES2022",
         "allowSyntheticDefaultImports": true,
         "checkJs": false,
-        "noEmit": false,
-        "outDir": "./build",
-        "sourceMap": true,
-        "sourceRoot": "./src",
+        "noEmit": true,
         "noImplicitAny": true,
         "skipLibCheck": true,
         "verbatimModuleSyntax": true,
@@ -23,6 +20,13 @@
         "jsx": "react",
         "types": ["@iobroker/types"]
     },
-    "include": ["./src/**/*.ts", "./src/**/*.d.ts", "./src/**/*.tsx", "./src/**/*.json", "./src/**/*.css"],
+    "include": [
+        "./src/**/*.ts",
+        "./src/**/*.d.ts",
+        "./src/**/*.tsx",
+        "./src/**/*.json",
+        "./src/**/*.css",
+        "./vite.config.ts"
+    ],
     "exclude": ["**/node_modules", "**/dist"]
 }

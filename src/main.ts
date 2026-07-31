@@ -1,6 +1,6 @@
 import express, { type Express } from 'express';
 import { existsSync, readFileSync } from 'node:fs';
-import axios, { type AxiosInstance, type AxiosResponse } from 'axios';
+import axios, { type AxiosInstance } from 'axios';
 import { Adapter, type AdapterOptions, EXIT_CODES } from '@iobroker/adapter-core'; // Get common adapter utils
 import * as IoBWebServer from '@iobroker/webserver';
 import type { Server } from 'node:http';
@@ -10,6 +10,20 @@ const SUPPORTED_ADAPTERS = ['admin', 'web'];
 
 /** Placeholder in index.html. Quoting and spacing depend on whether the file was minified by the build */
 const REPLACEMENT_PATTERN = /window\.REPLACEMENT_TEXT\s*=\s*(['"])REPLACEMENT_TEXT\1/;
+
+/** Delay before the page is re-rendered after an instance object was changed */
+const RENDER_DELAY_MS = 1_000;
+
+/** Build the URL of a web instance out of its native settings */
+function buildInstanceUrl(native: Record<string, any>): string {
+    // Listening on "all interfaces" says nothing about the address the user must call
+    let bind: string = !native.bind || native.bind === '0.0.0.0' || native.bind === '::' ? 'localhost' : native.bind;
+    // IPv6 addresses must be enclosed in brackets
+    if (bind.includes(':')) {
+        bind = `[${bind}]`;
+    }
+    return `http${native.secure ? 's' : ''}://${bind}:${native.port}/`;
+}
 
 interface WelcomeConfig {
     allInstances?: boolean;
@@ -34,12 +48,15 @@ interface WelcomeConfig {
 
 export class WelcomeAdapter extends Adapter {
     private startTimeout: NodeJS.Timeout | null = null;
+    private renderTimeout: NodeJS.Timeout | null = null;
     private webServer: null | {
         settings: WelcomeConfig;
         app: null | Express;
         server: null | (Server & { __server: { app: null | Express; server: null | Server } });
     } = null;
     private logoPng: { file: string | Buffer; mimeType?: string } | null = null;
+    /** Logo of the vendor. It has priority over the uploaded logo.png */
+    private vendorLogo: { file: string | Buffer; mimeType?: string } | null = null;
     private indexHtml = '';
     private favicon = '';
     private systemConfigOwn: ioBroker.SystemConfigObject | null | undefined = null;
@@ -51,8 +68,13 @@ export class WelcomeAdapter extends Adapter {
             ...options,
             name: 'welcome',
         });
-        this.on('ready', () => this.#onReady());
-        this.on('fileChange', (id, fileName) => this.#onFileChange(id, fileName));
+        this.on('ready', () => {
+            this.#onReady().catch(e => this.log.error(`Cannot start adapter: ${e}`));
+        });
+        this.on('fileChange', (id, fileName) => {
+            this.#onFileChange(id, fileName).catch(e => this.log.error(`Cannot process file change: ${e}`));
+        });
+        this.on('objectChange', id => this.#onObjectChange(id));
         this.on('unload', callback => this.#onUnload(callback));
         this.welcomeConfig = this.config as WelcomeConfig;
         this.httpsAxios = axios.create({
@@ -62,16 +84,39 @@ export class WelcomeAdapter extends Adapter {
         });
     }
 
-    async #onFileChange(_id: string, fileName: string): Promise<void> {
-        if (fileName === 'logo.png') {
+    async #onFileChange(id: string, fileName: string): Promise<void> {
+        if (id === this.namespace && fileName === 'logo.png') {
+            // Invalidate the cached logo, so `renderIndexHtml` reads the new file
+            this.logoPng = this.vendorLogo;
             this.indexHtml = await this.renderIndexHtml();
         }
+    }
+
+    /** Re-render the page if an instance was added, removed or reconfigured */
+    #onObjectChange(id: string): void {
+        if (!id.startsWith('system.adapter.') || !SUPPORTED_ADAPTERS.includes(id.split('.')[2])) {
+            return;
+        }
+        // Many objects can change at once (e.g., on upgrade), so render only once afterward
+        if (this.renderTimeout) {
+            clearTimeout(this.renderTimeout);
+        }
+        this.renderTimeout = setTimeout(() => {
+            this.renderTimeout = null;
+            this.renderIndexHtml()
+                .then(html => (this.indexHtml = html))
+                .catch(e => this.log.error(`Cannot render index.html: ${e}`));
+        }, RENDER_DELAY_MS);
     }
 
     #onUnload(callback: () => void): void {
         if (this.startTimeout) {
             clearTimeout(this.startTimeout);
             this.startTimeout = null;
+        }
+        if (this.renderTimeout) {
+            clearTimeout(this.renderTimeout);
+            this.renderTimeout = null;
         }
         try {
             this.webServer?.settings &&
@@ -85,7 +130,12 @@ export class WelcomeAdapter extends Adapter {
         callback();
     }
 
-    async getPages(): Promise<{
+    /**
+     * Collect all pages that must be shown on the welcome screen
+     *
+     * @param withIcons Read and encode the instance icons. Not required for the alive check
+     */
+    async getPages(withIcons = true): Promise<{
         pages: { icon?: string; instance: string; title?: ioBroker.StringOrTranslated; url: string; blank?: boolean }[];
         redirect: string;
     }> {
@@ -109,7 +159,10 @@ export class WelcomeAdapter extends Adapter {
         }[] = [];
         for (const id in mapInstance) {
             const instance = mapInstance[id];
-            const url = `http${instance.native.secure ? 's' : ''}://${instance.native.bind === '0.0.0.0' ? 'localhost' : instance.native.bind}:${instance.native.port}/`;
+            if (!instance?.common || !instance.native) {
+                continue;
+            }
+            const url = buildInstanceUrl(instance.native);
             if (id.substring('system.adapter.'.length) === this.welcomeConfig.redirect) {
                 redirect = url;
             }
@@ -118,9 +171,6 @@ export class WelcomeAdapter extends Adapter {
                 this.welcomeConfig.allInstances === false &&
                 !this.welcomeConfig.specificInstances?.includes(id.substring('system.adapter.'.length))
             ) {
-                continue;
-            }
-            if (!instance.common || !instance.native) {
                 continue;
             }
             if (!instance.common.enabled) {
@@ -132,9 +182,14 @@ export class WelcomeAdapter extends Adapter {
             if (!SUPPORTED_ADAPTERS.includes(instance.common.name)) {
                 continue;
             }
-            const iconFile = instance.common.icon
-                ? await this.readFileAsync(`${instance.common.name}.admin`, instance.common.icon)
-                : null;
+            let iconFile: { file: string | Buffer; mimeType?: string } | null = null;
+            if (withIcons && instance.common.icon) {
+                try {
+                    iconFile = await this.readFileAsync(`${instance.common.name}.admin`, instance.common.icon);
+                } catch (e) {
+                    this.log.debug(`Cannot read icon of ${id}: ${e.toString()}`);
+                }
+            }
             let icon: string | undefined;
             if (iconFile && instance.common.icon?.endsWith('.jpg')) {
                 icon = `data:image/jpg;base64,${iconFile.file.toString('base64')}`;
@@ -216,14 +271,18 @@ export class WelcomeAdapter extends Adapter {
             this.systemConfigOwn?.native?.vendor?.logo || this.systemConfigOwn?.native?.vendor?.icon;
         if (icon) {
             // icon is `data:image/svg+xml;base64,...`. Split it into file and mimeType
-            this.logoPng = {
+            this.vendorLogo = {
                 file: Buffer.from(icon.split(',')[1], 'base64'),
                 mimeType: icon.substring(5, icon.indexOf(';base64')),
             };
+            this.logoPng = this.vendorLogo;
         }
         if (this.systemConfigOwn?.native?.vendor?.icon) {
             this.favicon = this.systemConfigOwn.native.vendor.icon;
         }
+
+        // Keep the page up to date if instances are added, removed or reconfigured
+        await this.subscribeForeignObjectsAsync('system.adapter.*');
 
         this.indexHtml = await this.renderIndexHtml();
 
@@ -237,28 +296,29 @@ export class WelcomeAdapter extends Adapter {
             });
     }
 
-    async renderAliveJson(): Promise<boolean[]> {
-        const { pages } = await this.getPages();
-        const alive: boolean[] = [];
-        this.log.debug(`Checking pages`);
-
-        for (let p = 0; p < pages.length; p++) {
-            try {
-                let response: AxiosResponse<any, any>;
-                if (pages[p].url.startsWith('https://')) {
-                    response = await this.httpsAxios.get(pages[p].url, { timeout: 1000 });
-                } else {
-                    response = await axios.get(pages[p].url, { timeout: 1000 });
-                }
-                this.log.debug(`Checking ${pages[p].url}: ${response.status}`);
-                alive[p] = response.status === 200 || response.status === 403 || response.status === 401;
-            } catch (e) {
-                this.log.debug(`Checking ${pages[p].url}: ${e.toString()}`);
-                pages[p].url = '';
-                alive[p] = false;
-            }
+    /** Check if the page behind the URL answers */
+    async #isAlive(url: string): Promise<boolean> {
+        try {
+            // A page that requires authentication answers with 401/403 and is alive too,
+            // so every status code must be accepted and evaluated here
+            const options = { timeout: 1000, validateStatus: () => true };
+            const response = url.startsWith('https://')
+                ? await this.httpsAxios.get(url, options)
+                : await axios.get(url, options);
+            this.log.debug(`Checking ${url}: ${response.status}`);
+            return response.status === 200 || response.status === 403 || response.status === 401;
+        } catch (e) {
+            this.log.debug(`Checking ${url}: ${e.toString()}`);
+            return false;
         }
-        return alive;
+    }
+
+    async renderAliveJson(): Promise<boolean[]> {
+        // Icons are not required here and reading them is expensive
+        const { pages } = await this.getPages(false);
+        this.log.debug(`Checking ${pages.length} pages`);
+
+        return Promise.all(pages.map(page => this.#isAlive(page.url)));
     }
     //settings: {
     //    "port":   8080,
@@ -294,7 +354,9 @@ export class WelcomeAdapter extends Adapter {
             server.app.use(async (req, res, next) => {
                 const url = req.url.split('?')[0];
                 if (!url || url === '/' || url === '/index.html') {
-                    res.set('Cache-Control', `public, max-age=${this.welcomeConfig.staticAssetCacheMaxAge}`);
+                    // index.html contains the rendered instance list, so it may not be cached by default
+                    const maxAge = parseInt(this.welcomeConfig.staticAssetCacheMaxAge as unknown as string, 10) || 0;
+                    res.set('Cache-Control', `public, max-age=${maxAge}`);
                     res.send(this.indexHtml);
                 } else if (url === '/alive.json' || url === 'alive.json') {
                     res.json(await this.renderAliveJson());
@@ -377,7 +439,10 @@ export class WelcomeAdapter extends Adapter {
                         this.startTimeout = setTimeout(
                             () => {
                                 this.startTimeout = null;
-                                this.initWebServer(settings);
+                                // The result must be stored, otherwise the server cannot be closed on unload
+                                this.initWebServer(settings)
+                                    .then(returnedServer => (this.webServer = returnedServer))
+                                    .catch(e => this.log.error(`Failed to initWebServer: ${e}`));
                             },
                             (parseInt(this.welcomeConfig.retryInterval as unknown as string, 10) || 10) * 1000,
                         );

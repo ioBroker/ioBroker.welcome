@@ -32,6 +32,9 @@
         "@iobroker/build-tools": "^3.0.1",
         "@iobroker/legacy-testing": "^2.1.2",
         "@iobroker/testing": "^5.3.0",
+        "chai": "^6.2.2",
+        "chai-as-promised": "^8.0.2",
+        "mocha": "^11.7.6",
         "puppeteer": "^25.4.0",
         "colorette": "^2.0.20",
         "typescript": "~6.0.3"
@@ -50,7 +53,7 @@
     ],
     "scripts": {
         "test": "node node_modules/mocha/bin/mocha --exit",
-        "prepublishOnly": "node tasks",
+        "prepublishOnly": "npm run build",
         "0-admin-clean": "node tasks --0-admin-clean",
         "1-admin-npm": "node tasks --1-admin-npm",
         "2-admin-build": "node tasks --2-admin-build",
@@ -62,7 +65,7 @@
         "2-build": "node tasks --2-build",
         "3-copy": "node tasks --3-copy",
         "build-web": "node tasks --build-src",
-        "build": "node tasks",
+        "build": "npm run tsc && node tasks",
         "release": "release-script",
         "release-patch": "release-script patch --yes",
         "release-minor": "release-script minor --yes",

@@ -2,9 +2,30 @@ import React from 'react';
 import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
 import * as Sentry from '@sentry/browser';
 
-import { AppBar, Avatar, Button, Card, CardActions, CardContent, CardMedia, Toolbar, Typography } from '@mui/material';
+import {
+    AppBar,
+    Avatar,
+    Button,
+    Card,
+    CardActions,
+    CardContent,
+    CardMedia,
+    Toolbar,
+    Typography,
+    CssBaseline,
+} from '@mui/material';
 
-import { I18n, Theme, Utils, ToggleThemeMenu, Icon, type IobTheme } from '@iobroker/gui-components';
+import {
+    I18n,
+    Theme,
+    Utils,
+    ToggleThemeMenu,
+    Icon,
+    type IobTheme,
+    ScrollbarStyles,
+    type ThemeName,
+    type ThemeType,
+} from '@iobroker/gui-components';
 
 import logo from './assets/logo.svg';
 
@@ -48,7 +69,8 @@ interface AppProps {
 }
 
 interface AppState {
-    themeName: 'dark' | 'light';
+    themeName: ThemeName;
+    themeType: ThemeType;
     theme: IobTheme;
     alive: (boolean | undefined)[];
 }
@@ -70,7 +92,7 @@ export default class App extends React.Component<AppProps, AppState> {
             'zh-cn': zhLang,
         };
 
-        I18n.setTranslations(translations);
+        I18n.extendTranslations(translations);
         I18n.setLanguage(
             window.IOBROKER_PAGES.language ||
                 // @ts-expect-error userLanguage is deprecated
@@ -86,16 +108,16 @@ export default class App extends React.Component<AppProps, AppState> {
             });
         }
 
-        const theme = Theme(Utils.getThemeName());
+        const themeName = Utils.getThemeName();
 
         this.state = {
-            themeName: Utils.getThemeName() as 'dark' | 'light',
-            theme,
+            themeName: themeName,
+            themeType: Utils.getThemeType(themeName),
+            theme: Theme(themeName),
             alive: [],
         };
 
-        document.body.style.backgroundColor = theme.palette.mode === 'dark' ? '#111' : '#fafafa';
-        document.body.style.color = theme.palette.mode === 'dark' ? '#EEE' : '#111';
+        // The background and text color of `body` are applied by <CssBaseline /> and follow the theme
     }
 
     componentDidMount(): void {
@@ -200,30 +222,14 @@ export default class App extends React.Component<AppProps, AppState> {
         );
     }
 
-    toggleTheme(newThemeName?: 'dark' | 'light'): void {
-        const themeName = this.state.themeName;
-
-        // dark => light => dark
-        newThemeName = newThemeName || (themeName === 'dark' ? 'light' : 'dark');
-
-        if (newThemeName !== themeName) {
-            Utils.setThemeName(newThemeName);
-
-            const theme = Theme(newThemeName);
-
-            this.setState({
-                theme,
-                themeName: newThemeName,
-            });
-        }
-    }
-
     render(): React.JSX.Element {
         const { theme } = this.state;
 
         return (
             <StyledEngineProvider injectFirst>
                 <ThemeProvider theme={this.state.theme}>
+                    <CssBaseline />
+                    <ScrollbarStyles theme={this.state.theme} />
                     <AppBar position="static">
                         <Toolbar
                             variant="dense"
@@ -253,7 +259,19 @@ export default class App extends React.Component<AppProps, AppState> {
                             <div style={{ flexGrow: 1 }} />
                             <ToggleThemeMenu
                                 t={I18n.t}
-                                toggleTheme={() => this.toggleTheme()}
+                                toggleTheme={() => {
+                                    const themeName = this.state.themeName;
+
+                                    const newThemeName = Utils.toggleTheme(themeName);
+
+                                    const theme = Theme(Utils.getThemeName(newThemeName));
+
+                                    this.setState({
+                                        theme,
+                                        themeName: newThemeName,
+                                        themeType: Utils.getThemeType(newThemeName),
+                                    });
+                                }}
                                 themeName={this.state.themeName}
                             />
                         </Toolbar>

@@ -43,7 +43,7 @@ export default class WelcomeComponent extends ConfigGeneric<ConfigGenericProps, 
     }
 
     async componentDidMount(): Promise<void> {
-        super.componentDidMount();
+        await super.componentDidMount();
 
         await this.readData();
     }
@@ -64,22 +64,21 @@ export default class WelcomeComponent extends ConfigGeneric<ConfigGenericProps, 
         });
         result.sort((a, b) => a.id.localeCompare(b.id));
 
-        const icons: { [name: string]: { mimeType: string; file: string } } = {};
+        // All instances of one adapter share the same icon, so read it only once
+        const icons: { [name: string]: string | null } = {};
         for (let i = 0; i < result.length; i++) {
             const iconName = result[i].icon;
-            try {
-                const icon =
-                    icons[result[i].name] ||
-                    (iconName &&
-                        (await this.props.oContext.socket.readFile(`${result[i].name}.admin`, iconName, true)));
-                if (icon) {
-                    result[i].icon = `data:${icon.mimeType};base64,${icon.file}`;
-                } else {
-                    result[i].icon = null;
+            const adapterName = result[i].name;
+            if (icons[adapterName] === undefined) {
+                try {
+                    const icon =
+                        iconName && (await this.props.oContext.socket.readFile(`${adapterName}.admin`, iconName, true));
+                    icons[adapterName] = icon ? `data:${icon.mimeType};base64,${icon.file}` : null;
+                } catch {
+                    icons[adapterName] = null;
                 }
-            } catch {
-                result[i].icon = null;
             }
+            result[i].icon = icons[adapterName];
         }
 
         this.setState({ instances: result });

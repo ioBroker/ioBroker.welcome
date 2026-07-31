@@ -12,17 +12,7 @@ body {
     height: 100%;
     overflow: hidden;
 }
-/* scrollbar */
-*::-webkit-scrollbar-track {
-    background-color: #ccc;
-}
-*::-webkit-scrollbar {
-    width: 6px;
-    background-color: #ccc;
-}
-*::-webkit-scrollbar-thumb {
-    background-color: #575757;
-}
+/* The scrollbars are styled by <ScrollbarStyles /> in the colors of the current theme */
 
 #root {
     height: 100%;
