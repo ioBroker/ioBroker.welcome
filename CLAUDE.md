@@ -26,7 +26,7 @@ npm run build          # node tasks -> builds BOTH frontends (src-admin -> admin
 npm run tsc            # compiles src/main.ts -> build/ (NOT part of `npm run build`)
 npm run build-admin    # only the admin component
 npm run build-web      # only the www page
-npm test               # mocha: package + integration + puppeteer GUI test
+npm test               # test:package + test:integration (integration also runs the puppeteer GUI test)
 npm run release-patch  # release-script: bumps version, moves README changelog into io-package.json, runs build
 ```
 
@@ -46,11 +46,22 @@ failing part of a build.
 
 ### Tests
 
-`test/mocha.custom.opts` selects the spec files. `test/integration.js` uses `@iobroker/testing`;
-`test/testAdapter.gui.js` uses `@iobroker/legacy-testing` + puppeteer to install a real js-controller under `tmp/`,
-start the adapter and assert the page renders (`.MuiAvatar-root`) — it needs a built `public/` and takes minutes.
+The layout follows the other ioBroker adapters (`ioBroker.acme`, `ioBroker.hmip`): every suite is addressed
+explicitly by an npm script, `.mocharc.json` only preloads `test/mocha.setup.js` (which rethrows unhandled
+rejections). Do not reintroduce a `mocha.custom.opts` — that mocha-6 mechanism was removed in mocha 8.
 
-Run a single suite: `npx mocha test/testAdapter.gui.js --exit`.
+```bash
+npm run test:package      # @iobroker/testing packageFiles
+npm run test:integration  # @iobroker/testing integration, then test:gui
+npm run test:gui          # puppeteer GUI test only
+npm test                  # test:package + test:integration
+```
+
+`test/testAdapter.gui.test.js` uses `@iobroker/legacy-testing` + puppeteer: it installs a real js-controller and
+admin 8 under `tmp/`, opens `#tab-instances/config/system.adapter.welcome.0/_settings` and waits for
+`#welcome-custom-component` — the root `div` of `src-admin/src/WelcomeComponent.tsx`. It therefore needs a built
+`admin/custom/` (`npm run build-admin`) and takes minutes; screenshots land in `tmp/screenshots/`. Keep that id in
+place when touching the component.
 
 ## Architecture
 

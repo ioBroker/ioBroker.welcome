@@ -50,9 +50,10 @@
         "build/"
     ],
     "scripts": {
-        "test": "mocha --exit",
-        "test:integration": "mocha --exit",
-        "test:package": "mocha test/package.js --exit",
+        "test": "npm run test:package && npm run test:integration",
+        "test:package": "mocha test/package --exit",
+        "test:gui": "mocha test/testAdapter.gui.test --exit",
+        "test:integration": "mocha test/integration --exit && npm run test:gui",
         "lint": "eslint -c eslint.config.mjs && cd src-www && eslint -c eslint.config.mjs && cd ../src-admin && eslint -c eslint.config.mjs",
         "prepublishOnly": "npm run build",
         "0-admin-clean": "node tasks --0-admin-clean",

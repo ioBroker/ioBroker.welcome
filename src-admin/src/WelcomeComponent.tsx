@@ -89,7 +89,10 @@ export default class WelcomeComponent extends ConfigGeneric<ConfigGenericProps, 
             return <LinearProgress />;
         }
         return (
-            <div style={{ width: '100%' }}>
+            <div
+                style={{ width: '100%' }}
+                id="welcome-custom-component"
+            >
                 <FormControlLabel
                     control={
                         <Switch
