@@ -1,85 +1,85 @@
 {
-    "name": "iobroker.welcome",
-    "version": "1.1.1",
-    "description": "ioBroker simple web Adapter",
-    "author": {
-        "name": "bluefox",
-        "email": "dogafox@gmail.com"
-    },
-    "homepage": "https://github.com/ioBroker/ioBroker.welcome",
-    "keywords": [
-        "ioBroker",
-        "web"
-    ],
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/ioBroker/ioBroker.welcome"
-    },
-    "engines": {
-        "node": ">=22"
-    },
-    "dependencies": {
-        "@iobroker/adapter-core": "^3.4.3",
-        "@iobroker/webserver": "^2.0.1",
-        "axios": "^1.19.0",
-        "express": "^5.2.1"
-    },
-    "devDependencies": {
-        "@alcalzone/release-script": "^5.2.1",
-        "@alcalzone/release-script-plugin-iobroker": "^5.2.0",
-        "@alcalzone/release-script-plugin-license": "^5.2.2",
-        "@iobroker/eslint-config": "^2.3.4",
-        "@iobroker/build-tools": "^3.0.1",
-        "@iobroker/legacy-testing": "^3.0.0",
-        "@iobroker/testing": "^5.3.0",
-        "@types/express": "^5.0.6",
-        "puppeteer": "^25.5.0",
-        "colorette": "^2.0.20",
-        "typescript": "~6.0.3"
-    },
-    "bugs": {
-        "url": "https://github.com/ioBroker/ioBroker.welcome/issues"
-    },
-    "main": "build/main.js",
-    "files": [
-        "admin/",
-        "public/",
-        "img/",
-        "io-package.json",
-        "LICENSE",
-        "build/"
-    ],
-    "scripts": {
-        "test": "npm run test:package && npm run test:integration",
-        "test:package": "mocha test/package --exit",
-        "test:gui": "mocha test/testAdapter.gui.test --exit",
-        "test:integration": "mocha test/integration --exit && npm run test:gui",
-        "lint": "eslint -c eslint.config.mjs && cd src-www && eslint -c eslint.config.mjs && cd ../src-admin && eslint -c eslint.config.mjs",
-        "prepublishOnly": "npm run build",
-        "0-admin-clean": "node tasks --0-admin-clean",
-        "1-admin-npm": "node tasks --1-admin-npm",
-        "2-admin-build": "node tasks --2-admin-build",
-        "3-admin-copy": "node tasks --3-admin-copy",
-        "build-admin": "node tasks --admin",
-        "tsc": "tsc -p tsconfig.build.json",
-        "0-clean": "node tasks --0-clean",
-        "1-npm": "node tasks --1-npm",
-        "2-build": "node tasks --2-build",
-        "3-copy": "node tasks --3-copy",
-        "build-web": "node tasks --build-src",
-        "build": "npm run tsc && node tasks",
-        "release": "release-script",
-        "release-patch": "release-script patch --yes",
-        "release-minor": "release-script minor --yes",
-        "release-major": "release-script major --yes",
-        "update-packages": "npx -y npm-check-updates --upgrade && cd src-www && npx -y npm-check-updates --upgrade && cd ../src-admin && npx -y npm-check-updates --upgrade",
-        "npm": "npm i && cd src-www && npm i -f && cd ../src-admin && npm i -f"
-    },
-    "license": "MIT",
-    "maintainers": [
-        {
-            "name": "bluefox",
-            "email": "dogafox@gmail.com"
-        }
-    ]
+  "name": "iobroker.welcome",
+  "version": "2.0.0",
+  "description": "ioBroker simple web Adapter",
+  "author": {
+    "name": "bluefox",
+    "email": "dogafox@gmail.com"
+  },
+  "homepage": "https://github.com/ioBroker/ioBroker.welcome",
+  "keywords": [
+    "ioBroker",
+    "web"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ioBroker/ioBroker.welcome"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@iobroker/adapter-core": "^3.4.3",
+    "@iobroker/webserver": "^2.0.1",
+    "axios": "^1.19.0",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "@alcalzone/release-script": "^5.2.1",
+    "@alcalzone/release-script-plugin-iobroker": "^5.2.0",
+    "@alcalzone/release-script-plugin-license": "^5.2.2",
+    "@iobroker/eslint-config": "^2.3.4",
+    "@iobroker/build-tools": "^3.0.1",
+    "@iobroker/legacy-testing": "^3.0.0",
+    "@iobroker/testing": "^5.3.0",
+    "@types/express": "^5.0.6",
+    "puppeteer": "^25.5.0",
+    "colorette": "^2.0.20",
+    "typescript": "~6.0.3"
+  },
+  "bugs": {
+    "url": "https://github.com/ioBroker/ioBroker.welcome/issues"
+  },
+  "main": "build/main.js",
+  "files": [
+    "admin/",
+    "public/",
+    "img/",
+    "io-package.json",
+    "LICENSE",
+    "build/"
+  ],
+  "scripts": {
+    "test": "npm run test:package && npm run test:integration",
+    "test:package": "mocha test/package --exit",
+    "test:gui": "mocha test/testAdapter.gui.test --exit",
+    "test:integration": "mocha test/integration --exit && npm run test:gui",
+    "lint": "eslint -c eslint.config.mjs && cd src-www && eslint -c eslint.config.mjs && cd ../src-admin && eslint -c eslint.config.mjs",
+    "prepublishOnly": "npm run build",
+    "0-admin-clean": "node tasks --0-admin-clean",
+    "1-admin-npm": "node tasks --1-admin-npm",
+    "2-admin-build": "node tasks --2-admin-build",
+    "3-admin-copy": "node tasks --3-admin-copy",
+    "build-admin": "node tasks --admin",
+    "tsc": "tsc -p tsconfig.build.json",
+    "0-clean": "node tasks --0-clean",
+    "1-npm": "node tasks --1-npm",
+    "2-build": "node tasks --2-build",
+    "3-copy": "node tasks --3-copy",
+    "build-web": "node tasks --build-src",
+    "build": "npm run tsc && node tasks",
+    "release": "release-script",
+    "release-patch": "release-script patch --yes",
+    "release-minor": "release-script minor --yes",
+    "release-major": "release-script major --yes",
+    "update-packages": "npx -y npm-check-updates --upgrade && cd src-www && npx -y npm-check-updates --upgrade && cd ../src-admin && npx -y npm-check-updates --upgrade",
+    "npm": "npm i && cd src-www && npm i -f && cd ../src-admin && npm i -f"
+  },
+  "license": "MIT",
+  "maintainers": [
+    {
+      "name": "bluefox",
+      "email": "dogafox@gmail.com"
+    }
+  ]
 }

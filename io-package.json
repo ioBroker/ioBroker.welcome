@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "welcome",
-    "version": "1.1.1",
+    "version": "2.0.0",
     "titleLang": {
       "en": "Welcome page",
       "de": "Willkommensseite",
@@ -16,6 +16,19 @@
       "zh-cn": "欢迎页面"
     },
     "news": {
+      "2.0.0": {
+        "en": "Migrated admin component to React 19",
+        "de": "Die Admin-Komponente wurde auf React 19 migriert.",
+        "ru": "Компонент административной панели перенесен на React 19.",
+        "pt": "Componente administrativo migrado para React 19",
+        "nl": "Beheercomponent gemigreerd naar React 19.",
+        "fr": "Composant d'administration migré vers React 19",
+        "it": "Componente amministrativo migrato a React 19",
+        "es": "Componente de administración migrado a React 19",
+        "pl": "Przeniesiono komponent administracyjny do React 19",
+        "uk": "Перенесено адміністративний компонент до React 19",
+        "zh-cn": "将管理组件迁移到 React 19"
+      },
       "1.1.1": {
         "en": "Migrated admin component to TypeScript and vite",
         "de": "Geförderte Admin-Komponente zu TypeScript und vite",
@@ -93,19 +106,6 @@
         "pl": "Dostosowywanie do standardu URL",
         "uk": "Додано користувацький перенаправлений URL",
         "zh-cn": "增加习俗转用欧元"
-      },
-      "0.1.0": {
-        "en": "Added custom links",
-        "de": "Hinzufügen von benutzerdefinierten Links",
-        "ru": "Добавлены пользовательские ссылки",
-        "pt": "Adicionados links personalizados",
-        "nl": "Toegevoegde gewoonte links",
-        "fr": "Ajout de liens personnalisés",
-        "it": "Aggiunto link personalizzati",
-        "es": "Enlaces personalizados",
-        "pl": "Adddition link",
-        "uk": "Додати користувацькі посилання",
-        "zh-cn": "增加习俗联系"
       }
     },
     "desc": {
