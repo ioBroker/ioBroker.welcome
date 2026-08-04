@@ -32,6 +32,7 @@
         "@iobroker/build-tools": "^3.0.1",
         "@iobroker/legacy-testing": "^3.0.0",
         "@iobroker/testing": "^5.3.0",
+        "@types/express": "^5.0.6",
         "puppeteer": "^25.5.0",
         "colorette": "^2.0.20",
         "typescript": "~6.0.3"
