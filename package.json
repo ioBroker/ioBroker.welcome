@@ -49,7 +49,10 @@
         "build/"
     ],
     "scripts": {
-        "test": "node node_modules/mocha/bin/mocha --exit",
+        "test": "mocha --exit",
+        "test:integration": "mocha --exit",
+        "test:package": "mocha test/testPackageFiles.js --exit",
+        "lint": "eslint -c eslint.config.mjs && cd src-www && eslint -c eslint.config.mjs && cd ../src-admin && eslint -c eslint.config.mjs",
         "prepublishOnly": "npm run build",
         "0-admin-clean": "node tasks --0-admin-clean",
         "1-admin-npm": "node tasks --1-admin-npm",

@@ -141,7 +141,7 @@ export default class WelcomeComponent extends ConfigGeneric<ConfigGenericProps, 
                                                     specificInstances.push(instance.id);
                                                 }
                                                 specificInstances.sort();
-                                                this.onChange('specificInstances', specificInstances);
+                                                void this.onChange('specificInstances', specificInstances);
                                             }}
                                         />
                                     </TableCell>

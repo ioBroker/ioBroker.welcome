@@ -376,7 +376,7 @@ export class WelcomeAdapter extends Adapter {
             try {
                 const webserver: any = new IoBWebServer.WebServer({
                     app: server.app,
-                    adapter: this as unknown as ioBroker.Adapter,
+                    adapter: this,
                     secure: settings.secure,
                 });
                 server.server = await webserver.init();
@@ -454,7 +454,7 @@ export class WelcomeAdapter extends Adapter {
                         !settings.bind || settings.bind === '0.0.0.0' ? undefined : settings.bind || undefined,
                         () => {
                             serverListening = true;
-                            this.setState('info.connection', true, true);
+                            void this.setStateAsync('info.connection', true, true);
                         },
                     );
 
