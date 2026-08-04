@@ -1,19 +1,26 @@
-const engineHelper = require('./engineHelper');
-const guiHelper = require('./guiHelper');
+const engineHelper = require('@iobroker/legacy-testing/engineHelper');
+const guiHelper = require('@iobroker/legacy-testing/guiHelper');
 
 let gPage;
+process.env.ADMIN_VERSION = '8.0.1';
+const rootDir = `${__dirname}/../`;
 
 describe('welcome-gui', () => {
-    before(async function (){
+    before(async function () {
         this.timeout(240_000);
 
-        // install js-controller, web and vis-2-beta
-        await engineHelper.startIoBroker();
-        const { page } = await guiHelper.startBrowser(process.env.CI === 'true');
+        // install js-controller
+        await engineHelper.startIoBrokerAdapters();
+        const { page } = await guiHelper.startBrowser(
+            'welcome',
+            rootDir,
+            process.env.CI === 'true',
+            '#tab-instances/config/system.adapter.acme.0/statusTab',
+        );
         gPage = page;
     });
 
-    it('Check web server', async function (){
+    it('Check web server', async function () {
         this.timeout(5_000);
         await gPage.waitForSelector('.MuiAvatar-root', { timeout: 5_000 });
     });
@@ -22,7 +29,7 @@ describe('welcome-gui', () => {
         this.timeout(5000);
         await guiHelper.stopBrowser();
         console.log('BROWSER stopped');
-        await engineHelper.stopIoBroker();
+        await engineHelper.stopIoBrokerAdapters();
         console.log('ioBroker stopped');
     });
 });
