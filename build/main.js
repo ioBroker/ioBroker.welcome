@@ -403,7 +403,7 @@ class WelcomeAdapter extends adapter_core_1.Adapter {
                 serverPort = port;
                 server.server?.listen(port, !settings.bind || settings.bind === '0.0.0.0' ? undefined : settings.bind || undefined, () => {
                     serverListening = true;
-                    this.setState('info.connection', true, true);
+                    void this.setStateAsync('info.connection', true, true);
                 });
                 this.log.info(`http${settings.secure ? 's' : ''} server listening on port ${port}`);
             });

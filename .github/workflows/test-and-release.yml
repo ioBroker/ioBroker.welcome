@@ -51,6 +51,10 @@ jobs:
             - uses: ioBroker/testing-action-adapter@v1.1.2
               with:
                   install-command: 'npm i && cd src-admin && npm i -f && cd ../src-www && npm i -f'
+                  # `public/` and `admin/custom/` are git-ignored build outputs.
+                  # Without this the adapter cannot serve the welcome page and the GUI test
+                  # never finds #welcome-custom-component.
+                  build: true
                   os: ${{ matrix.os }}
                   node-version: ${{ matrix.node-version }}
                   screenshots-path: 'tmp/screenshots/**/*.png'
