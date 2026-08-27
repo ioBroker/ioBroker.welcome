@@ -12,5 +12,7 @@
   "Custom URL": "URL personalizado",
   "User will be immediately redirected to this link after opening of the page": "O usuário será imediatamente redirecionado para este link após a abertura da página",
   "URL must be set": "O URL deve ser definido",
-  "Logo": "Imagem do logotipo"
+  "Logo": "Imagem do logotipo",
+  "Answer ACME HTTP-01 challenges": "Responder a desafios ACME HTTP-01",
+  "Let the acme adapter renew Let's Encrypt certificates over this port without stopping this adapter": "Permite que o adaptador acme renove certificados Let's Encrypt por esta porta sem parar este adaptador"
 }

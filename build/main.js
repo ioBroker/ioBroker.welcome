@@ -339,6 +339,9 @@ class WelcomeAdapter extends adapter_core_1.Adapter {
                     app: server.app,
                     adapter: this,
                     secure: settings.secure,
+                    // The welcome adapter usually owns port 80, so the acme adapter cannot bind it
+                    // itself: answer the HTTP-01 challenges here unless the user turned that off
+                    acmeChallenge: settings.acmeChallenge !== false,
                 });
                 server.server = await webserver.init();
             }

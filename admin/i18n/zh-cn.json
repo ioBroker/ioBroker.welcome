@@ -12,5 +12,7 @@
   "Custom URL": "自定义网址",
   "User will be immediately redirected to this link after opening of the page": "用户打开页面后将立即重定向至此链接",
   "URL must be set": "必须设置网址",
-  "Logo": "形象标识"
+  "Logo": "形象标识",
+  "Answer ACME HTTP-01 challenges": "响应 ACME HTTP-01 验证",
+  "Let the acme adapter renew Let's Encrypt certificates over this port without stopping this adapter": "让 acme 适配器无需停止本适配器即可通过此端口续订 Let's Encrypt 证书"
 }

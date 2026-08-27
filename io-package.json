@@ -183,6 +183,7 @@
     "port": 80,
     "auth": false,
     "secure": false,
+    "acmeChallenge": true,
     "bind": "0.0.0.0",
     "language": "",
     "defaultUser": "admin",

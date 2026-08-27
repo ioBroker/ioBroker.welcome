@@ -12,5 +12,7 @@
   "Custom URL": "Пользовательский URL",
   "User will be immediately redirected to this link after opening of the page": "Пользователь будет немедленно перенаправлен на эту ссылку после открытия страницы.",
   "URL must be set": "URL-адрес должен быть установлен",
-  "Logo": "Изображение логотипа"
+  "Logo": "Изображение логотипа",
+  "Answer ACME HTTP-01 challenges": "Отвечать на запросы ACME HTTP-01",
+  "Let the acme adapter renew Let's Encrypt certificates over this port without stopping this adapter": "Адаптер acme сможет обновлять сертификаты Let's Encrypt через этот порт, не останавливая данный адаптер"
 }

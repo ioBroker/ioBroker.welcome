@@ -43,6 +43,16 @@
                     "sm": 6,
                     "md": 4,
                     "lg": 2
+                },
+                "acmeChallenge": {
+                    "newLine": true,
+                    "type": "checkbox",
+                    "label": "Answer ACME HTTP-01 challenges",
+                    "help": "Let the acme adapter renew Let's Encrypt certificates over this port without stopping this adapter",
+                    "default": true,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4
                 }
             }
         },

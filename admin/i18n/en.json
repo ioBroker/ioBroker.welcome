@@ -12,5 +12,7 @@
   "Custom URL": "Custom URL",
   "User will be immediately redirected to this link after opening of the page": "User will be immediately redirected to this link after opening of the page",
   "URL must be set": "URL must be set",
-  "Logo": "Logo image"
+  "Logo": "Logo image",
+  "Answer ACME HTTP-01 challenges": "Answer ACME HTTP-01 challenges",
+  "Let the acme adapter renew Let's Encrypt certificates over this port without stopping this adapter": "Let the acme adapter renew Let's Encrypt certificates over this port without stopping this adapter"
 }

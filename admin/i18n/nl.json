@@ -12,5 +12,7 @@
   "Custom URL": "Eigen URL",
   "User will be immediately redirected to this link after opening of the page": "De gebruiker wordt na het openen van de pagina onmiddellijk doorverwezen naar deze link",
   "URL must be set": "URL moet worden ingesteld",
-  "Logo": "Logo afbeelding"
+  "Logo": "Logo afbeelding",
+  "Answer ACME HTTP-01 challenges": "ACME HTTP-01-uitdagingen beantwoorden",
+  "Let the acme adapter renew Let's Encrypt certificates over this port without stopping this adapter": "Laat de acme-adapter Let's Encrypt-certificaten via deze poort vernieuwen zonder deze adapter te stoppen"
 }
