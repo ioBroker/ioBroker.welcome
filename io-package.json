@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "welcome",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "titleLang": {
       "en": "Welcome page",
       "de": "Willkommensseite",
@@ -16,6 +16,19 @@
       "zh-cn": "欢迎页面"
     },
     "news": {
+      "2.0.1": {
+        "en": "Added the option to answer ACME HTTP-01 challenges of the acme adapter",
+        "de": "Es wurde die Option hinzugefügt, die ACME HTTP-01-Herausforderungen des ACME-Adapters zu beantworten.",
+        "ru": "Добавлена возможность отвечать на HTTP-запросы ACME HTTP-01 адаптера ACME.",
+        "pt": "Adicionada a opção de responder aos desafios ACME HTTP-01 do adaptador ACME.",
+        "nl": "De optie is toegevoegd om ACME HTTP-01-uitdagingen van de ACME-adapter te beantwoorden.",
+        "fr": "Ajout d'une option permettant de répondre aux défis ACME HTTP-01 de l'adaptateur ACME",
+        "it": "Aggiunta l'opzione per rispondere alle sfide ACME HTTP-01 dell'adattatore acme",
+        "es": "Se agregó la opción de responder a los desafíos ACME HTTP-01 del adaptador acme.",
+        "pl": "Dodano opcję odpowiadania na wyzwania ACME HTTP-01 dotyczące adaptera Acme",
+        "uk": "Додано опцію відповіді на запити ACME HTTP-01 для адаптера acme.",
+        "zh-cn": "新增了对 ACME 适配器的 ACME HTTP-01 质询进行响应的选项"
+      },
       "2.0.0": {
         "en": "Migrated admin component to React 19",
         "de": "Die Admin-Komponente wurde auf React 19 migriert.",
@@ -93,19 +106,6 @@
         "pl": "Wszystko dodaje własne logo do ekranu powitalnego",
         "uk": "Додайте власний логотип на екран",
         "zh-cn": "允许在受欢迎的屏幕上增加自己的标志"
-      },
-      "0.2.0": {
-        "en": "Added custom redirect URL",
-        "de": "Hinzugefügt benutzerdefinierte redirect URL",
-        "ru": "Добавлен пользовательский редирект URL",
-        "pt": "Adicionado URL de redirecionamento personalizado",
-        "nl": "Vertaling:",
-        "fr": "Ajout d'URL de redirection personnalisée",
-        "it": "Aggiunto URL redirect personalizzato",
-        "es": "URL redireccionada personalizada",
-        "pl": "Dostosowywanie do standardu URL",
-        "uk": "Додано користувацький перенаправлений URL",
-        "zh-cn": "增加习俗转用欧元"
       }
     },
     "desc": {

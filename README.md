@@ -28,7 +28,7 @@ In this case, by opening of http://IP it will be immediately redirected to a spe
 -->
 
 ## Changelog
-### **WORK IN PROGRESS**
+### 2.0.1 (2026-08-27)
 -   (@GermanBluefox) Added the option to answer ACME HTTP-01 challenges of the acme adapter
 
 ### 2.0.0 (2026-08-04)
