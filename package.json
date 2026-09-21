@@ -35,7 +35,7 @@
     "@types/express": "^5.0.6",
     "puppeteer": "^25.9.0",
     "colorette": "^2.0.20",
-    "typescript": "~6.0.3"
+    "typescript": "~7.0.2"
   },
   "bugs": {
     "url": "https://github.com/ioBroker/ioBroker.welcome/issues"
