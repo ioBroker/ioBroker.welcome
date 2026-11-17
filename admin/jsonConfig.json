@@ -1,6 +1,9 @@
 {
     "i18n": true,
     "type": "tabs",
+    "tabsStyle": {
+        "width": "calc(100% - 100px)"
+    },
     "items": {
         "_config": {
             "type": "panel",
@@ -9,40 +12,52 @@
                 "bind": {
                     "type": "ip",
                     "label": "Own IP address",
-                    "sm": 6,
-                    "md": 4,
-                    "lg": 2
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "xl": 4
                 },
                 "port": {
                     "type": "port",
                     "label": "Port",
                     "default": 80,
-                    "sm": 6,
-                    "md": 4,
-                    "lg": 2
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "xl": 4
                 },
                 "secure": {
                     "newLine": true,
                     "type": "checkbox",
                     "label": "Secure(HTTPS)",
+                    "xs": 12,
                     "sm": 12,
                     "md": 6,
-                    "lg": 2
+                    "lg": 4,
+                    "xl": 4
                 },
                 "_certs": {
                     "type": "certificates",
                     "newLine": true,
                     "hidden": "!data.secure",
-                    "sm": 12
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 12,
+                    "xl": 12
                 },
                 "retryInterval": {
                     "newLine": true,
                     "type": "number",
                     "label": "Retry Interval",
                     "help": "Adapter will retry every X seconds to open the web server on the given port",
-                    "sm": 6,
-                    "md": 4,
-                    "lg": 2
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "xl": 4
                 },
                 "acmeChallenge": {
                     "newLine": true,
@@ -50,9 +65,11 @@
                     "label": "Answer ACME HTTP-01 challenges",
                     "help": "Let the acme adapter renew Let's Encrypt certificates over this port without stopping this adapter",
                     "default": true,
+                    "xs": 12,
                     "sm": 12,
                     "md": 6,
-                    "lg": 4
+                    "lg": 4,
+                    "xl": 4
                 }
             }
         },
@@ -64,9 +81,11 @@
                     "newLine": true,
                     "type": "checkbox",
                     "label": "Redirect to custom link",
+                    "xs": 12,
                     "sm": 12,
                     "md": 6,
-                    "lg": 4
+                    "lg": 4,
+                    "xl": 4
                 },
                 "redirectUrl": {
                     "newLine": true,
@@ -76,9 +95,11 @@
                     "validatorErrorText": "URL must be set",
                     "validatorNoSaveOnError": true,
                     "tooltip": "User will be immediately redirected to this link after opening of the page",
+                    "xs": 12,
                     "sm": 12,
                     "md": 6,
                     "lg": 4,
+                    "xl": 4,
                     "hidden": "!data.redirectToLink"
                 },
                 "redirect": {
@@ -87,34 +108,44 @@
                     "label": "Redirect to instance by opening of the page",
                     "default": "",
                     "adapters": ["admin", "web"],
+                    "xs": 12,
                     "sm": 12,
                     "md": 6,
                     "lg": 4,
+                    "xl": 4,
                     "hidden": "!!data.redirectToLink"
                 },
                 "welcomePhrase": {
                     "newLine": true,
                     "type": "text",
                     "label": "Welcome Phrase",
+                    "xs": 12,
                     "sm": 12,
+                    "md": 12,
+                    "lg": 12,
+                    "xl": 12,
                     "hidden": "!!data.redirect || !!data.redirectToLink"
                 },
                 "backgroundColor": {
                     "newLine": true,
                     "type": "color",
                     "label": "Background Color",
-                    "sm": 6,
-                    "md": 4,
-                    "lg": 2,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "xl": 4,
                     "hidden": "!!data.redirect || !!data.redirectToLink"
                 },
                 "backgroundToolbarColor": {
                     "newLine": true,
                     "type": "color",
                     "label": "Toolbar background Color",
-                    "sm": 6,
-                    "md": 4,
-                    "lg": 2,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "xl": 4,
                     "hidden": "!!data.redirect || !!data.redirectToLink"
                 },
                 "language": {
@@ -123,9 +154,11 @@
                     "label": "Language",
                     "system": true,
                     "noTranslation": true,
-                    "sm": 6,
-                    "md": 4,
-                    "lg": 2,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "xl": 4,
                     "hidden": "!!data.redirect || !!data.redirectToLink"
                 },
                 "logo.png": {
@@ -133,17 +166,21 @@
                     "type": "image",
                     "label": "Logo",
                     "accept": { "image/*": [] },
-                    "sm": 6,
-                    "md": 4,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
                     "lg": 4,
+                    "xl": 4,
                     "hidden": "!!data.redirect || !!data.redirectToLink"
                 },
                 "_custom": {
                     "newLine": true,
                     "type": "custom",
+                    "xs": 12,
                     "sm": 12,
-                    "md": 6,
+                    "md": 12,
                     "lg": 6,
+                    "xl": 6,
                     "i18n": true,
                     "bundlerType": "module",
                     "guiApi": 2,
@@ -175,7 +212,11 @@
                             "maxSize": 1024000
                         }
                     ],
-                    "xs": 12
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 12,
+                    "lg": 12,
+                    "xl": 12
                 }
             }
         }
