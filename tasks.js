@@ -10,6 +10,7 @@ function adminCopyAllFiles() {
     copyFiles(['src-admin/src/i18n/*.json'], 'admin/custom/i18n');
     copyFiles(['src-admin/build/assets/*.js'], 'admin/custom/assets');
     copyFiles(['src-admin/build/customComponents.js'], 'admin/custom');
+    copyFiles(['src-admin/build/mf-manifest.json'], 'admin/custom');
     copyFiles(['src-admin/build/customComponents.js.map'], 'admin/custom');
     copyFiles(['src-admin/build/assets/*.map'], 'admin/custom/assets');
 }
